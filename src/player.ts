@@ -1,10 +1,8 @@
 import { Vector3 } from 'three';
 import { Level } from './level';
+import { TexturedBillboardProps } from './model';
 import { renderer, state } from './state';
-import {
-  TexturedBillboard,
-  TexturedBillboardProps
-} from './textured-billboard';
+import { TexturedBillboard } from './textured-billboard';
 
 export class Player extends TexturedBillboard {
   readonly isPlayer = true;
@@ -14,8 +12,6 @@ export class Player extends TexturedBillboard {
 
   constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
-
-    this.body.r = 0.2;
     this.init(level);
   }
 

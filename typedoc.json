@@ -4,5 +4,5 @@
   "plugin": [],
   "theme": "default",
   "tsconfig": "./tsconfig.json",
-  "name": "@pietal.dev/engine"
+  "name": "engine25d"
 }

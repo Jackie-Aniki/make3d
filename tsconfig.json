@@ -7,14 +7,11 @@
     "declaration": true,
     "declarationMap": true,
     "moduleResolution": "node",
-    "target": "es2017",
+    "target": "es2018",
     "module": "none",
     "outDir": "dist",
     "rootDir": "src",
-    "skipLibCheck": true,
-    "paths": {
-      "three-loaders/*": ["./node_modules/three/examples/jsm/loaders/*"]
-    }
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]

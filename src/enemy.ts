@@ -1,8 +1,6 @@
 import { Level } from './level';
-import {
-  TexturedBillboard,
-  TexturedBillboardProps
-} from './textured-billboard';
+import { TexturedBillboardProps } from './model';
+import { TexturedBillboard } from './textured-billboard';
 
 export class Enemy extends TexturedBillboard {
   readonly isPlayer = false;
@@ -14,8 +12,6 @@ export class Enemy extends TexturedBillboard {
 
   constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
-
-    this.body.r = 0.2;
     this.init(level);
   }
 

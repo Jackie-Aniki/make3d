@@ -40,7 +40,7 @@ export class Billboard {
   }
 
   constructor(material: Material) {
-    this.body = physics.createCircle({}, 0.125, { group: floors[0] });
+    this.body = physics.createCircle({}, 0.2, { group: floors[0] });
     this.mesh = new Mesh(new PlaneGeometry(1, 1, 1, 1), material);
     this.scale = material.scale ? material.scale.clone() : new Vector3(1, 1, 1);
 

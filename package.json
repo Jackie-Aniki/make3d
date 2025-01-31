@@ -2,12 +2,10 @@
   "name": "engine25d",
   "description": "threejs based game engine",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "chef-express docs --port 3000",
     "docs": "yarn build && yarn start",
-    "prebuild": "rm -rf dist",
     "build": "tsc",
     "postbuild": "yarn build:docs",
     "prebuild:docs": "rm -rf docs",
@@ -23,7 +21,7 @@
     "amend": "yarn precommit && git commit -a --am --no-edit"
   },
   "files": [
-    "dist/*.*"
+    "src/*.*"
   ],
   "license": "MIT",
   "dependencies": {

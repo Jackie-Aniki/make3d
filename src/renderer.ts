@@ -2,13 +2,11 @@ import {
   AmbientLight,
   CubeTextureLoader,
   DirectionalLight,
-  Group,
   LinearSRGBColorSpace,
   Scene,
   WebGLRenderer
 } from 'three';
 import { Camera } from './camera';
-import { state } from './state';
 
 export class Renderer extends WebGLRenderer {
   now = Date.now();
@@ -51,13 +49,5 @@ export class Renderer extends WebGLRenderer {
     this.camera.updateProjectionMatrix();
 
     this.setSize(innerWidth, innerHeight);
-  }
-
-  async loadMesh(path: string): Promise<Group> {
-    return new Promise((resolve) => {
-      state.fbxLoader.load(path, (object: Group) => {
-        resolve(object);
-      });
-    });
   }
 }

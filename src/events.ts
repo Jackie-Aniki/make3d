@@ -84,7 +84,7 @@ export const addEventListeners = () => {
   window.addEventListener('contextmenu', preventEvent, { passive: false });
   window.addEventListener('pointerdown', onPointerDown, { passive: false });
   window.addEventListener('pointerup', onPointerUp, { passive: true });
-  window.addEventListener('touchend', onPointerUp, { passive: false });
+  window.addEventListener('touchend', onPointerUp, { passive: true });
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   window.addEventListener('touchmove', onPointerMove, { passive: true });
 };

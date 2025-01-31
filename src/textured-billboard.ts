@@ -1,19 +1,13 @@
 import { MeshBasicMaterial } from 'three';
 import { Billboard } from './billboard';
-import { Material } from './model';
+import {
+  Direction,
+  DirectionsToRows,
+  Material,
+  TexturedBillboardProps
+} from './model';
 import { renderer } from './state';
 import { createMaterial } from './utils';
-
-export type Direction = 'down' | 'right' | 'up' | 'left';
-
-export type directionsToRows = Partial<Record<Direction | 'default', number>>;
-
-export interface TexturedBillboardProps {
-  textureName: string;
-  frameDuration?: number;
-  totalFrames?: number;
-  directionsToRows?: directionsToRows;
-}
 
 export class TexturedBillboard extends Billboard {
   static directions: Direction[] = ['down', 'right', 'up', 'left'];
@@ -28,7 +22,7 @@ export class TexturedBillboard extends Billboard {
   frame = 0;
   frameDuration: number;
   totalFrames: number;
-  directionsToRows: directionsToRows;
+  directionsToRows: DirectionsToRows;
 
   constructor({
     textureName = '',

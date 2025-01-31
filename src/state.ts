@@ -1,16 +1,16 @@
 import { groupBits, System } from 'detect-collisions';
 import {
-  LinearFilter,
   LinearSRGBColorSpace,
   NearestFilter,
+  NearestMipMapLinearFilter,
   Raycaster,
   Texture,
   Vector2,
   Vector3
 } from 'three';
+import { Loader } from './loader';
 import { Key, MaskBits, State } from './model';
 import { Renderer } from './renderer';
-import { Loader } from './loader';
 
 export const keys: Partial<Record<Key, boolean>> = {};
 
@@ -18,9 +18,9 @@ export const textures: Record<string, Texture> = {};
 
 export const physics = new System();
 
-export const raycaster = new Raycaster(new Vector3(), new Vector3(), 3, 12);
-
 export const renderer = new Renderer();
+
+export const raycaster = new Raycaster(new Vector3(), new Vector3(), 3, 12);
 
 export const floors = [
   groupBits(MaskBits.Floor0),
@@ -37,7 +37,6 @@ export const loader = new Loader();
 export const state: State = {
   keys,
   mouse,
-  loader,
   direction: Math.random() * 2 * Math.PI
 };
 
@@ -61,7 +60,7 @@ export const init = async () => {
   textures.groundW.rotation = (-90 * Math.PI) / 180;
 
   Object.values(textures).forEach((texture) => {
-    texture.minFilter = LinearFilter;
+    texture.minFilter = NearestMipMapLinearFilter;
     texture.magFilter = NearestFilter;
     texture.colorSpace = LinearSRGBColorSpace;
   });

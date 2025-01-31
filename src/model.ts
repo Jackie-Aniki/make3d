@@ -17,3 +17,14 @@ export enum MaskBits {
   Floor3 = 0b00001000_00000000,
   Floor4 = 0b00010000_00000000
 }
+
+export type Direction = 'down' | 'right' | 'up' | 'left';
+
+export type DirectionsToRows = Partial<Record<Direction | 'default', number>>;
+
+export interface TexturedBillboardProps {
+  textureName: string;
+  frameDuration?: number;
+  totalFrames?: number;
+  directionsToRows?: DirectionsToRows;
+}
