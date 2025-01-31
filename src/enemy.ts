@@ -1,15 +1,25 @@
-import { TexturedBillboard } from './textured-billboard';
+import { Level } from './level';
+import {
+  TexturedBillboard,
+  TexturedBillboardProps
+} from './textured-billboard';
 
 export class Enemy extends TexturedBillboard {
   readonly isPlayer = false;
-
   readonly maxVelocity = 1000;
   readonly maxRotation = 100;
 
   velocity = this.maxVelocity;
   rotation = this.maxRotation;
 
-  update(ms: number) {
+  constructor(level: Level, props: TexturedBillboardProps) {
+    super(props);
+
+    this.body.r = 0.2;
+    this.init(level);
+  }
+
+  protected update(ms: number) {
     super.update(ms);
 
     this.velocity -= ms;

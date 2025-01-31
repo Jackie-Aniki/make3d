@@ -1,4 +1,5 @@
 import { Vector3 } from 'three';
+import { Level } from './level';
 import { renderer, state } from './state';
 import {
   TexturedBillboard,
@@ -7,13 +8,15 @@ import {
 
 export class Player extends TexturedBillboard {
   readonly isPlayer = true;
+  readonly state = state;
 
   protected direction = 'up';
 
-  constructor(props: TexturedBillboardProps) {
+  constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
 
-    this.body.r = 0.33;
+    this.body.r = 0.2;
+    this.init(level);
   }
 
   protected update(ms: number) {
@@ -43,7 +46,7 @@ export class Player extends TexturedBillboard {
 
   protected setDirection() {
     TexturedBillboard.directions.some((direction) => {
-      if (state.keys[direction]) {
+      if (this.state.keys[direction]) {
         this.direction = direction;
 
         return true;

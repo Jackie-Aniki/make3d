@@ -26,7 +26,7 @@ export class Level {
     this.map = new Map.Cellular(this.size, this.size);
     this.map.randomize(0.6);
 
-    for (var i = this.iterations; i > 0; i--) {
+    for (let i = this.iterations; i > 0; i--) {
       this.map.create((x: number, y: number, value: number) => {
         this.heights[x] = this.heights[x] || [];
         this.heights[x][y] = this.heights[x][y] || this.iterations;

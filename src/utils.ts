@@ -28,12 +28,18 @@ export const getMatrix = (
 };
 
 export const createMaterial = (texture: string) => {
-  const material: Material = new MeshBasicMaterial({
-    map: textures[texture].clone(),
-    transparent: true
-  });
+  try {
+    const material: Material = new MeshBasicMaterial({
+      map: textures[texture].clone(),
+      transparent: true
+    });
 
-  material.size = new Vector2(90 / 3, 240 / 6);
+    material.size = new Vector2(90 / 3, 240 / 6);
 
-  return material;
+    return material;
+  } catch (_missing) {
+    console.warn(`${texture} missing in ${Object.keys(textures).join(', ')}`);
+
+    return {} as Material;
+  }
 };

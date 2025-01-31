@@ -1,11 +1,8 @@
 import { Circle } from 'detect-collisions';
-import { Inject } from 'inject.min';
 import { Mesh, PlaneGeometry, Vector3 } from 'three';
 import { Level } from './level';
 import { Material, State } from './model';
 import { floors, physics, renderer } from './state';
-
-export const counterMeshInitialRotation = (90 * Math.PI) / 180;
 
 export class Billboard {
   static readonly jumpSpeed = 7;
@@ -16,10 +13,9 @@ export class Billboard {
   readonly isPlayer: boolean = false;
   readonly maxStamina = 1;
 
-  @Inject(Level) level: Level;
-
   z = 0;
   stamina = this.maxStamina;
+  level!: Level;
   mesh: Mesh;
   body: Circle;
   scale: Vector3;
@@ -44,6 +40,7 @@ export class Billboard {
   }
 
   constructor(material: Material) {
+    this.body = physics.createCircle({}, 0.125, { group: floors[0] });
     this.mesh = new Mesh(new PlaneGeometry(1, 1, 1, 1), material);
     this.scale = material.scale ? material.scale.clone() : new Vector3(1, 1, 1);
 
@@ -51,6 +48,15 @@ export class Billboard {
       this.scale.x *= material.size.x / 64;
       this.scale.y *= material.size.y / 64;
     }
+
+    renderer.scene.add(this.mesh);
+    renderer.animations.push((time: number) => {
+      this.update(time);
+    });
+  }
+
+  protected init(level: Level) {
+    this.level = level;
 
     let x: number;
     let y: number;
@@ -60,14 +66,7 @@ export class Billboard {
       y = Math.random() * (this.level.size - 2) + 1;
     } while (this.level.getHeight(x, y) > 0);
 
-    this.body = physics.createCircle({ x, y }, 0.125, {
-      group: floors[0]
-    });
-
-    renderer.scene.add(this.mesh);
-    renderer.animations.push((time: number) => {
-      this.update(time);
-    });
+    this.body.setPosition(x, y);
   }
 
   protected normalize(angle: number) {

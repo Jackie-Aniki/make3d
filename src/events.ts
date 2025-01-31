@@ -1,6 +1,6 @@
 import { keys, mouse, state } from './state';
 
-const onPointerMove = (event: MouseEvent | TouchEvent) => {
+export const onPointerMove = (event: MouseEvent | TouchEvent) => {
   const pointer = event instanceof TouchEvent ? event.touches[0] : event;
 
   if (pointer && state.player) {
@@ -23,7 +23,7 @@ const onPointerMove = (event: MouseEvent | TouchEvent) => {
   }
 };
 
-const setKey = (value: boolean) => {
+export const setKey = (value: boolean) => {
   return (event: KeyboardEvent) => {
     switch (event.key) {
       case 'ArrowLeft':
@@ -50,10 +50,10 @@ const setKey = (value: boolean) => {
 
 let lastClickTime = 0;
 
-const preventEvent = (event: PointerEvent | MouseEvent) =>
+export const preventEvent = (event: PointerEvent | MouseEvent) =>
   event.preventDefault();
 
-const onPointerDown = (event: PointerEvent) => {
+export const onPointerDown = (event: PointerEvent) => {
   const clickTime = Date.now();
   if (clickTime - lastClickTime < 200) {
     keys.space = true;
@@ -70,7 +70,7 @@ const onPointerDown = (event: PointerEvent) => {
   onPointerMove(event);
 };
 
-const onPointerUp = () => {
+export const onPointerUp = () => {
   state.mouseDown = false;
   keys.up = false;
   keys.down = false;
@@ -78,11 +78,13 @@ const onPointerUp = () => {
   keys.right = false;
 };
 
-window.addEventListener('keydown', setKey(true), { passive: true });
-window.addEventListener('keyup', setKey(false), { passive: true });
-window.addEventListener('contextmenu', preventEvent, { passive: false });
-window.addEventListener('pointerdown', onPointerDown, { passive: false });
-window.addEventListener('pointerup', onPointerUp, { passive: true });
-window.addEventListener('touchend', onPointerUp, { passive: false });
-window.addEventListener('pointermove', onPointerMove, { passive: true });
-window.addEventListener('touchmove', onPointerMove, { passive: true });
+export const addEventListeners = () => {
+  window.addEventListener('keydown', setKey(true), { passive: true });
+  window.addEventListener('keyup', setKey(false), { passive: true });
+  window.addEventListener('contextmenu', preventEvent, { passive: false });
+  window.addEventListener('pointerdown', onPointerDown, { passive: false });
+  window.addEventListener('pointerup', onPointerUp, { passive: true });
+  window.addEventListener('touchend', onPointerUp, { passive: false });
+  window.addEventListener('pointermove', onPointerMove, { passive: true });
+  window.addEventListener('touchmove', onPointerMove, { passive: true });
+};

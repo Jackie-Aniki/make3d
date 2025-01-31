@@ -20,9 +20,9 @@ export class Loader extends LoadingManager {
 
   async load(path: string): Promise<Texture | any> {
     if (path.toLowerCase().endsWith('.fbx')) {
-      return this.fbxLoader.load(path, Promise.resolve);
+      return this.fbxLoader.load(path, () => Promise.resolve());
     }
 
-    return this.textureLoader.load(path, Promise.resolve);
+    return this.textureLoader.load(path, () => Promise.resolve());
   }
 }

@@ -12,9 +12,9 @@ export type AnimationsOrder = Partial<
 
 export interface TexturedBillboardProps {
   materialName: string;
-  animationsOrder: AnimationsOrder;
-  animationsDuration: number;
-  totalFramesInAnimation: number;
+  animationsOrder?: AnimationsOrder;
+  frameDuration?: number;
+  totalFrames?: number;
 }
 
 export class TexturedBillboard extends Billboard {
@@ -25,6 +25,7 @@ export class TexturedBillboard extends Billboard {
     'down',
     'right'
   ];
+
   static findByAngle =
     (angle: number) => (_animation: unknown, index: number) =>
       angle >= (Math.PI / 2) * index && angle < (Math.PI / 2) * (index + 1);
@@ -33,20 +34,20 @@ export class TexturedBillboard extends Billboard {
 
   frame = 0;
   animationsOrder: AnimationsOrder;
-  animationsDuration: number;
-  totalFramesInAnimation: number;
+  frameDuration: number;
+  totalFrames: number;
 
   constructor({
     materialName = '',
-    animationsDuration = 120,
+    frameDuration = 60,
     animationsOrder = {},
-    totalFramesInAnimation = 6
+    totalFrames = 1
   }: TexturedBillboardProps) {
     super(createMaterial(materialName));
 
-    this.animationsDuration = animationsDuration;
+    this.frameDuration = frameDuration;
     this.animationsOrder = animationsOrder;
-    this.totalFramesInAnimation = totalFramesInAnimation;
+    this.totalFrames = totalFrames;
   }
 
   protected getDirection() {
@@ -56,7 +57,9 @@ export class TexturedBillboard extends Billboard {
     );
     const angle = this.normalize(characterAngle - cameraAngle + Math.PI / 4);
     const findByAngle = TexturedBillboard.findByAngle(angle);
-    const direction = TexturedBillboard.directions.find(findByAngle);
+    const direction =
+      TexturedBillboard.directions.find(findByAngle) ||
+      TexturedBillboard.directions[0];
 
     return this.gear === -1
       ? TexturedBillboard.reverseDirections[direction]
@@ -64,23 +67,23 @@ export class TexturedBillboard extends Billboard {
   }
 
   protected getRow(direction: AnimationsDirection) {
-    return this.animationsOrder[direction] ?? this.animationsOrder.default;
+    return (
+      (this.animationsOrder[direction] ?? this.animationsOrder.default) || 0
+    );
   }
 
   protected update(ms: number) {
     super.update(ms);
 
     if (Object.values(this.state.keys).some(Boolean)) {
-      this.frame =
-        (this.frame + ms / this.animationsDuration) %
-        this.totalFramesInAnimation;
+      this.frame = (this.frame + ms / this.frameDuration) % this.totalFrames;
     }
 
     const frame = Math.floor(this.frame);
     const direction = this.getDirection();
     const row = this.getRow(direction);
     const x = (frame % 3) / 3;
-    const y = (Math.floor(frame / 3) + row) / this.totalFramesInAnimation;
+    const y = (Math.floor(frame / 3) + row) / this.totalFrames;
 
     const material = this.mesh.material as Material;
     if (material instanceof MeshBasicMaterial) {

@@ -1,12 +1,4 @@
-import {
-  LoadingManager,
-  MeshBasicMaterial,
-  TextureLoader,
-  Vector2,
-  Vector3
-} from 'three';
-import { TGALoader } from './vendor/three-loaders/TGALoader';
-import { FBXLoader } from './vendor/three-loaders/FBXLoader';
+import { MeshBasicMaterial, Vector2, Vector3 } from 'three';
 
 export type Material = MeshBasicMaterial & { scale?: Vector3; size?: Vector2 };
 
