@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "postinstall": "mkdir -p src/vendor && ln -s ../../node_modules/three/examples/jsm/loaders src/vendor/three-loaders",
+    "get-vendor": "mkdir -p src/vendor && ln -s ../../node_modules/three/examples/jsm/loaders src/vendor/three-loaders",
     "start": "chef-express docs --port 3000",
     "docs": "yarn build && yarn start",
     "prebuild": "rm -rf dist",
