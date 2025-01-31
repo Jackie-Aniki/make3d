@@ -2,42 +2,33 @@
 import {
   addEventListeners,
   Enemy,
-  init,
+  loadTextures,
   Player,
   state,
-  textures,
   ViewLevel
 } from 'engine25d';
 
-const props = {
-  textureName: 'elf',
-  frameDuration: 120,
-  totalFrames: 6,
-  directionsToRows: {
-    down: 4,
-    up: 2,
-    default: 0
-  }
-};
+export const start = async () => {
+  await loadTextures(['./elf.png', './grass-side.png', './skybox.jpg']);
 
-addEventListeners();
-
-export const start = async (enemies = 64) => {
-  await init();
-
-  const level = new ViewLevel([
-    textures.groundE,
-    textures.groundW,
-    textures.groundN,
-    textures.groundS,
-    textures.grass,
-    textures.grass
-  ]);
+  const levelTextures = Array.from({ length: 6 }, () => textures.grassSide);
+  const level = new ViewLevel(levelTextures);
+  const props = {
+    textureName: 'elf',
+    totalFrames: 6,
+    frameDuration: 120,
+    cols: 3,
+    rows: 6,
+    directionsToRows: {
+      down: 0,
+      up: 2,
+      default: 4
+    }
+  };
 
   state.player = new Player(level, props);
+  state.enemies = Array.from({ length: 64 }, () => new Enemy(level, props));
 
-  for (let i = 0; i < enemies; i++) {
-    new Enemy(level, props);
-  }
+  addEventListeners();
 };
 ```
