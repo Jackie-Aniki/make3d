@@ -8,7 +8,7 @@ export class Billboard {
   static readonly offsetZ = 0.25;
   static readonly moveSpeed = 2.5;
   static readonly rotateSpeed = 3;
-  static readonly jumpSpeed = 2.2;
+  static readonly jumpSpeed = 2.3;
 
   readonly tireRate = 0.008;
   readonly isPlayer: boolean = false;
@@ -58,17 +58,17 @@ export class Billboard {
   protected init(level: Level) {
     let x: number;
     let y: number;
+    let floor: number;
 
     do {
       x = Math.random() * (level.size - 2) + 1;
       y = Math.random() * (level.size - 2) + 1;
-    } while (level.getFloor(x, y) > 0);
-
-    const height = level.getFloor(x, y) / 2;
+      floor = level.getFloor(x, y);
+    } while (!floor);
 
     this.level = level;
     this.body.setPosition(x, y);
-    this.z = height;
+    this.z = floor / 2;
     this.mesh.position.set(this.body.x, this.body.y, this.z + 0.25);
   }
 
@@ -89,19 +89,21 @@ export class Billboard {
       this.state.direction += rotateGear * Billboard.rotateSpeed * deltaTime;
     }
 
-    const playerFloor = Math.floor((this.z + 0.25) * 2);
-    if (this.z === playerFloor / 2) {
-      this.velocity = this.state.keys.space ? Billboard.jumpSpeed : -0.1;
-    } else {
-      this.velocity -= this.tireRate * ms;
-    }
-
     const jump = deltaTime * Billboard.jumpSpeed * this.velocity;
     const levelFloorHeight = this.level
       ? this.level.getFloor(this.body.x, this.body.y) / 2
       : 0;
 
+    if (this.z === levelFloorHeight) {
+      this.velocity = this.state.keys.space ? Billboard.jumpSpeed : -0.1;
+    } else {
+      this.velocity -= this.tireRate * ms;
+    }
+
     this.z = Math.max(levelFloorHeight, this.z + jump);
+
+    const playerFloor = Math.floor((this.z + 0.25) * 2);
+
     this.body.group = floors[playerFloor];
     this.body.angle = this.state.direction + Math.PI / 2;
     this.body.move(moveSpeed);

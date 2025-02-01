@@ -144,15 +144,10 @@
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>size</span></a
                     >
-                    <a href="Level.html#iterations" class="tsd-index-link"
+                    <a href="Level.html#maxheight" class="tsd-index-link"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>iterations</span></a
-                    >
-                    <a href="Level.html#wallheight" class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>wall<wbr />Height</span></a
+                      ><span>max<wbr />Height</span></a
                     >
                   </div>
                 </section>
@@ -262,8 +257,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L14"
-                          >src/level.ts:14</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L13"
+                          >src/level.ts:13</a
                         >
                       </li>
                     </ul>
@@ -308,8 +303,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L11"
-                      >src/level.ts:11</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L10"
+                      >src/level.ts:10</a
                     >
                   </li>
                 </ul>
@@ -334,8 +329,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L12"
-                      >src/level.ts:12</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L11"
+                      >src/level.ts:11</a
                     >
                   </li>
                 </ul>
@@ -360,20 +355,21 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L9"
-                      >src/level.ts:9</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L8"
+                      >src/level.ts:8</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <a id="iterations" class="tsd-anchor"></a>
+              <a id="maxheight" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
                 <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>iterations</span
+                <code class="tsd-tag">Readonly</code
+                ><span>max<wbr />Height</span
                 ><a
-                  href="#iterations"
+                  href="#maxheight"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24">
@@ -381,7 +377,7 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">iterations</span
+                <span class="tsd-kind-property">maxHeight</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">4</span>
               </div>
@@ -392,38 +388,6 @@
                     <a
                       href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L6"
                       >src/level.ts:6</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <a id="wallheight" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code
-                ><span>wall<wbr />Height</span
-                ><a
-                  href="#wallheight"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">wallHeight</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol"> = ...</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L7"
-                      >src/level.ts:7</a
                     >
                   </li>
                 </ul>
@@ -458,9 +422,33 @@
                 <li class="tsd-signature tsd-anchor-link">
                   <a id="createmap-1" class="tsd-anchor"></a
                   ><span class="tsd-kind-call-signature">createMap</span
-                  ><span class="tsd-signature-symbol">()</span
+                  ><span class="tsd-signature-symbol">(</span><br />    <span
+                    class="tsd-kind-parameter"
+                    >fill</span
+                  ><span class="tsd-signature-symbol">?:</span>
+                  <span class="tsd-signature-type">number</span
+                  ><span class="tsd-signature-symbol">,</span><br />    <span
+                    class="tsd-kind-parameter"
+                    >cols</span
+                  ><span class="tsd-signature-symbol">?:</span>
+                  <span class="tsd-signature-type">number</span
+                  ><span class="tsd-signature-symbol">,</span><br />    <span
+                    class="tsd-kind-parameter"
+                    >rows</span
+                  ><span class="tsd-signature-symbol">?:</span>
+                  <span class="tsd-signature-type">number</span
+                  ><span class="tsd-signature-symbol">,</span><br />    <span
+                    class="tsd-kind-parameter"
+                    >iterations</span
+                  ><span class="tsd-signature-symbol">?:</span>
+                  <span class="tsd-signature-type">number</span
+                  ><span class="tsd-signature-symbol">,</span><br /><span
+                    class="tsd-signature-symbol"
+                    >)</span
                   ><span class="tsd-signature-symbol">:</span>
-                  <span class="tsd-signature-type">void</span
+                  <span class="tsd-signature-type">number</span
+                  ><span class="tsd-signature-symbol">[]</span
+                  ><span class="tsd-signature-symbol">[]</span
                   ><a
                     href="#createmap-1"
                     aria-label="Permalink"
@@ -470,16 +458,59 @@
                   ></a>
                 </li>
                 <li class="tsd-description">
+                  <div class="tsd-parameters">
+                    <h4 class="tsd-parameters-title">Parameters</h4>
+                    <ul class="tsd-parameter-list">
+                      <li>
+                        <span
+                          ><span class="tsd-kind-parameter">fill</span>:
+                          <span class="tsd-signature-type">number</span
+                          ><span class="tsd-signature-symbol">
+                            = 0.525</span
+                          ></span
+                        >
+                      </li>
+                      <li>
+                        <span
+                          ><span class="tsd-kind-parameter">cols</span>:
+                          <span class="tsd-signature-type">number</span
+                          ><span class="tsd-signature-symbol">
+                            = ...</span
+                          ></span
+                        >
+                      </li>
+                      <li>
+                        <span
+                          ><span class="tsd-kind-parameter">rows</span>:
+                          <span class="tsd-signature-type">number</span
+                          ><span class="tsd-signature-symbol">
+                            = ...</span
+                          ></span
+                        >
+                      </li>
+                      <li>
+                        <span
+                          ><span class="tsd-kind-parameter">iterations</span>:
+                          <span class="tsd-signature-type">number</span
+                          ><span class="tsd-signature-symbol">
+                            = Level.maxHeight</span
+                          ></span
+                        >
+                      </li>
+                    </ul>
+                  </div>
                   <h4 class="tsd-returns-title">
-                    Returns <span class="tsd-signature-type">void</span>
+                    Returns <span class="tsd-signature-type">number</span
+                    ><span class="tsd-signature-symbol">[]</span
+                    ><span class="tsd-signature-symbol">[]</span>
                   </h4>
                   <aside class="tsd-sources">
                     <ul>
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L31"
-                          >src/level.ts:31</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L36"
+                          >src/level.ts:36</a
                         >
                       </li>
                     </ul>
@@ -548,8 +579,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L23"
-                          >src/level.ts:23</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L32"
+                          >src/level.ts:32</a
                         >
                       </li>
                     </ul>
@@ -733,14 +764,10 @@
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>size</span></a
-                  ><a href="#iterations" class=""
+                  ><a href="#maxheight" class=""
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>iterations</span></a
-                  ><a href="#wallheight" class=""
-                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>wall<wbr />Height</span></a
+                    ><span>max<wbr />Height</span></a
                   >
                 </div>
               </details>

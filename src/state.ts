@@ -14,13 +14,12 @@ export const renderer = new Renderer();
 
 export const raycaster = new Raycaster(new Vector3(), new Vector3(), 3, 12);
 
-export const floors = [
-  groupBits(MaskBits.Floor0),
-  groupBits(MaskBits.Floor1),
-  groupBits(MaskBits.Floor2),
-  groupBits(MaskBits.Floor3),
-  groupBits(MaskBits.Floor4)
-];
+export const floorsBase = Array.from(
+  { length: 7 },
+  (_: unknown, power) => 128 * Math.pow(2, power)
+);
+
+export const floors = floorsBase.map(groupBits);
 
 export const mouse = new Vector2();
 
