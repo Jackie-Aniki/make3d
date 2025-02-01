@@ -13,7 +13,7 @@ export class Billboard {
   readonly tireRate = 0.008;
   readonly isPlayer: boolean = false;
 
-  z = 0;
+  z = -Infinity;
   velocity = 0;
   level?: Level;
   mesh: Mesh;
@@ -70,7 +70,7 @@ export class Billboard {
       x = Math.random() * (Level.cols - 2) + 1;
       y = Math.random() * (Level.rows - 2) + 1;
       floor = level.getFloor(x, y);
-    } while (!floor);
+    } while (floor === -Infinity);
 
     this.level = level;
     this.body.setPosition(x, y);

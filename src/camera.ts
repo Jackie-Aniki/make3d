@@ -1,6 +1,7 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 import { Level } from './level';
 import { Player } from './player';
+import { maxLevelHeight } from './state';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1;
@@ -24,10 +25,13 @@ export class Camera extends PerspectiveCamera {
 
   setLevel(level: Level) {
     this.level = level;
+
+    this.updatePosition(Level.cols / 2, Level.rows / 2, maxLevelHeight);
   }
 
   setPlayer(player: Player) {
     this.player = player;
+
     this.updatePosition(
       this.player.state.direction,
       this.player.body.x,
