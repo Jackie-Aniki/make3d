@@ -29,7 +29,7 @@ export class Enemy extends TexturedBillboard {
         this.state.keys[key] = false;
       });
 
-      if (Math.random() < 0.8) {
+      if (Math.random() < ms / 100) {
         this.state.keys[Math.random() < 0.5 ? 'left' : 'right'] = true;
       }
     }
@@ -43,5 +43,7 @@ export class Enemy extends TexturedBillboard {
 
       this.state.keys[Math.random() < 0.9 ? 'up' : 'down'] = true;
     }
+
+    this.state.keys.space = Math.random() < ms / 200;
   }
 }

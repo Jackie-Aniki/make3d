@@ -31,12 +31,18 @@ export class ViewLevel extends Level {
       row.forEach((height: number, y: number) => {
         const z = height / 2;
         const angle = Math.floor(Math.random() * 4) * 90;
-
         const quaternion = new Quaternion();
-        quaternion.setFromAxisAngle(
-          new Vector3(0, 0, 1),
-          (angle * Math.PI) / 180
-        );
+
+        if (height) {
+          quaternion.setFromAxisAngle(
+            new Vector3(0, 0, 1),
+            (angle * Math.PI) / 180
+          );
+
+          this.createBox(x, y, height);
+        } else {
+          quaternion.setFromAxisAngle(new Vector3(0, 1, 0), Math.PI);
+        }
 
         const euler = new Euler();
         euler.setFromQuaternion(quaternion);
@@ -45,8 +51,6 @@ export class ViewLevel extends Level {
           y * this.size + x,
           getMatrix(new Vector3(x, y, z / 2), euler, new Vector3(1, 1, z))
         );
-
-        this.createBox(x, y, height || ViewLevel.waterBoxHeight);
       });
     };
   }

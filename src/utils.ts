@@ -34,7 +34,8 @@ export const createMaterial = (textureName: string) => {
   try {
     const material: Material = new MeshBasicMaterial({
       map: textures[textureName].clone(),
-      transparent: true
+      transparent: true,
+      alphaTest: 0.5
     });
 
     material.size = new Vector2(90 / 3, 240 / 6);

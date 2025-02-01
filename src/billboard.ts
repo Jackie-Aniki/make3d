@@ -8,7 +8,7 @@ export class Billboard {
   static readonly offsetZ = 0.25;
   static readonly moveSpeed = 2.5;
   static readonly rotateSpeed = 3;
-  static readonly jumpSpeed = 2.3;
+  static readonly jumpSpeed = 2;
 
   readonly tireRate = 0.008;
   readonly isPlayer: boolean = false;

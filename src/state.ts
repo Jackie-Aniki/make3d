@@ -1,7 +1,7 @@
 import { groupBits, System } from 'detect-collisions';
 import { Raycaster, Texture, Vector2, Vector3 } from 'three';
 import { Loader } from './loader';
-import { Key, MaskBits, State } from './model';
+import { Key, State } from './model';
 import { Renderer } from './renderer';
 
 export const keys: Partial<Record<Key, boolean>> = {};
