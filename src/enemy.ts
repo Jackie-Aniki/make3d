@@ -3,12 +3,13 @@ import { TexturedBillboardProps } from './model';
 import { TexturedBillboard } from './textured-billboard';
 
 export class Enemy extends TexturedBillboard {
-  readonly isPlayer = false;
-  readonly maxVelocity = 1000;
-  readonly maxRotation = 100;
+  static readonly maxSpeed = 1000;
+  static readonly maxRotation = 100;
 
-  velocity = this.maxVelocity;
-  rotation = this.maxRotation;
+  readonly isPlayer = false;
+
+  speed = Enemy.maxSpeed;
+  rotation = Enemy.maxRotation;
 
   constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
@@ -18,11 +19,11 @@ export class Enemy extends TexturedBillboard {
   protected update(ms: number) {
     super.update(ms);
 
-    this.velocity -= ms;
+    this.speed -= ms;
     this.rotation -= ms;
 
     if (this.rotation < 0) {
-      this.rotation = this.maxRotation;
+      this.rotation = Enemy.maxRotation;
 
       ['left', 'right'].forEach((key) => {
         this.state.keys[key] = false;
@@ -33,8 +34,8 @@ export class Enemy extends TexturedBillboard {
       }
     }
 
-    if (this.velocity < 0) {
-      this.velocity = this.maxVelocity;
+    if (this.speed < 0) {
+      this.speed = Enemy.maxSpeed;
 
       ['up', 'down'].forEach((key) => {
         this.state.keys[key] = false;

@@ -1,21 +1,20 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 import { Level } from './level';
-import { state } from './state';
 import { Player } from './player';
 
 export class Camera extends PerspectiveCamera {
-  distance: number;
+  static readonly distance = 3;
+
   levelSize: number;
   targetX!: number;
   targetY!: number;
   level?: Level;
   player?: Player;
 
-  constructor(levelSize = 32) {
-    super(70, innerWidth / innerHeight, 0.2, levelSize * 1.33);
+  constructor(levelSize = 32, fov = 60) {
+    super(fov, innerWidth / innerHeight, 0.2, levelSize * 1.33);
 
     this.levelSize = levelSize;
-    this.updateDistance();
     this.updatePosition();
   }
 
@@ -33,20 +32,16 @@ export class Camera extends PerspectiveCamera {
       this.targetY = targetY;
     }
 
-    const player = this.player ? this.player.mesh.position.z : 0;
-    const level = this.level
-      ? this.level.getFloor(this.targetX, this.targetY) / 2
+    const playerFloor = this.player ? 2 * this.player.mesh.position.z : 0;
+    const levelFloor = this.level
+      ? this.level.getFloor(this.targetX, this.targetY)
       : 0;
 
     return new Vector3(
       Math.max(1, Math.min(this.levelSize - 2, this.targetX)),
       Math.max(1, Math.min(this.levelSize - 2, this.targetY)),
-      1 / this.distance + Math.max(player, level)
+      1 + Math.max(playerFloor, levelFloor) / 2
     );
-  }
-
-  updateDistance() {
-    this.distance = innerHeight / innerWidth;
   }
 
   updatePosition(targetX = this.targetX, targetY = this.targetY) {

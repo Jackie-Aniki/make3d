@@ -1,9 +1,9 @@
-import { LoadingManager, Texture, type TextureLoader } from 'three';
+import { LoadingManager, Texture, TextureLoader } from 'three';
 
 export class Loader extends LoadingManager {
-  textureLoader: TextureLoader;
-  fbxLoader: FBXLoader;
-  tgaLoader: boolean;
+  textureLoader?: TextureLoader;
+  fbxLoader?: any;
+  tgaLoader?: boolean;
 
   constructor(
     onLoad?: () => void,
@@ -40,7 +40,6 @@ export class Loader extends LoadingManager {
 
         default:
           if (!this.textureLoader) {
-            const { TextureLoader } = await import('three');
             this.textureLoader = new TextureLoader(this);
           }
 

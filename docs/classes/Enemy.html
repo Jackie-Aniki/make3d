@@ -69,7 +69,7 @@
           </ul>
           <h1>Class Enemy</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="620">
+        <section class="tsd-panel tsd-hierarchy" data-refl="626">
           <h4>
             Hierarchy (<a href="../hierarchy.html#Enemy">View Summary</a>)
           </h4>
@@ -174,24 +174,7 @@
                       class="tsd-index-link tsd-is-inherited"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>level</span></a
-                    >
-                    <a href="Enemy.html#maxrotation" class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>max<wbr />Rotation</span></a
-                    >
-                    <a
-                      href="Enemy.html#maxstamina"
-                      class="tsd-index-link tsd-is-inherited"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>max<wbr />Stamina</span></a
-                    >
-                    <a href="Enemy.html#maxvelocity" class="tsd-index-link"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>max<wbr />Velocity</span></a
+                      ><span>level?</span></a
                     >
                     <a
                       href="Enemy.html#mesh"
@@ -219,12 +202,10 @@
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>scale</span></a
                     >
-                    <a
-                      href="Enemy.html#stamina"
-                      class="tsd-index-link tsd-is-inherited"
+                    <a href="Enemy.html#speed" class="tsd-index-link"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>stamina</span></a
+                      ><span>speed</span></a
                     >
                     <a
                       href="Enemy.html#state"
@@ -234,13 +215,22 @@
                       ><span>state</span></a
                     >
                     <a
+                      href="Enemy.html#tirerate"
+                      class="tsd-index-link tsd-is-inherited"
+                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>tire<wbr />Rate</span></a
+                    >
+                    <a
                       href="Enemy.html#totalframes"
                       class="tsd-index-link tsd-is-inherited"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>total<wbr />Frames</span></a
                     >
-                    <a href="Enemy.html#velocity" class="tsd-index-link"
+                    <a
+                      href="Enemy.html#velocity"
+                      class="tsd-index-link tsd-is-inherited"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>velocity</span></a
@@ -260,18 +250,21 @@
                       ><span>directions</span></a
                     >
                     <a
-                      href="Enemy.html#fallspeed"
-                      class="tsd-index-link tsd-is-inherited"
-                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>fall<wbr />Speed</span></a
-                    >
-                    <a
                       href="Enemy.html#jumpspeed"
                       class="tsd-index-link tsd-is-inherited"
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>jump<wbr />Speed</span></a
+                    >
+                    <a href="Enemy.html#maxrotation" class="tsd-index-link"
+                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>max<wbr />Rotation</span></a
+                    >
+                    <a href="Enemy.html#maxspeed" class="tsd-index-link"
+                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>max<wbr />Speed</span></a
                     >
                     <a
                       href="Enemy.html#movespeed"
@@ -279,6 +272,13 @@
                       ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>move<wbr />Speed</span></a
+                    >
+                    <a
+                      href="Enemy.html#offsetz"
+                      class="tsd-index-link tsd-is-inherited"
+                      ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>offsetZ</span></a
                     >
                     <a
                       href="Enemy.html#reversedirections"
@@ -459,8 +459,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L13"
-                          >src/enemy.ts:13</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L14"
+                          >src/enemy.ts:14</a
                         >
                       </li>
                     </ul>
@@ -565,13 +565,12 @@
                 ><span class="tsd-signature-symbol">&lt;</span
                 ><span class="tsd-signature-type">Record</span
                 ><span class="tsd-signature-symbol">&lt;</span
-                ><a
+                ><span class="tsd-signature-type">&quot;default&quot;</span>
+                <span class="tsd-signature-symbol">|</span>
+                <a
                   href="../types/Direction.html"
                   class="tsd-signature-type tsd-kind-type-alias"
                   >Direction</a
-                >
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">&quot;default&quot;</span
                 ><span class="tsd-signature-symbol">,</span>
                 <span class="tsd-signature-type">number</span
                 ><span class="tsd-signature-symbol">&gt;</span
@@ -695,8 +694,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L6"
-                      >src/enemy.ts:6</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L9"
+                      >src/enemy.ts:9</a
                     >
                   </li>
                 </ul>
@@ -705,7 +704,7 @@
             <section class="tsd-panel tsd-member tsd-is-inherited">
               <a id="level" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <span>level</span
+                <code class="tsd-tag">Optional</code><span>level</span
                 ><a href="#level" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
@@ -713,7 +712,7 @@
               </h3>
               <div class="tsd-signature">
                 <span class="tsd-kind-property">level</span
-                ><span class="tsd-signature-symbol">:</span>
+                ><span class="tsd-signature-symbol">?:</span>
                 <a href="Level.html" class="tsd-signature-type tsd-kind-class"
                   >Level</a
                 >
@@ -732,103 +731,6 @@
                     <a
                       href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L18"
                       >src/billboard.ts:18</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <a id="maxrotation" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Readonly</code
-                ><span>max<wbr />Rotation</span
-                ><a
-                  href="#maxrotation"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">maxRotation</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">100</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L8"
-                      >src/enemy.ts:8</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-inherited">
-              <a id="maxstamina" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Readonly</code
-                ><span>max<wbr />Stamina</span
-                ><a
-                  href="#maxstamina"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">maxStamina</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">1</span>
-              </div>
-              <aside class="tsd-sources">
-                <p>
-                  Inherited from
-                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
-                    href="TexturedBillboard.html#maxstamina"
-                    >maxStamina</a
-                  >
-                </p>
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L14"
-                      >src/billboard.ts:14</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <a id="maxvelocity" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Readonly</code
-                ><span>max<wbr />Velocity</span
-                ><a
-                  href="#maxvelocity"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">maxVelocity</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">1000</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L7"
-                      >src/enemy.ts:7</a
                     >
                   </li>
                 </ul>
@@ -883,15 +785,15 @@
                 <span class="tsd-kind-property">rotation</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol"> = ...</span>
+                ><span class="tsd-signature-symbol"> = Enemy.maxRotation</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L11"
-                      >src/enemy.ts:11</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L12"
+                      >src/enemy.ts:12</a
                     >
                   </li>
                 </ul>
@@ -963,38 +865,28 @@
                 </ul>
               </aside>
             </section>
-            <section class="tsd-panel tsd-member tsd-is-inherited">
-              <a id="stamina" class="tsd-anchor"></a>
+            <section class="tsd-panel tsd-member">
+              <a id="speed" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <span>stamina</span
-                ><a
-                  href="#stamina"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
+                <span>speed</span
+                ><a href="#speed" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">stamina</span
+                <span class="tsd-kind-property">speed</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol"> = ...</span>
+                ><span class="tsd-signature-symbol"> = Enemy.maxSpeed</span>
               </div>
               <aside class="tsd-sources">
-                <p>
-                  Inherited from
-                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
-                    href="TexturedBillboard.html#stamina"
-                    >stamina</a
-                  >
-                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L17"
-                      >src/billboard.ts:17</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L11"
+                      >src/enemy.ts:11</a
                     >
                   </li>
                 </ul>
@@ -1038,6 +930,42 @@
               </aside>
             </section>
             <section class="tsd-panel tsd-member tsd-is-inherited">
+              <a id="tirerate" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <code class="tsd-tag">Readonly</code><span>tire<wbr />Rate</span
+                ><a
+                  href="#tirerate"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">tireRate</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">0.008</span>
+              </div>
+              <aside class="tsd-sources">
+                <p>
+                  Inherited from
+                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
+                    href="TexturedBillboard.html#tirerate"
+                    >tireRate</a
+                  >
+                </p>
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L13"
+                      >src/billboard.ts:13</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-inherited">
               <a id="totalframes" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
                 <span>total<wbr />Frames</span
@@ -1073,7 +1001,7 @@
                 </ul>
               </aside>
             </section>
-            <section class="tsd-panel tsd-member">
+            <section class="tsd-panel tsd-member tsd-is-inherited">
               <a id="velocity" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
                 <span>velocity</span
@@ -1089,15 +1017,22 @@
                 <span class="tsd-kind-property">velocity</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol"> = ...</span>
+                ><span class="tsd-signature-symbol"> = 0</span>
               </div>
               <aside class="tsd-sources">
+                <p>
+                  Inherited from
+                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
+                    href="TexturedBillboard.html#velocity"
+                    >velocity</a
+                  >
+                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L10"
-                      >src/enemy.ts:10</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L17"
+                      >src/billboard.ts:17</a
                     >
                   </li>
                 </ul>
@@ -1179,44 +1114,6 @@
               </aside>
             </section>
             <section class="tsd-panel tsd-member tsd-is-inherited">
-              <a id="fallspeed" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code
-                ><span>fall<wbr />Speed</span
-                ><a
-                  href="#fallspeed"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">fallSpeed</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">3.25</span>
-              </div>
-              <aside class="tsd-sources">
-                <p>
-                  Inherited from
-                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
-                    href="TexturedBillboard.html#fallspeed"
-                    >fallSpeed</a
-                  >
-                </p>
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L9"
-                      >src/billboard.ts:9</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-inherited">
               <a id="jumpspeed" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
                 <code class="tsd-tag">Static</code>
@@ -1233,7 +1130,7 @@
               <div class="tsd-signature">
                 <span class="tsd-kind-property">jumpSpeed</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">7</span>
+                <span class="tsd-signature-type">2.2</span>
               </div>
               <aside class="tsd-sources">
                 <p>
@@ -1247,8 +1144,69 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L8"
-                      >src/billboard.ts:8</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L11"
+                      >src/billboard.ts:11</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <a id="maxrotation" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code
+                ><span>max<wbr />Rotation</span
+                ><a
+                  href="#maxrotation"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">maxRotation</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">100</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L7"
+                      >src/enemy.ts:7</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <a id="maxspeed" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code><span>max<wbr />Speed</span
+                ><a
+                  href="#maxspeed"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">maxSpeed</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">1000</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L6"
+                      >src/enemy.ts:6</a
                     >
                   </li>
                 </ul>
@@ -1271,7 +1229,7 @@
               <div class="tsd-signature">
                 <span class="tsd-kind-property">moveSpeed</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">2</span>
+                <span class="tsd-signature-type">2.5</span>
               </div>
               <aside class="tsd-sources">
                 <p>
@@ -1285,8 +1243,45 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L10"
-                      >src/billboard.ts:10</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L9"
+                      >src/billboard.ts:9</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-inherited">
+              <a id="offsetz" class="tsd-anchor"></a>
+              <h3 class="tsd-anchor-link">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code><span>offsetZ</span
+                ><a
+                  href="#offsetz"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">offsetZ</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">0.25</span>
+              </div>
+              <aside class="tsd-sources">
+                <p>
+                  Inherited from
+                  <a href="TexturedBillboard.html">TexturedBillboard</a>.<a
+                    href="TexturedBillboard.html#offsetz"
+                    >offsetZ</a
+                  >
+                </p>
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L8"
+                      >src/billboard.ts:8</a
                     >
                   </li>
                 </ul>
@@ -1351,7 +1346,7 @@
               <div class="tsd-signature">
                 <span class="tsd-kind-property">rotateSpeed</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">2</span>
+                <span class="tsd-signature-type">3</span>
               </div>
               <aside class="tsd-sources">
                 <p>
@@ -1365,8 +1360,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L11"
-                      >src/billboard.ts:11</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L10"
+                      >src/billboard.ts:10</a
                     >
                   </li>
                 </ul>
@@ -1694,8 +1689,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L72"
-                          >src/billboard.ts:72</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/billboard.ts#L75"
+                          >src/billboard.ts:75</a
                         >
                       </li>
                     </ul>
@@ -1761,8 +1756,8 @@
                       <li>
                         Defined in
                         <a
-                          href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L18"
-                          >src/enemy.ts:18</a
+                          href="https://github.com/Prozi/engine25d/blob/main/src/enemy.ts#L19"
+                          >src/enemy.ts:19</a
                         >
                       </li>
                     </ul>
@@ -2050,18 +2045,6 @@
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>level</span></a
-                  ><a href="#maxrotation" class=""
-                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>max<wbr />Rotation</span></a
-                  ><a href="#maxstamina" class="tsd-is-inherited"
-                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>max<wbr />Stamina</span></a
-                  ><a href="#maxvelocity" class=""
-                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>max<wbr />Velocity</span></a
                   ><a href="#mesh" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
@@ -2078,19 +2061,23 @@
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>scale</span></a
-                  ><a href="#stamina" class="tsd-is-inherited"
+                  ><a href="#speed" class=""
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>stamina</span></a
+                    ><span>speed</span></a
                   ><a href="#state" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>state</span></a
+                  ><a href="#tirerate" class="tsd-is-inherited"
+                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>tire<wbr />Rate</span></a
                   ><a href="#totalframes" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>total<wbr />Frames</span></a
-                  ><a href="#velocity" class=""
+                  ><a href="#velocity" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>velocity</span></a
@@ -2102,18 +2089,26 @@
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>directions</span></a
-                  ><a href="#fallspeed" class="tsd-is-inherited"
-                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>fall<wbr />Speed</span></a
                   ><a href="#jumpspeed" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>jump<wbr />Speed</span></a
+                  ><a href="#maxrotation" class=""
+                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>max<wbr />Rotation</span></a
+                  ><a href="#maxspeed" class=""
+                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>max<wbr />Speed</span></a
                   ><a href="#movespeed" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>move<wbr />Speed</span></a
+                  ><a href="#offsetz" class="tsd-is-inherited"
+                    ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>offsetZ</span></a
                   ><a href="#reversedirections" class="tsd-is-inherited"
                     ><svg class="tsd-kind-icon" viewBox="0 0 24 24">
                       <use href="../assets/icons.svg#icon-1024"></use></svg

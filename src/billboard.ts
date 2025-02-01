@@ -8,9 +8,9 @@ export class Billboard {
   static readonly offsetZ = 0.25;
   static readonly moveSpeed = 2.5;
   static readonly rotateSpeed = 3;
-  static readonly jumpSpeed = 2.1;
+  static readonly jumpSpeed = 2.2;
 
-  readonly tireRate = 0.0075;
+  readonly tireRate = 0.008;
   readonly isPlayer: boolean = false;
 
   z = 0;
@@ -96,12 +96,12 @@ export class Billboard {
       this.velocity -= this.tireRate * ms;
     }
 
-    const levelFloorHeight = this.level.getFloor(this.body.x, this.body.y) / 2;
-    this.z = Math.max(
-      levelFloorHeight,
-      this.z + deltaTime * Billboard.jumpSpeed * this.velocity
-    );
+    const jump = deltaTime * Billboard.jumpSpeed * this.velocity;
+    const levelFloorHeight = this.level
+      ? this.level.getFloor(this.body.x, this.body.y) / 2
+      : 0;
 
+    this.z = Math.max(levelFloorHeight, this.z + jump);
     this.body.group = floors[playerFloor];
     this.body.angle = this.state.direction + Math.PI / 2;
     this.body.move(moveSpeed);
