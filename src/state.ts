@@ -4,9 +4,9 @@ import { Loader } from './loader';
 import { Key, State } from './model';
 import { Renderer } from './renderer';
 
-export const minLevelHeight = 2;
+export const minLevelHeight = 3;
 
-export const maxLevelHeight = 10;
+export const maxLevelHeight = 6;
 
 export const waterFloor = -0.25;
 

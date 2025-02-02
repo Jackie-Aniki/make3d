@@ -2,7 +2,7 @@ import { Map } from 'rot-js';
 import { maxLevelHeight, minLevelHeight, renderer, waterFloor } from './state';
 
 export class Level {
-  static readonly fill = 0.45;
+  static readonly fill = 0.49;
   static readonly mapIterations = 4;
   static readonly cols = 24;
   static readonly rows = 24;

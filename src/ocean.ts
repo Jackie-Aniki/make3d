@@ -9,13 +9,15 @@ import { Level } from './level';
 import { meshProps, renderer } from './state';
 
 export class Ocean extends Mesh {
-  constructor(texture: Texture) {
+  constructor(texture: Texture, repeat = 1) {
+    const cols = Level.cols * repeat;
+    const rows = Level.rows * repeat;
+
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
-    texture.repeat.set(Level.cols / 4, Level.rows / 4); // Powtarzanie 5x5
+    texture.repeat.set(cols / 4, rows / 4);
 
-    // Stworzenie płaskiej powierzchni (siatki)
-    const geometry = new PlaneGeometry(Level.cols, Level.rows); // 10x10 jednostek
+    const geometry = new PlaneGeometry(cols, rows);
     const material = new MeshBasicMaterial({
       ...meshProps,
       map: texture,

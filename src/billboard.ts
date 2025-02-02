@@ -5,7 +5,6 @@ import { Material, State } from './model';
 import { floors, physics, renderer, waterFloor } from './state';
 
 export class Billboard {
-  static readonly offsetZ = 0.25;
   static readonly moveSpeed = 2.5;
   static readonly rotateSpeed = 3;
   static readonly jumpSpeed = 2;
@@ -67,7 +66,7 @@ export class Billboard {
     this.level = level;
     this.body.setPosition(x, y);
     this.z = floor / 2;
-    this.mesh.position.set(this.body.x, this.body.y, this.z + 0.25);
+    this.mesh.position.set(this.body.x, this.body.y, this.z);
   }
 
   protected normalize(angle: number) {
@@ -99,7 +98,7 @@ export class Billboard {
       ? this.level.getFloor(this.body.x, this.body.y) / 2
       : 0;
 
-    if (this.z === levelFloorHeight || this.z === waterFloor) {
+    if (this.z === levelFloorHeight || this.z === 0) {
       this.velocity = this.state.keys.space ? Billboard.jumpSpeed : -0.1;
     } else {
       this.velocity -= this.tireRate * ms;
@@ -108,7 +107,7 @@ export class Billboard {
     this.z =
       levelFloorHeight && this.z > -waterFloor
         ? Math.max(levelFloorHeight, this.z + jump)
-        : Math.max(waterFloor, this.z + jump);
+        : Math.max(0, this.z + jump);
 
     const playerFloor = Math.floor((this.z + 0.25) * 2);
 
@@ -117,11 +116,7 @@ export class Billboard {
     this.body.move(moveSpeed);
     this.body.system?.separateBody(this.body);
 
-    this.mesh.position.set(
-      this.body.x,
-      this.body.y,
-      this.z + Billboard.offsetZ
-    );
+    this.mesh.position.set(this.body.x, this.body.y, this.z);
     this.mesh.lookAt(renderer.camera.position);
     this.mesh.up = renderer.camera.up;
     this.mesh.scale.set(this.scale.x, this.scale.y, this.scale.z);

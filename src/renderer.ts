@@ -1,5 +1,6 @@
 import {
   AmbientLight,
+  Color,
   DirectionalLight,
   LinearSRGBColorSpace,
   Scene,
@@ -21,6 +22,7 @@ export class Renderer extends WebGLRenderer {
     this.setAnimationLoop(this.animation.bind(this));
     this.outputColorSpace = LinearSRGBColorSpace;
     this.scene.add(new AmbientLight(0xffeecc, 0.5));
+    this.scene.background = new Color(0x000000);
 
     document.body.appendChild(this.domElement);
 
