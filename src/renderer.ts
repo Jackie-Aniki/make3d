@@ -1,3 +1,4 @@
+import { Stats } from 'pixi-stats';
 import {
   AmbientLight,
   Color,
@@ -7,7 +8,6 @@ import {
   WebGLRenderer
 } from 'three';
 import { Camera } from './camera';
-import { Stats } from 'pixi-stats';
 
 export class Renderer extends WebGLRenderer {
   now = Date.now();
@@ -15,6 +15,7 @@ export class Renderer extends WebGLRenderer {
   camera = new Camera();
   animations: Array<(time: number) => void> = [];
   light?: DirectionalLight;
+  stats?: Stats;
 
   constructor() {
     super({ antialias: true, powerPreference: 'high-performance' });
@@ -29,16 +30,18 @@ export class Renderer extends WebGLRenderer {
     window.addEventListener('resize', () => this.onResize());
     document.body.appendChild(this.domElement);
 
-    new Stats(this);
+    setTimeout(() => {
+      this.stats = new Stats(this);
+    });
   }
 
   animation() {
     const now = Date.now();
     const time = now - this.now;
 
-    this.now = Date.now();
     this.animations.forEach((animation) => animation(time));
     this.render(this.scene, this.camera);
+    this.now = now;
   }
 
   onResize() {

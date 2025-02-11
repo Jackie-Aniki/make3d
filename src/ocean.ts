@@ -7,10 +7,8 @@ import {
   Vector3
 } from 'three';
 import { Level } from './level';
+import { useFast } from './query-params';
 import { renderer } from './state';
-import { getQueryParams } from './utils';
-
-const { ocean } = getQueryParams();
 
 export class Ocean {
   static readonly scale = 4;
@@ -20,7 +18,7 @@ export class Ocean {
   static readonly textureRepeat = 8; // Powtarzanie tekstury
   static readonly config = [
     {
-      opacity: ocean === '1' ? 1 : 0.5,
+      opacity: useFast ? 1 : 0.5,
       z: 0,
       renderOrder: 2,
       scale: 0.9
@@ -46,7 +44,7 @@ export class Ocean {
 
     renderer.scene.add(
       ...Array.from(
-        { length: ocean === '1' ? 1 : Ocean.config.length },
+        { length: useFast ? 1 : Ocean.config.length },
         (_: unknown, index) => this.createPlane(texture, index)
       )
     );

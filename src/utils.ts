@@ -1,4 +1,5 @@
 import {
+  LinearFilter,
   LinearSRGBColorSpace,
   Matrix4,
   MeshBasicMaterial,
@@ -10,6 +11,7 @@ import {
   Vector3
 } from 'three';
 import { CubeDirections, Material } from './model';
+import { useFast } from './query-params';
 import { loader, meshProps, textures } from './state';
 
 export const randomOf = (array: any[]) =>
@@ -64,8 +66,10 @@ export const getTextureNameFromPath = (path: string) => {
     .join('');
 };
 
+const minFilter = useFast ? LinearFilter : NearestMipMapLinearFilter;
+
 export const pixelate = (texture: Texture) => {
-  texture.minFilter = NearestMipMapLinearFilter;
+  texture.minFilter = minFilter;
   texture.magFilter = NearestFilter;
   texture.colorSpace = LinearSRGBColorSpace;
 };
@@ -94,19 +98,3 @@ export const mapCubeTextures = <T>({
   front,
   back
 }: Record<CubeDirections, T>): T[] => [left, right, up, down, front, back];
-
-export const getQueryParams = (): Record<string, string> => {
-  if (typeof location === 'undefined') {
-    return {};
-  }
-
-  const matches = location.search.matchAll(/[?&]([^=?&]+)=?([^?&]*)/g);
-
-  return [...matches].reduce(
-    (queryParams, [_wholeMatch, paramName, paramValue]) => ({
-      ...queryParams,
-      [decodeURIComponent(paramName)]: decodeURIComponent(paramValue)
-    }),
-    {}
-  );
-};
