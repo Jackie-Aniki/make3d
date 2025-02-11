@@ -18,14 +18,6 @@ export class TexturedBillboard extends Billboard {
   rows: number;
   directionsToRows: DirectionsToRows;
 
-  static createMaterial(textureName: string, cols: number, rows: number) {
-    const material = createMaterial(textureName);
-
-    material.map?.repeat.set(1 / cols, 1 / rows);
-
-    return material;
-  }
-
   constructor({
     textureName = '',
     frameDuration = 120,
@@ -34,7 +26,7 @@ export class TexturedBillboard extends Billboard {
     rows = 6,
     directionsToRows = {}
   }: TexturedBillboardProps) {
-    super(TexturedBillboard.createMaterial(textureName, cols, rows));
+    super(createMaterial(textureName, cols, rows));
 
     this.frameDuration = frameDuration;
     this.totalFrames = totalFrames;

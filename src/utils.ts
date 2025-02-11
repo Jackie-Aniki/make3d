@@ -25,19 +25,25 @@ export const getMatrix = (position: Vector3, scale: Vector3) => {
   return matrix;
 };
 
-export const createMaterial = (textureName: string) => {
+export const createMaterial = (textureName: string, cols = 1, rows = 1) => {
   try {
+    const texture = textures[textureName].clone();
+    const image: HTMLImageElement = texture.image;
     const material: Material = new MeshBasicMaterial({
       ...meshProps,
-      map: textures[textureName].clone()
+      map: texture
     });
 
-    material.size = new Vector2(90 / 3, 240 / 6);
+    if (cols > 1 || rows > 1) {
+      material.size = new Vector2(image.width / cols, image.height / rows);
+      texture.repeat.set(1 / cols, 1 / rows);
+    }
 
     return material;
-  } catch (_missing) {
+  } catch (missing: any) {
     console.warn(
-      `${textureName} missing in ${Object.keys(textures).join(', ')}`
+      `${textureName} missing in ${Object.keys(textures).join(', ')}`,
+      missing.message || missing
     );
 
     return {} as Material;
@@ -88,3 +94,19 @@ export const mapCubeTextures = <T>({
   front,
   back
 }: Record<CubeDirections, T>): T[] => [left, right, up, down, front, back];
+
+export const getQueryParams = (): Record<string, string> => {
+  if (typeof location === 'undefined') {
+    return {};
+  }
+
+  const matches = location.search.matchAll(/[?&]([^=?&]+)=?([^?&]*)/g);
+
+  return [...matches].reduce(
+    (queryParams, [_wholeMatch, paramName, paramValue]) => ({
+      ...queryParams,
+      [decodeURIComponent(paramName)]: decodeURIComponent(paramValue)
+    }),
+    {}
+  );
+};

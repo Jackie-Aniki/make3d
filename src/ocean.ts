@@ -8,6 +8,9 @@ import {
 } from 'three';
 import { Level } from './level';
 import { renderer } from './state';
+import { getQueryParams } from './utils';
+
+const { ocean } = getQueryParams();
 
 export class Ocean {
   static readonly scale = 4;
@@ -17,7 +20,7 @@ export class Ocean {
   static readonly textureRepeat = 8; // Powtarzanie tekstury
   static readonly config = [
     {
-      opacity: 0.5,
+      opacity: ocean === '1' ? 1 : 0.5,
       z: 0,
       renderOrder: 2,
       scale: 0.9
@@ -42,8 +45,9 @@ export class Ocean {
     texture.wrapT = RepeatWrapping;
 
     renderer.scene.add(
-      ...Array.from({ length: Ocean.config.length }, (_: unknown, index) =>
-        this.createPlane(texture, index)
+      ...Array.from(
+        { length: ocean === '1' ? 1 : Ocean.config.length },
+        (_: unknown, index) => this.createPlane(texture, index)
       )
     );
   }
