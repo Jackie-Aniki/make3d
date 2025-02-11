@@ -112,14 +112,16 @@ export class Ocean {
     mesh.position.set(0, z, 0);
     mesh.renderOrder = renderOrder;
 
+    const size = 2 / (scale * Ocean.textureRepeat);
+
     // Animacja shadera
     renderer.animations.push((ms: number) => {
       if (!renderer.camera.ref) return;
 
       const { x, y } = renderer.camera.ref.body;
+
       mesh.position.set(x, z, y);
 
-      const size = 1 / ((scale * Ocean.textureRepeat) / 2);
       material.uniforms.time.value += ms / 1000;
       material.uniforms.cameraX.value = x * size;
       material.uniforms.cameraY.value = -y * size;
