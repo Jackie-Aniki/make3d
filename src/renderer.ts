@@ -8,6 +8,7 @@ import {
   WebGLRenderer
 } from 'three';
 import { Camera } from './camera';
+import { queryParams } from './query-params';
 
 export class Renderer extends WebGLRenderer {
   now = Date.now();
@@ -30,9 +31,9 @@ export class Renderer extends WebGLRenderer {
     window.addEventListener('resize', () => this.onResize());
     document.body.appendChild(this.domElement);
 
-    setTimeout(() => {
+    if ('fps' in queryParams) {
       this.stats = new Stats(this);
-    });
+    }
   }
 
   animation() {
