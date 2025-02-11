@@ -5,6 +5,7 @@ import { TexturedBillboard } from './textured-billboard';
 export class Enemy extends TexturedBillboard {
   static readonly maxSpeed = 1000;
   static readonly maxRotation = 100;
+  static readonly jumpChance = 0.001;
 
   readonly isPlayer = false;
 
@@ -44,6 +45,6 @@ export class Enemy extends TexturedBillboard {
       this.state.keys[Math.random() < 0.9 ? 'up' : 'down'] = true;
     }
 
-    this.state.keys.space = Math.random() < ms / 200;
+    this.state.keys.space = Math.random() < ms * Enemy.jumpChance;
   }
 }

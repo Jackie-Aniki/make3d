@@ -5,13 +5,13 @@ import { renderer } from './state';
 import { ViewLevel } from './view-level';
 
 export class Camera extends PerspectiveCamera {
-  static readonly distance = 1.3;
-  static readonly height = 2 / 3;
+  static readonly distance = 1.4;
+  static readonly height = 0.8;
   static readonly lerpRatio = 0.003;
 
-  static fov = 95;
-  static near = 0.05;
-  static far = 16;
+  static fov = 90;
+  static near = 0.01;
+  static far = 32;
 
   ref?: Player;
 

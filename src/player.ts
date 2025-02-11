@@ -10,7 +10,6 @@ export class Player extends TexturedBillboard {
 
   constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
-
     this.spawn(level);
 
     if (level instanceof ViewLevel) {
