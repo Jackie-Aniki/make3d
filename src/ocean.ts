@@ -7,11 +7,11 @@ import {
   Vector3
 } from 'three';
 import { Level } from './level';
-import { renderer } from './state';
+import { meshProps, renderer } from './state';
 
 export class Ocean {
   static readonly scale = 4;
-  static readonly waveSpeed = 1;
+  static readonly waveSpeed = 2;
   static readonly waveHeight = 0.05;
   static readonly waveDetail = 16;
   static readonly textureRepeat = 8; // Powtarzanie tekstury
@@ -57,6 +57,7 @@ export class Ocean {
     const geometry = new CircleGeometry(radius);
 
     const material = new ShaderMaterial({
+      ...meshProps,
       uniforms: {
         time: { value: (index * Math.PI) / 2 },
         waveSpeed: { value: Ocean.waveSpeed },
@@ -70,41 +71,39 @@ export class Ocean {
       },
       vertexShader: `
         uniform float time;
+        uniform float textureRepeat;
         uniform float waveSpeed;
         uniform float waveHeight;
-        uniform float textureRepeat;
-        uniform float oceanZ;
         uniform float cameraX;
         uniform float cameraY;
-
+        uniform float oceanZ;
+      
         varying vec2 vUv;
-
+      
         void main() {
           vUv = uv * textureRepeat + vec2(cameraX, cameraY); // Powtarzanie tekstury
-          float wave = sin(position.x + position.z + time * waveSpeed * 2.0);
-
+          float wave = sin((position.x + position.z + time) * waveSpeed); // Mniej operacji mnożenia
+      
           vec3 pos = position;
-          pos.z = oceanZ + wave * waveHeight;
-
+          pos.z = oceanZ + wave * waveHeight; // Uproszczona wersja
+      
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }
       `,
       fragmentShader: `
         uniform sampler2D map;
-        uniform float opacity;
         uniform float time;
-        uniform float textureRepeat;
-
+        uniform float opacity;
+      
         varying vec2 vUv;
-
+      
         void main() {
-          vec2 repeatedUV = vUv * textureRepeat + vec2(0.0, time * 0.01); // Powtarzanie + lekkie przesuwanie
-          vec4 color = texture2D(map, repeatedUV); // fract() zapewnia powtarzanie
-
+          vec2 repeatedUV = fract(vUv + vec2(0.0, time * 0.01)); // Powtarzanie + lekkie przesuwanie
+          vec4 color = texture2D(map, repeatedUV);
+      
           gl_FragColor = vec4(color.rgb, color.a * opacity);
         }
-      `,
-      transparent: true
+      `
     });
 
     const mesh = new Mesh(geometry, material);
