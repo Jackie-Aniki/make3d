@@ -1,33 +1,25 @@
-import { normalizeAngle } from './utils';
-
 const defaultPrecision = Math.PI / 18;
+const tableSize = Math.floor((2 * Math.PI) / defaultPrecision);
+const sinTable = new Float32Array(tableSize);
+const cosTable = new Float32Array(tableSize);
 
-const fastSin = (precision = defaultPrecision) => {
-  const cache = new Map();
+// Precompute values
+for (let i = 0; i < tableSize; i++) {
+  const angle = i * defaultPrecision;
+  sinTable[i] = Math.sin(angle);
+  cosTable[i] = Math.cos(angle);
+}
 
-  return (angle: number) => {
-    const key = Math.floor(normalizeAngle(angle) / precision);
-    if (!cache.has(key)) {
-      cache.set(key, Math.sin(key * precision));
-    }
-
-    return cache.get(key);
-  };
+const fastSin = (angle: number) => {
+  let index = Math.floor((angle % (2 * Math.PI)) / defaultPrecision);
+  while (index < 0) index += tableSize; // Handle negative angles
+  return sinTable[index];
 };
 
-const fastCos = (precision = defaultPrecision) => {
-  const cache = new Map();
-
-  return (angle: number) => {
-    const key = Math.floor(normalizeAngle(angle) / precision);
-    if (!cache.has(key)) {
-      cache.set(key, Math.cos(key * precision));
-    }
-
-    return cache.get(key);
-  };
+const fastCos = (angle: number) => {
+  let index = Math.floor((angle % (2 * Math.PI)) / defaultPrecision);
+  while (index < 0) index += tableSize; // Handle negative angles
+  return cosTable[index];
 };
 
-export const sin = fastSin();
-
-export const cos = fastCos();
+export { fastSin as sin, fastCos as cos };

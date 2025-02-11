@@ -1,7 +1,7 @@
-import { Euler, PerspectiveCamera, Quaternion, Vector3 } from 'three';
+import { PerspectiveCamera, Quaternion, Vector3 } from 'three';
+import { cos, sin } from './fast-math';
 import { Level } from './level';
 import { Player } from './player';
-import { sin, cos } from './fast-math';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1;
@@ -32,9 +32,7 @@ export class Camera extends PerspectiveCamera {
   }
 
   onCameraUpdate(lerp = 0) {
-    if (!this.ref) {
-      return;
-    }
+    if (!this.ref) return;
 
     const scale = 1 / this.aspect;
     const angle = -this.ref.body.angle + Math.PI / 2;
@@ -45,24 +43,22 @@ export class Camera extends PerspectiveCamera {
     const cameraHeight = this.getFloor(cameraX, cameraY);
     const cameraZ = 0.5 + Math.max(cameraHeight / 2, this.ref.z);
 
-    const { position, rotation } = this.ref.mesh;
+    const { position: target, rotation: targetRotation } = this.ref.mesh;
+    const targetPosition = new Vector3(cameraX, cameraZ, cameraY);
+    const targetQuaterion = new Quaternion().setFromEuler(targetRotation);
 
     if (lerp) {
-      this.position.lerp(new Vector3(cameraX, cameraZ, cameraY), lerp);
-
-      const targetRotation = new Quaternion().setFromEuler(this.rotation);
-      const endRotation = new Quaternion().setFromEuler(
-        new Euler(rotation.x, rotation.y, rotation.z)
+      this.position.lerp(targetPosition, lerp);
+      this.rotation.setFromQuaternion(
+        new Quaternion()
+          .setFromEuler(this.rotation)
+          .slerp(targetQuaterion, lerp)
       );
-
-      this.rotation.setFromQuaternion(targetRotation.slerp(endRotation, lerp));
     } else {
-      this.position.set(cameraX, cameraZ, cameraY);
-      this.rotation.setFromVector3(
-        new Vector3(rotation.x, rotation.y, rotation.z)
-      );
+      this.position.copy(targetPosition);
+      this.rotation.setFromQuaternion(targetQuaterion);
     }
 
-    this.lookAt(new Vector3(position.x, position.y, position.z));
+    this.lookAt(target);
   }
 }
