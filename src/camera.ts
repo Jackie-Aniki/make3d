@@ -45,8 +45,7 @@ export class Camera extends PerspectiveCamera {
   onCameraUpdate(lerp = 0) {
     if (!this.ref) return;
 
-    const gear = this.ref.gear || 1;
-    const scale = (Camera.distance * gear) / this.aspect;
+    const scale = Camera.distance / this.aspect;
     const angle = -this.ref.body.angle + Math.PI / 2;
     const offsetX = Math.sin(angle) * scale;
     const offsetY = Math.cos(angle) * scale;
