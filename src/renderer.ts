@@ -24,10 +24,9 @@ export class Renderer extends WebGLRenderer {
     this.scene.add(new AmbientLight(0xffeecc, 0.5));
     this.scene.background = new Color(0x99eeff);
 
-    document.body.appendChild(this.domElement);
-    window.addEventListener('resize', () => this.onResize());
-
     this.onResize();
+    window.addEventListener('resize', () => this.onResize());
+    document.body.appendChild(this.domElement);
   }
 
   animation() {

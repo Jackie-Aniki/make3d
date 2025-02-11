@@ -42,7 +42,7 @@ export class Camera extends PerspectiveCamera {
     const cameraX = this.ref.body.x - offsetX;
     const cameraY = this.ref.body.y - offsetY;
     const cameraHeight = this.getFloor(cameraX, cameraY);
-    const cameraZ = 0.25 + Math.max(cameraHeight / 2, this.ref.z);
+    const cameraZ = 0.5 + Math.max(cameraHeight / 2, this.ref.z);
 
     const { position, rotation } = this.ref.mesh;
 

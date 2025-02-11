@@ -36,7 +36,7 @@ export const state: State = {
 
 export const meshProps = {
   transparent: true,
-  alphaTest: 0.2
+  alphaTest: 0.75
 };
 
 export const directions: Direction[] = ['up', 'right', 'down', 'left'];
