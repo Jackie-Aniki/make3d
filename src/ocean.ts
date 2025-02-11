@@ -12,20 +12,21 @@ import { renderer } from './state';
 export class Ocean {
   static readonly scale = 4;
   static readonly waveSpeed = 1;
-  static readonly waveHeight = 0.03;
-  static readonly waveFrequency = 80;
-  static readonly waveDetail = 150;
-  static readonly textureRepeat = 10; // Powtarzanie tekstury
+  static readonly waveHeight = 0.07;
+  static readonly waveDetail = 16;
+  static readonly textureRepeat = 8; // Powtarzanie tekstury
   static readonly config = [
     {
-      opacity: 0.7,
-      z: -0.05,
-      renderOrder: 2
+      opacity: 0.5,
+      z: 0,
+      renderOrder: 2,
+      scale: 0.9
     },
     {
       opacity: 1,
-      z: -0.3,
-      renderOrder: 0
+      z: -0.5,
+      renderOrder: 1,
+      scale: 0.5
     }
   ];
 
@@ -54,36 +55,35 @@ export class Ocean {
       Ocean.waveDetail,
       Ocean.waveDetail
     ); // więcej podziałów dla lepszego falowania
-    const { opacity, z, renderOrder } = Ocean.config[index];
-    const rotateZ = (index * Math.PI) / 2;
+    const { opacity, z, renderOrder, scale } = Ocean.config[index];
     const material = new ShaderMaterial({
       uniforms: {
-        time: { value: rotateZ },
+        direction: { value: index ? -1 : 1 },
+        z: { value: z },
+        time: { value: (index * Math.PI) / 2 },
         map: { value: texture },
         opacity: { value: opacity },
-        waveSpeed: { value: Ocean.waveSpeed },
-        waveHeight: { value: Ocean.waveHeight / (index + 1) },
-        waveFrequency: { value: Ocean.waveFrequency },
-        textureRepeat: { value: Ocean.textureRepeat }
+        waveSpeed: { value: Ocean.waveSpeed * scale },
+        waveHeight: { value: Ocean.waveHeight * scale },
+        textureRepeat: { value: Ocean.textureRepeat * scale }
       },
       vertexShader: `
         uniform float time;
         uniform float waveSpeed;
         uniform float waveHeight;
-        uniform float waveFrequency;
         uniform float textureRepeat;
+        uniform float direction;
+        uniform float z;
 
         varying vec2 vUv;
 
         void main() {
           vUv = uv * textureRepeat; // Powtarzanie tekstury
-
           vec3 pos = position;
-          
-          // Sinusoidalna fala
-          float wave = sin(pos.x * waveFrequency + time * waveSpeed) * waveHeight;
-          wave += cos(pos.y * waveFrequency + time * waveSpeed) * waveHeight;
-          pos.z += wave;
+          float wave = sin(pos.x + pos.z + time * waveSpeed * 2.0);
+
+          pos.y += time * waveSpeed * direction * 0.05;
+          pos.z = z + wave * waveHeight;
 
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }
@@ -97,8 +97,8 @@ export class Ocean {
         varying vec2 vUv;
 
         void main() {
-          vec2 repeatedUV = vUv * textureRepeat + vec2(0.0, time * 0.02); // Powtarzanie + lekkie przesuwanie
-          vec4 color = texture2D(map, fract(repeatedUV)); // fract() zapewnia powtarzanie
+          vec2 repeatedUV = vUv * textureRepeat + vec2(0.0, time * 0.01); // Powtarzanie + lekkie przesuwanie
+          vec4 color = texture2D(map, repeatedUV); // fract() zapewnia powtarzanie
 
           gl_FragColor = vec4(color.rgb, color.a * opacity);
         }
@@ -111,13 +111,13 @@ export class Ocean {
     const y = this.rows / 2 / Ocean.scale;
 
     mesh.setRotationFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2);
-    mesh.rotateZ(rotateZ);
     mesh.position.set(x, z, y);
+    mesh.rotateZ(Math.PI / 4 + index * Math.PI);
     mesh.renderOrder = renderOrder;
 
     // Animacja shadera
-    renderer.animations.push(() => {
-      material.uniforms.time.value = (Date.now() - this.startTime) / 1000;
+    renderer.animations.push((ms: number) => {
+      material.uniforms.time.value += ms / 1000;
     });
 
     return mesh;

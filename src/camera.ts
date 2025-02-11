@@ -4,12 +4,13 @@ import { Level } from './level';
 import { Player } from './player';
 
 export class Camera extends PerspectiveCamera {
-  static readonly distance = 1;
-  static readonly lerpRatio = 0.0025;
+  static readonly distance = 1.3;
+  static readonly height = 2 / 3;
+  static readonly lerpRatio = 0.003;
 
-  static fov = 90;
-  static near = 0.1;
-  static far = 100;
+  static fov = 95;
+  static near = 0.01;
+  static far = 64;
 
   ref?: Player;
 
@@ -34,18 +35,18 @@ export class Camera extends PerspectiveCamera {
   onCameraUpdate(lerp = 0) {
     if (!this.ref) return;
 
-    const scale = 1 / this.aspect;
+    const gear = this.ref.gear || 1;
+    const scale = (Camera.distance * gear) / this.aspect;
     const angle = -this.ref.body.angle + Math.PI / 2;
     const offsetX = sin(angle) * scale;
     const offsetY = cos(angle) * scale;
     const cameraX = this.ref.body.x - offsetX;
     const cameraY = this.ref.body.y - offsetY;
     const cameraHeight = this.getFloor(cameraX, cameraY);
-    const cameraZ = 0.5 + Math.max(cameraHeight / 2, this.ref.z);
+    const cameraZ = Camera.height + Math.max(cameraHeight / 2, this.ref.z);
 
-    const { position: target, rotation: targetRotation } = this.ref.mesh;
+    const { position: lookAt, quaternion: targetQuaterion } = this.ref.mesh;
     const targetPosition = new Vector3(cameraX, cameraZ, cameraY);
-    const targetQuaterion = new Quaternion().setFromEuler(targetRotation);
 
     if (lerp) {
       this.position.lerp(targetPosition, lerp);
@@ -59,6 +60,6 @@ export class Camera extends PerspectiveCamera {
       this.rotation.setFromQuaternion(targetQuaterion);
     }
 
-    this.lookAt(target);
+    this.lookAt(new Vector3(0, 0.25, 0).add(lookAt));
   }
 }

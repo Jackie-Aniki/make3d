@@ -34,6 +34,20 @@ export class Billboard {
   scale: Vector3;
   level?: Level;
 
+  get gear() {
+    let gear = 0;
+
+    if (this.state.keys.up) {
+      gear++;
+    }
+
+    if (this.state.keys.down) {
+      gear--;
+    }
+
+    return gear;
+  }
+
   constructor(material: Material) {
     this.mesh = new Mesh(new PlaneGeometry(1, 1, 1, 1), material);
     this.scale = material.scale ? material.scale.clone() : new Vector3(1, 1, 1);
@@ -47,24 +61,6 @@ export class Billboard {
     renderer.animations.push((time: number) => {
       this.update(time);
     });
-  }
-
-  protected get gear() {
-    let gear = 0;
-
-    if (this.state.keys.up) {
-      gear++;
-    }
-
-    if (this.state.keys.down) {
-      gear--;
-    }
-
-    if (this.z < waterZ) {
-      gear /= 2;
-    }
-
-    return gear;
   }
 
   protected spawn(level: Level) {
@@ -152,8 +148,12 @@ export class Billboard {
 
   protected update(ms: number) {
     const deltaTime = ms / 1000;
-    const moveSpeed = this.gear * Billboard.moveSpeed * deltaTime;
     const floorZ = this.getFloorZ();
+
+    let moveSpeed = this.gear * Billboard.moveSpeed * deltaTime;
+    if (this.z < waterZ) {
+      moveSpeed /= 2;
+    }
 
     this.updateVelocity(floorZ, deltaTime);
     this.updateZ(floorZ, deltaTime);
