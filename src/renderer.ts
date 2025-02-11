@@ -7,7 +7,7 @@ import {
   WebGLRenderer
 } from 'three';
 import { Camera } from './camera';
-import { Stats } from 'pixi-stats/src';
+import { Stats } from 'pixi-stats';
 
 export class Renderer extends WebGLRenderer {
   now = Date.now();
