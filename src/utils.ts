@@ -1,5 +1,4 @@
 import {
-  Euler,
   LinearSRGBColorSpace,
   Matrix4,
   MeshBasicMaterial,
@@ -16,16 +15,11 @@ import { loader, meshProps, textures } from './state';
 export const randomOf = (array: any[]) =>
   array[Math.floor(Math.random() * array.length)];
 
-export const getMatrix = (
-  position: Vector3,
-  scale: Vector3,
-  rotation = new Euler()
-) => {
+export const getMatrix = (position: Vector3, scale: Vector3) => {
   const matrix = new Matrix4();
   const quaternion = new Quaternion();
   const offset = new Vector3(0.5, 0.5, 0.5);
 
-  quaternion.setFromEuler(rotation);
   matrix.compose(position.add(offset), quaternion, scale);
 
   return matrix;
@@ -82,6 +76,9 @@ export const loadTextures = async (texturePaths: string[]) => {
     textures[textureName] = texture;
   });
 };
+
+export const normalizeAngle = (angle: number) =>
+  (2 * Math.PI + angle) % (2 * Math.PI);
 
 export const mapCubeTextures = <T>({
   left,

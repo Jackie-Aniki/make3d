@@ -1,6 +1,7 @@
 import { Euler, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { Level } from './level';
 import { Player } from './player';
+import { sin, cos } from './fast-math';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1;
@@ -37,8 +38,8 @@ export class Camera extends PerspectiveCamera {
 
     const scale = 1 / this.aspect;
     const angle = -this.ref.body.angle + Math.PI / 2;
-    const offsetX = Math.sin(angle) * scale;
-    const offsetY = Math.cos(angle) * scale;
+    const offsetX = sin(angle) * scale;
+    const offsetY = cos(angle) * scale;
     const cameraX = this.ref.body.x - offsetX;
     const cameraY = this.ref.body.y - offsetY;
     const cameraHeight = this.getFloor(cameraX, cameraY);

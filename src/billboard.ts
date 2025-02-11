@@ -11,6 +11,7 @@ import {
   state,
   waterZ
 } from './state';
+import { normalizeAngle } from './utils';
 
 export class Billboard {
   static readonly moveSpeed = 3;
@@ -78,10 +79,6 @@ export class Billboard {
     physics.insert(this.body);
   }
 
-  protected normalize(angle: number) {
-    return (2 * Math.PI + angle) % (2 * Math.PI);
-  }
-
   protected getFloorZ({ x, y } = this.body) {
     return this.level ? this.level.getFloor(x, y) / 2 : 0;
   }
@@ -93,8 +90,8 @@ export class Billboard {
     }
 
     const angle = this.body.angle - state.player.body.angle;
-    const radians = this.normalize(gear * angle);
-    const directionIndex = Math.floor(radians / (Math.PI / 2));
+    const radians = normalizeAngle(gear * angle);
+    const directionIndex = Math.floor((2 * radians) / Math.PI);
 
     return gear > 0
       ? directions[directionIndex]
@@ -125,7 +122,7 @@ export class Billboard {
           ? 1
           : this.state.mouse.x;
 
-      this.body.angle = this.normalize(
+      this.body.angle = normalizeAngle(
         this.body.angle + rotateGear * Billboard.rotateSpeed * deltaTime * scale
       );
     }
