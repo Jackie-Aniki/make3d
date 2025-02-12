@@ -2,15 +2,7 @@ import { Mesh, PlaneGeometry, Vector2, Vector3 } from 'three';
 import { BillboardBody } from './billboard-body';
 import { Level } from './level';
 import { Direction, Material, State } from './model';
-import {
-  directions,
-  floors,
-  physics,
-  renderer,
-  reverseDirections,
-  state,
-  waterZ
-} from './state';
+import { directions, floors, physics, renderer, state, waterZ } from './state';
 import { normalizeAngle } from './utils';
 
 export class Billboard {
@@ -23,7 +15,6 @@ export class Billboard {
 
   z = 0;
   velocity = 0;
-  scaleChanged = true;
   body = new BillboardBody();
   direction: Direction = 'up';
   state: State = {
@@ -80,29 +71,11 @@ export class Billboard {
     return this.level ? this.level.getFloor(x, y) / 2 : 0;
   }
 
-  protected getDirection(): Direction {
-    const gear = this.gear;
-    if (!gear) {
-      return this.direction;
-    }
+  protected getDirection() {
+    const angle = normalizeAngle(this.body.angle - state.player.body.angle);
+    const directionIndex = Math.floor((2 * angle) / Math.PI); // Szybsze (4 * angle) / (2 * Math.PI)
 
-    const angle = this.body.angle - state.player.body.angle;
-    const radians = normalizeAngle(gear * angle);
-    const directionIndex = Math.round((2 * radians) / Math.PI); // Poprawione zaokrąglanie
-
-    return gear > 0
-      ? directions[directionIndex]
-      : reverseDirections[directionIndex];
-  }
-
-  protected updateDirectionFromKeys() {
-    this.direction = this.getDirection();
-
-    directions.forEach((direction) => {
-      if (this.state.keys[direction]) {
-        this.direction = direction;
-      }
-    });
+    return directions[directionIndex];
   }
 
   protected update(ms: number) {
@@ -128,8 +101,7 @@ export class Billboard {
     }
 
     this.body.group = floors[Math.floor(this.z * 2 + 0.5)];
-
-    this.updateDirectionFromKeys();
+    this.direction = this.getDirection();
 
     if (
       this.state.keys.left ||
@@ -158,11 +130,8 @@ export class Billboard {
     this.mesh.quaternion.copy(renderer.camera.quaternion);
     this.mesh.up = renderer.camera.up;
 
-    // Aktualizujemy skalę tylko wtedy, gdy się zmieniła
-    this.scaleChanged = this.mesh.scale.x !== this.scale.x;
-    if (this.scaleChanged) {
+    if (this.scale.x !== this.mesh.scale.x) {
       this.mesh.scale.set(this.scale.x, this.scale.y, this.scale.z);
-      this.scaleChanged = false;
     }
   }
 }

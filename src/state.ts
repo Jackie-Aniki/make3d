@@ -40,5 +40,3 @@ export const meshProps = {
 };
 
 export const directions: Direction[] = ['up', 'right', 'down', 'left'];
-
-export const reverseDirections: Direction[] = ['down', 'right', 'up', 'left'];

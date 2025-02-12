@@ -3,10 +3,10 @@ import { TexturedBillboardProps } from './model';
 import { TexturedBillboard } from './textured-billboard';
 
 export class Enemy extends TexturedBillboard {
-  static readonly maxSpeed = 1000;
+  static readonly maxSpeed = 0;
   static readonly maxRotation = 100;
   static readonly jumpChance = 0.001;
-  static readonly rotateChance = 0.01;
+  static readonly rotateChance = 0.03;
 
   readonly isPlayer = false;
 
@@ -42,7 +42,6 @@ export class Enemy extends TexturedBillboard {
 
       // 90% szansy na ruch w górę
       this.state.keys.up = Math.random() < 0.9;
-      this.state.keys.down = false;
     }
 
     // Skok (uniknięcie podwójnego `Math.random`)

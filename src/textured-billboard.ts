@@ -1,11 +1,6 @@
 import { MeshBasicMaterial } from 'three';
 import { Billboard } from './billboard';
-import {
-  Direction,
-  DirectionsToRows,
-  Material,
-  TexturedBillboardProps
-} from './model';
+import { Direction, DirectionsToRows, TexturedBillboardProps } from './model';
 import { createMaterial } from './utils';
 
 export class TexturedBillboard extends Billboard {
@@ -44,8 +39,6 @@ export class TexturedBillboard extends Billboard {
   }
 
   protected update(ms: number) {
-    super.update(ms);
-
     // Sprawdzamy, czy jakikolwiek klawisz jest aktywny (wydajniejsza metoda)
     for (const key in this.state.keys) {
       if (this.state.keys[key]) {
@@ -58,17 +51,20 @@ export class TexturedBillboard extends Billboard {
     const row = this.getRow(this.direction);
     const x = frameIndex % this.cols;
     const y = Math.floor(frameIndex / this.cols) + row;
+    const { material } = this.mesh;
 
-    const material = this.mesh.material as Material;
     if (!(material instanceof MeshBasicMaterial)) return;
 
     material.map?.offset.set(x / this.cols, y / this.rows);
 
-    // Optymalizacja operacji na skali (tylko jeśli wartość się zmienia)
-    const newScaleX =
-      (this.direction === 'left' ? -1 : 1) * Math.abs(this.scale.x);
-    if (this.scale.x !== newScaleX) {
-      this.scale.x = newScaleX;
+    if (this.direction === 'left') {
+      this.scale.x = -Math.abs(this.scale.x);
     }
+
+    if (this.direction === 'right') {
+      this.scale.x = Math.abs(this.scale.x);
+    }
+
+    super.update(ms);
   }
 }

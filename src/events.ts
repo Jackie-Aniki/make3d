@@ -51,10 +51,7 @@ export const onPointerDown = (event: PointerEvent) => {
   const clickTime = Date.now();
   if (clickTime - lastClickTime < doubleClickTime) {
     keys.space = true;
-    setTimeout(() => {
-      // safe
-      keys.space = false;
-    }, 100);
+    setTimeout(() => (keys.space = false), 100);
   }
 
   lastClickTime = clickTime;
