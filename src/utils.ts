@@ -1,9 +1,9 @@
 import {
-  LinearSRGBColorSpace,
   Matrix4,
   MeshBasicMaterial,
   NearestFilter,
   NearestMipMapLinearFilter,
+  NoColorSpace,
   Quaternion,
   Texture,
   Vector3
@@ -64,7 +64,7 @@ export const getTextureNameFromPath = (path: string) => {
 export const pixelate = (texture: Texture) => {
   texture.minFilter = NearestMipMapLinearFilter;
   texture.magFilter = NearestFilter;
-  texture.colorSpace = LinearSRGBColorSpace;
+  texture.colorSpace = NoColorSpace;
 };
 
 export const loadTextures = async (texturePaths: string[]) => {
