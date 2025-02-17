@@ -7,7 +7,7 @@ import { ViewLevel } from './view-level';
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1.3;
   static readonly height = 0.75;
-  static readonly lerpRatio = 0.005;
+  static readonly lerpRatio = 0.0033;
 
   protected static targetVector = new Vector3();
   protected static lookAtVector = new Vector3();
@@ -55,11 +55,11 @@ export class Camera extends PerspectiveCamera {
     if (!this.ref) return;
 
     const { body, z, mesh } = this.ref;
-    const gear = this.ref.mouseGear || this.ref.gear || 1;
+    const gear = Math.sign(this.ref.mouseGear || this.ref.gear) || 1;
     const angle = -body.angle + Math_Half_PI;
     const cameraX = body.x - Math.sin(angle) * this.distance * gear;
     const cameraY = body.y - Math.cos(angle) * this.distance * gear;
-    const cameraHeight = this.getFloor(cameraX, cameraY) / 2;
+    const cameraHeight = this.getFloor(cameraX, cameraY) / 3;
     const cameraZ = Math.max(cameraHeight, z);
 
     const targetPosition = Camera.targetVector.set(
