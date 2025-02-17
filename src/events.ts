@@ -1,25 +1,4 @@
-import { doubleClickTime, keys, mouse, state } from './state';
-
-export const onPointerMove = (event: MouseEvent | TouchEvent) => {
-  const pointer = event instanceof TouchEvent ? event.touches[0] : event;
-  if (pointer && state.player) {
-    event.preventDefault();
-
-    mouse.pageX = pointer.pageX;
-    mouse.pageY = pointer.pageY;
-  }
-};
-
-export const updateMouseXY = () => {
-  const min = 2 / Math.min(innerWidth, innerHeight);
-  const centerY = state.player.getScreenPosition().y;
-
-  mouse.x = Math.max(
-    -1,
-    Math.min(1, (mouse.pageX - innerWidth / 2) * min * 1.33)
-  );
-  mouse.y = Math.max(-1, Math.min(1, (mouse.pageY - centerY) * min * 2));
-};
+import { keys, mouse } from './state';
 
 export const setKey = (value: boolean) => {
   return (event: KeyboardEvent) => {
@@ -46,44 +25,31 @@ export const setKey = (value: boolean) => {
   };
 };
 
-let lastClickTime = 0;
-
-export const preventEvent = (event: PointerEvent | MouseEvent) =>
-  event.preventDefault();
-
-export const onPointerDown = (event: PointerEvent) => {
-  const clickTime = Date.now();
-  if (clickTime - lastClickTime < doubleClickTime) {
-    keys.space = true;
-    setTimeout(() => (keys.space = false), 100);
-  }
-
-  lastClickTime = clickTime;
-
-  state.mouseDown = true;
-
-  preventEvent(event);
-  onPointerMove(event);
-};
-
-export const onPointerUp = (event: PointerEvent | TouchEvent) => {
-  event.preventDefault();
-  state.mouseDown = false;
-  keys.up = false;
-  keys.down = false;
-  keys.left = false;
-  keys.right = false;
-};
-
 export const addEventListeners = () => {
   window.addEventListener('keydown', setKey(true), { passive: true });
   window.addEventListener('keyup', setKey(false), { passive: true });
-  window.addEventListener('pointerdown', onPointerDown, { passive: false });
-  window.addEventListener('pointermove', onPointerMove, { passive: false });
-  window.addEventListener('touchmove', onPointerMove, { passive: false });
-  window.addEventListener('pointerup', onPointerUp, { passive: false });
-  window.addEventListener('touchend', onPointerUp, { passive: false });
-  window.addEventListener('dblclick', preventEvent, { passive: false });
-  window.addEventListener('dragstart', preventEvent, { passive: false });
-  window.addEventListener('contextmenu', preventEvent, { passive: false });
+  window.addEventListener('pointerdown', mouse.onPointerDown.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('pointermove', mouse.onPointerMove.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('touchmove', mouse.onPointerMove.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('pointerup', mouse.onPointerUp.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('touchend', mouse.onPointerUp.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('dblclick', mouse.preventEvent.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('dragstart', mouse.preventEvent.bind(mouse), {
+    passive: false
+  });
+  window.addEventListener('contextmenu', mouse.preventEvent.bind(mouse), {
+    passive: false
+  });
 };

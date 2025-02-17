@@ -1,9 +1,10 @@
 import { groupBits, System } from 'detect-collisions';
-import { Texture, Vector2 } from 'three';
+import { Texture } from 'three';
 import { Loader } from './loader';
 import { Direction, Key, State } from './model';
-import { Renderer } from './renderer';
+import { Mouse } from './mouse';
 import { queryParams } from './query-params';
+import { Renderer } from './renderer';
 
 export const minLevelHeight = 3;
 
@@ -16,11 +17,6 @@ export const doubleClickTime = 400;
 export const keys: Partial<Record<Key, boolean>> = {};
 
 export const textures: Record<string, Texture> = {};
-
-class Mouse extends Vector2 {
-  pageX = innerWidth / 2;
-  pageY = innerWidth / 2;
-}
 
 export const mouse = new Mouse();
 

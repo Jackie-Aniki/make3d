@@ -1,4 +1,5 @@
 import { MeshBasicMaterial, Vector2, Vector3 } from 'three';
+import { Mouse } from './mouse';
 
 export type Material = MeshBasicMaterial & { scale?: Vector3; size?: Vector2 };
 
@@ -12,7 +13,7 @@ export type CubeDirections = Direction | 'front' | 'back';
 
 export interface State extends Record<string, any> {
   keys: Record<string, boolean>;
-  mouse: Vector2;
+  mouse: Mouse;
 }
 
 export interface TexturedBillboardProps {

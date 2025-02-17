@@ -9,13 +9,13 @@ import {
 } from 'three';
 import { Billboard } from './billboard';
 import { Camera } from './camera';
+import { DeviceDetector } from './detect';
 import { Ocean } from './ocean';
 import { queryParams } from './query-params';
 import { Skybox } from './skybox';
 
 export class Renderer extends WebGLRenderer {
   static backgroundColor = 0xbbf0ff;
-  static isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
   now = Date.now();
   scene = new Scene();
@@ -28,7 +28,7 @@ export class Renderer extends WebGLRenderer {
 
   constructor() {
     super({
-      antialias: !Renderer.isMobile,
+      antialias: !DeviceDetector.isMobile && !DeviceDetector.isTV,
       powerPreference: 'high-performance'
     });
     this.outputColorSpace = LinearSRGBColorSpace;

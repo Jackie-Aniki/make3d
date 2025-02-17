@@ -1,10 +1,11 @@
-import { Vector2 } from 'three';
+import { BodyGroup } from 'detect-collisions';
 import { Billboard } from './billboard';
 import { DynamicBody } from './billboard-body';
+import { Level } from './level';
 import { State, TexturedBillboardProps } from './model';
+import { Mouse } from './mouse';
 import { physics } from './state';
 import { normalizeAngle } from './utils';
-import { Level } from './level';
 
 export class MovingBillboard extends Billboard {
   static readonly moveSpeed = 3;
@@ -38,7 +39,7 @@ export class MovingBillboard extends Billboard {
     props: TexturedBillboardProps,
     state: State = {
       keys: {},
-      mouse: new Vector2()
+      mouse: new Mouse()
     }
   ) {
     super(props);
@@ -57,7 +58,19 @@ export class MovingBillboard extends Billboard {
 
     if (moveSpeed) {
       this.body.move(moveSpeed);
-      this.body.system?.separateBody(this.body);
+      this.body.system?.checkOne(
+        this.body,
+        ({ b: wall, overlapV: { x, y } }) => {
+          if (wall.isStatic) {
+            this.body.setPosition(this.body.x - x, this.body.y - y);
+          } else {
+            const offsetX = x * 0.5;
+            const offsetY = y * 0.5;
+            this.body.setPosition(this.body.x - offsetX, this.body.y - offsetY);
+            wall.setPosition(wall.x + offsetX, wall.y + offsetY);
+          }
+        }
+      );
     }
 
     this.updateZ(deltaTime);

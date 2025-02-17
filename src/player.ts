@@ -3,7 +3,6 @@ import { TexturedBillboardProps } from './model';
 import { directions, renderer, state } from './state';
 import { MovingBillboard } from './moving-billboard';
 import { ViewLevel } from './view-level';
-import { updateMouseXY } from './events';
 
 export class Player extends MovingBillboard {
   readonly isPlayer = true;
@@ -20,7 +19,7 @@ export class Player extends MovingBillboard {
   }
 
   update(ms: number) {
-    updateMouseXY();
+    state.mouse.updateMouseXY();
     super.update(ms);
   }
 
