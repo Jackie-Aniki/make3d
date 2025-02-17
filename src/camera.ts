@@ -16,8 +16,8 @@ export class Camera extends PerspectiveCamera {
   protected static invFullHD = 1 / Math.hypot(1440, 1080);
 
   static fov = 90;
-  static near = 0.1;
-  static far = 32;
+  static near = 0.001;
+  static far = 40;
 
   ref?: Player;
 

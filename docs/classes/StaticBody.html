@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>Level | engine25d</title>
+    <title>StaticBody | engine25d</title>
     <meta name="description" content="Documentation for engine25d" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -77,26 +77,19 @@
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb">
             <li><a href="../modules.html">engine25d</a></li>
-            <li><a href="Level.html">Level</a></li>
+            <li><a href="StaticBody.html">StaticBody</a></li>
           </ul>
-          <h1>Class Level</h1>
+          <h1>Class StaticBody</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="845">
-          <h4>
-            Hierarchy (<a href="../hierarchy.html#Level">View Summary</a>)
-          </h4>
+        <section class="tsd-panel">
+          <h4>Implements</h4>
           <ul class="tsd-hierarchy">
-            <li class="tsd-hierarchy-item">
-              <span class="tsd-hierarchy-target">Level</span>
-              <ul class="tsd-hierarchy">
-                <li class="tsd-hierarchy-item">
-                  <a
-                    href="ViewLevel.html"
-                    class="tsd-signature-type tsd-kind-class"
-                    >ViewLevel</a
-                  >
-                </li>
-              </ul>
+            <li>
+              <a
+                href="../interfaces/BodyLike.html"
+                class="tsd-signature-type tsd-kind-interface"
+                >BodyLike</a
+              >
             </li>
           </ul>
         </section>
@@ -105,8 +98,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L4"
-                >src/level.ts:4</a
+                href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L12"
+                >src/billboard-body.ts:12</a
               >
             </li>
           </ul>
@@ -137,7 +130,7 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Constructors</h3>
                   <div class="tsd-index-list">
-                    <a href="Level.html#constructor" class="tsd-index-link"
+                    <a href="StaticBody.html#constructor" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
@@ -151,75 +144,55 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
-                    <a href="Level.html#heights" class="tsd-index-link"
+                    <a href="StaticBody.html#angle" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>heights</span></a
+                      ><span>angle</span></a
                     >
-                    <a href="Level.html#cols" class="tsd-index-link"
+                    <a href="StaticBody.html#group" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>cols</span></a
+                      ><span>group</span></a
                     >
-                    <a href="Level.html#fill" class="tsd-index-link"
+                    <a href="StaticBody.html#x" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>fill</span></a
+                      ><span>x</span></a
                     >
-                    <a href="Level.html#mapiterations" class="tsd-index-link"
+                    <a href="StaticBody.html#y" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>map<wbr />Iterations</span></a
-                    >
-                    <a href="Level.html#rows" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>rows</span></a
+                      ><span>y</span></a
                     >
                   </div>
                 </section>
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Methods</h3>
                   <div class="tsd-index-list">
-                    <a
-                      href="Level.html#createmap"
-                      class="tsd-index-link tsd-is-protected"
+                    <a href="StaticBody.html#setposition" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>create<wbr />Map</span></a
-                    >
-                    <a href="Level.html#getfloor" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Floor</span></a
+                      ><span>set<wbr />Position</span></a
                     >
                   </div>
                 </section>
@@ -261,17 +234,18 @@
               <ul class="tsd-signatures">
                 <li class="">
                   <div class="tsd-signature tsd-anchor-link">
-                    <a id="constructorlevel" class="tsd-anchor"></a
+                    <a id="constructorstaticbody" class="tsd-anchor"></a
                     ><span class="tsd-signature-keyword">new</span>
-                    <span class="tsd-kind-constructor-signature">Level</span
+                    <span class="tsd-kind-constructor-signature"
+                      >StaticBody</span
                     ><span class="tsd-signature-symbol">()</span
                     ><span class="tsd-signature-symbol">:</span>
                     <a
-                      href="Level.html"
+                      href="StaticBody.html"
                       class="tsd-signature-type tsd-kind-class"
-                      >Level</a
+                      >StaticBody</a
                     ><a
-                      href="#constructorlevel"
+                      href="#constructorstaticbody"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -282,22 +256,11 @@
                     <h4 class="tsd-returns-title">
                       Returns
                       <a
-                        href="Level.html"
+                        href="StaticBody.html"
                         class="tsd-signature-type tsd-kind-class"
-                        >Level</a
+                        >StaticBody</a
                       >
                     </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L12"
-                            >src/level.ts:12</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
                   </div>
                 </li>
               </ul>
@@ -321,144 +284,136 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member">
-              <a id="heights" class="tsd-anchor"></a>
+              <a id="angle" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <span>heights</span
-                ><a
-                  href="#heights"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
+                <span>angle</span
+                ><a href="#angle" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">heights</span
+                <span class="tsd-kind-property">angle</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol">[]</span
-                ><span class="tsd-signature-symbol">[]</span
-                ><span class="tsd-signature-symbol"> = []</span>
+                ><span class="tsd-signature-symbol"> = 0</span>
               </div>
               <aside class="tsd-sources">
+                <p>
+                  Implementation of
+                  <a href="../interfaces/BodyLike.html">BodyLike</a>.<a
+                    href="../interfaces/BodyLike.html#angle"
+                    >angle</a
+                  >
+                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L10"
-                      >src/level.ts:10</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L16"
+                      >src/billboard-body.ts:16</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <a id="cols" class="tsd-anchor"></a>
+              <a id="group" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>cols</span
-                ><a href="#cols" aria-label="Permalink" class="tsd-anchor-icon"
+                <span>group</span
+                ><a href="#group" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">cols</span
+                <span class="tsd-kind-property">group</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">24</span>
+                <span class="tsd-signature-type">number</span
+                ><span class="tsd-signature-symbol"> = ...</span>
               </div>
               <aside class="tsd-sources">
+                <p>
+                  Implementation of
+                  <a href="../interfaces/BodyLike.html">BodyLike</a>.<a
+                    href="../interfaces/BodyLike.html#group"
+                    >group</a
+                  >
+                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L7"
-                      >src/level.ts:7</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L15"
+                      >src/billboard-body.ts:15</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <a id="fill" class="tsd-anchor"></a>
+              <a id="x" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>fill</span
-                ><a href="#fill" aria-label="Permalink" class="tsd-anchor-icon"
+                <span>x</span
+                ><a href="#x" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">fill</span
+                <span class="tsd-kind-property">x</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.5</span>
+                <span class="tsd-signature-type">number</span
+                ><span class="tsd-signature-symbol"> = 0</span>
               </div>
               <aside class="tsd-sources">
+                <p>
+                  Implementation of
+                  <a href="../interfaces/BodyLike.html">BodyLike</a>.<a
+                    href="../interfaces/BodyLike.html#x"
+                    >x</a
+                  >
+                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L5"
-                      >src/level.ts:5</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L13"
+                      >src/billboard-body.ts:13</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <a id="mapiterations" class="tsd-anchor"></a>
+              <a id="y" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code
-                ><span>map<wbr />Iterations</span
-                ><a
-                  href="#mapiterations"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
+                <span>y</span
+                ><a href="#y" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">mapIterations</span
+                <span class="tsd-kind-property">y</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">4</span>
+                <span class="tsd-signature-type">number</span
+                ><span class="tsd-signature-symbol"> = 0</span>
               </div>
               <aside class="tsd-sources">
+                <p>
+                  Implementation of
+                  <a href="../interfaces/BodyLike.html">BodyLike</a>.<a
+                    href="../interfaces/BodyLike.html#y"
+                    >y</a
+                  >
+                </p>
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L6"
-                      >src/level.ts:6</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <a id="rows" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>rows</span
-                ><a href="#rows" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">rows</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">24</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L8"
-                      >src/level.ts:8</a
+                      href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L14"
+                      >src/billboard-body.ts:14</a
                     >
                   </li>
                 </ul>
@@ -482,95 +437,12 @@
             </h2>
           </summary>
           <section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <a id="createmap" class="tsd-anchor"></a>
-              <h3 class="tsd-anchor-link">
-                <code class="tsd-tag">Protected</code
-                ><span>create<wbr />Map</span
-                ><a
-                  href="#createmap"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures tsd-is-protected">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link">
-                    <a id="createmap-1" class="tsd-anchor"></a
-                    ><span class="tsd-kind-call-signature">createMap</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">fill</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">iterations</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><a
-                      href="#createmap-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">fill</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">
-                              = Level.fill</span
-                            ></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">iterations</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">
-                              = Level.mapIterations</span
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span
-                      ><span class="tsd-signature-symbol">[]</span
-                      ><span class="tsd-signature-symbol">[]</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L38"
-                            >src/level.ts:38</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
             <section class="tsd-panel tsd-member">
-              <a id="getfloor" class="tsd-anchor"></a>
+              <a id="setposition" class="tsd-anchor"></a>
               <h3 class="tsd-anchor-link">
-                <span>get<wbr />Floor</span
+                <span>set<wbr />Position</span
                 ><a
-                  href="#getfloor"
+                  href="#setposition"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -580,8 +452,8 @@
               <ul class="tsd-signatures">
                 <li class="">
                   <div class="tsd-signature tsd-anchor-link">
-                    <a id="getfloor-1" class="tsd-anchor"></a
-                    ><span class="tsd-kind-call-signature">getFloor</span
+                    <a id="setposition-1" class="tsd-anchor"></a
+                    ><span class="tsd-kind-call-signature">setPosition</span
                     ><span class="tsd-signature-symbol">(</span
                     ><span class="tsd-kind-parameter">x</span
                     ><span class="tsd-signature-symbol">:</span>
@@ -592,9 +464,9 @@
                     <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">)</span
                     ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
+                    <span class="tsd-signature-type">void</span
                     ><a
-                      href="#getfloor-1"
+                      href="#setposition-1"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -620,15 +492,22 @@
                       </ul>
                     </div>
                     <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
+                      Returns <span class="tsd-signature-type">void</span>
                     </h4>
                     <aside class="tsd-sources">
+                      <p>
+                        Implementation of
+                        <a href="../interfaces/BodyLike.html">BodyLike</a>.<a
+                          href="../interfaces/BodyLike.html#setposition"
+                          >setPosition</a
+                        >
+                      </p>
                       <ul>
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Prozi/engine25d/blob/main/src/level.ts#L30"
-                            >src/level.ts:30</a
+                            href="https://github.com/Prozi/engine25d/blob/main/src/billboard-body.ts#L18"
+                            >src/billboard-body.ts:18</a
                           >
                         </li>
                       </ul>
@@ -829,46 +708,38 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#heights" class=""
+                  <a href="#angle" class=""
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>heights</span></a
-                  ><a href="#cols" class=""
+                    ><span>angle</span></a
+                  ><a href="#group" class=""
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>cols</span></a
-                  ><a href="#fill" class=""
+                    ><span>group</span></a
+                  ><a href="#x" class=""
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>fill</span></a
-                  ><a href="#mapiterations" class=""
+                    ><span>x</span></a
+                  ><a href="#y" class=""
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>map<wbr />Iterations</span></a
-                  ><a href="#rows" class=""
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>rows</span></a
+                    ><span>y</span></a
                   >
                 </div>
               </details>
@@ -888,22 +759,14 @@
                   >Methods
                 </summary>
                 <div>
-                  <a href="#createmap" class="tsd-is-protected"
+                  <a href="#setposition" class=""
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>create<wbr />Map</span></a
-                  ><a href="#getfloor" class=""
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Floor</span></a
+                    ><span>set<wbr />Position</span></a
                   >
                 </div>
               </details>

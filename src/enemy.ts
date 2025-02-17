@@ -15,7 +15,6 @@ export class Enemy extends MovingBillboard {
 
   constructor(level: Level, props: TexturedBillboardProps) {
     super(props);
-
     this.spawn(level);
   }
 

@@ -1,7 +1,8 @@
 import { Vector2 } from 'three';
 import { Billboard } from './billboard';
+import { DynamicBody } from './billboard-body';
 import { State, TexturedBillboardProps } from './model';
-import { floors } from './state';
+import { physics } from './state';
 import { normalizeAngle } from './utils';
 
 export class MovingBillboard extends Billboard {
@@ -12,6 +13,7 @@ export class MovingBillboard extends Billboard {
 
   velocity = 0;
   state: State;
+  declare body: DynamicBody;
 
   get gear() {
     let gear = 0;
@@ -55,8 +57,6 @@ export class MovingBillboard extends Billboard {
         floorZ,
         0
       );
-
-      this.body.group = floors[Math.floor(this.z * 2 + 0.5)];
     }
 
     if (
@@ -92,5 +92,22 @@ export class MovingBillboard extends Billboard {
     }
 
     super.update(ms);
+  }
+
+  protected createBody() {
+    const body = new DynamicBody();
+    physics.insert(body);
+    return body;
+  }
+
+  protected updateTexture() {
+    super.updateTexture();
+
+    const sign = Math.sign(this.mesh.scale.x);
+    if (this.direction === 'left' && sign > 0) {
+      this.mesh.scale.set(-1, 1, 1);
+    } else if (this.direction === 'right' && sign < 0) {
+      this.mesh.scale.set(1, 1, 1);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Mesh, PlaneGeometry, Vector3 } from 'three';
-import { BillboardBody } from './billboard-body';
+import { BodyLike, StaticBody } from './billboard-body';
 import { Level } from './level';
 import {
   Direction,
@@ -7,17 +7,17 @@ import {
   Material,
   TexturedBillboardProps
 } from './model';
-import { directions, physics, renderer, state } from './state';
+import { directions, floors, renderer, state } from './state';
 import { createMaterial, normalizeAngle } from './utils';
 
 export class Billboard {
-  z = 0;
+  static up = new Vector3(0, 1, 0);
+
   frame = 0;
   direction: Direction = 'up';
   material: Material;
   mesh: Mesh;
-  body: BillboardBody;
-  scale: Vector3;
+  body!: BodyLike;
   cols: number;
   rows: number;
   frameDuration: number;
@@ -28,9 +28,18 @@ export class Billboard {
   directionsToRows: DirectionsToRows;
   level?: Level;
 
+  get z() {
+    return this._z;
+  }
+
+  set z(z: number) {
+    this._z = z;
+    this.body.group = floors[Math.floor(z * 2 + 0.5)];
+  }
+
+  protected _z = 0;
+
   constructor(props: TexturedBillboardProps) {
-    this.material = createMaterial(props.textureName, props.cols, props.rows);
-    this.mesh = new Mesh(new PlaneGeometry(1, 1), this.material);
     this.cols = props.cols || 1;
     this.rows = props.rows || 1;
     this.frameDuration = props.frameDuration || 120;
@@ -39,12 +48,12 @@ export class Billboard {
     this.invFrameDuration = 1 / this.frameDuration;
     this.totalFrames = props.totalFrames || 1;
     this.directionsToRows = props.directionsToRows || { default: 0 };
-    this.body = new BillboardBody();
+    this.material = createMaterial(props.textureName, props.cols, props.rows);
 
     const w = this.material.map!.image.width / this.cols;
     const h = this.material.map!.image.height / this.rows;
     const m = Math.max(w, h) / (props.scale || 1);
-    this.scale = new Vector3(w / m, h / m, 1);
+    this.mesh = new Mesh(new PlaneGeometry(w / m, h / m), this.material);
 
     renderer.scene.add(this.mesh);
     renderer.animations.push((ms: number) => {
@@ -55,21 +64,24 @@ export class Billboard {
   update(_ms: number): void {
     this.mesh.position.set(this.body.x, this.z, this.body.y);
     this.mesh.quaternion.copy(renderer.camera.quaternion);
-    this.mesh.up = renderer.camera.up;
+    this.mesh.up = Billboard.up;
     this.direction = this.getDirection();
     this.updateTexture();
+  }
+
+  protected createBody() {
+    return new StaticBody();
   }
 
   protected spawn(level: Level) {
     const x = (Math.random() * Level.cols) / 2;
     const y = (Math.random() * Level.rows) / 2;
 
-    this.level = level;
+    this.body = this.createBody();
     this.body.setPosition(x, y);
+    this.level = level;
     this.z = this.getFloorZ();
     this.mesh.position.set(x, this.z, y);
-
-    physics.insert(this.body);
   }
 
   protected getFloorZ({ x, y } = this.body) {
@@ -84,18 +96,6 @@ export class Billboard {
     const { map } = this.mesh.material as any;
 
     map?.offset.set(x * this.invCols, y * this.invRows);
-
-    if (this.direction === 'left') {
-      this.scale.x = -Math.abs(this.scale.x);
-    }
-
-    if (this.direction === 'right') {
-      this.scale.x = Math.abs(this.scale.x);
-    }
-
-    if (this.mesh.scale.x !== this.scale.x) {
-      this.mesh.scale.copy(this.scale);
-    }
   }
 
   protected getDirection() {
