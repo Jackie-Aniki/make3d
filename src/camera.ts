@@ -3,6 +3,7 @@ import { Level } from './level';
 import { Player } from './player';
 import { Math_Half_PI } from './state';
 import { ViewLevel } from './view-level';
+import { Renderer } from './renderer';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1.33;
@@ -14,8 +15,7 @@ export class Camera extends PerspectiveCamera {
   protected static tempQuaternion = new Quaternion();
   protected static tempEuler = new Euler();
 
-  static fov = 90;
-  static near = 0.01;
+  static near = 0.1;
   static far = 25;
 
   offsetX = 0;
@@ -23,7 +23,11 @@ export class Camera extends PerspectiveCamera {
   ref?: Player;
   distance = Camera.distance;
 
-  constructor(fov = Camera.fov, near = Camera.near, far = Camera.far) {
+  constructor(
+    fov = Renderer.isMobile ? 85 : 90,
+    near = Camera.near,
+    far = Camera.far
+  ) {
     super(fov, innerWidth / innerHeight, near, far);
   }
 

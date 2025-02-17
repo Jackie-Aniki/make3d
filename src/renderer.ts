@@ -7,14 +7,15 @@ import {
   Scene,
   WebGLRenderer
 } from 'three';
+import { Billboard } from './billboard';
 import { Camera } from './camera';
 import { Ocean } from './ocean';
 import { queryParams } from './query-params';
-import { Billboard } from './billboard';
 import { Skybox } from './skybox';
 
 export class Renderer extends WebGLRenderer {
   static backgroundColor = 0xbbf0ff;
+  static isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
   now = Date.now();
   scene = new Scene();
@@ -26,13 +27,17 @@ export class Renderer extends WebGLRenderer {
   skybox?: Skybox;
 
   constructor() {
-    super({ antialias: true, powerPreference: 'high-performance' });
+    super({
+      antialias: !Renderer.isMobile,
+      powerPreference: 'high-performance'
+    });
     this.outputColorSpace = LinearSRGBColorSpace;
 
+    const animationFrame = () => this.animation();
     if ('debug' in queryParams) {
-      setInterval(this.animation.bind(this), 40);
+      setInterval(animationFrame, 40);
     } else {
-      this.setAnimationLoop(this.animation.bind(this));
+      this.setAnimationLoop(animationFrame);
     }
 
     this.light = new AmbientLight(0xffffff, 0.44);
@@ -46,13 +51,6 @@ export class Renderer extends WebGLRenderer {
     if ('fps' in queryParams) {
       this.stats = new Stats(this);
     }
-
-    const frame = () => {
-      this.render(this.scene, this.camera);
-      requestAnimationFrame(frame);
-    };
-
-    requestAnimationFrame(frame);
   }
 
   animation() {
@@ -66,6 +64,7 @@ export class Renderer extends WebGLRenderer {
 
     this.ocean?.update(ms);
     this.now = now;
+    this.render(this.scene, this.camera);
   }
 
   onResize() {
