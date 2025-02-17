@@ -57,7 +57,8 @@ export const onPointerDown = (event: PointerEvent) => {
   onPointerMove(event);
 };
 
-export const onPointerUp = () => {
+export const onPointerUp = (event: PointerEvent | TouchEvent) => {
+  event.preventDefault();
   state.mouseDown = false;
   keys.up = false;
   keys.down = false;
@@ -68,11 +69,12 @@ export const onPointerUp = () => {
 export const addEventListeners = () => {
   window.addEventListener('keydown', setKey(true), { passive: true });
   window.addEventListener('keyup', setKey(false), { passive: true });
-  window.addEventListener('contextmenu', preventEvent, { passive: false });
-  window.addEventListener('dragstart', preventEvent, { passive: false });
   window.addEventListener('pointerdown', onPointerDown, { passive: false });
   window.addEventListener('pointermove', onPointerMove, { passive: false });
   window.addEventListener('touchmove', onPointerMove, { passive: false });
-  window.addEventListener('pointerup', onPointerUp, { passive: true });
-  window.addEventListener('touchend', onPointerUp, { passive: true });
+  window.addEventListener('pointerup', onPointerUp, { passive: false });
+  window.addEventListener('touchend', onPointerUp, { passive: false });
+  window.addEventListener('dblclick', preventEvent, { passive: false });
+  window.addEventListener('dragstart', preventEvent, { passive: false });
+  window.addEventListener('contextmenu', preventEvent, { passive: false });
 };
