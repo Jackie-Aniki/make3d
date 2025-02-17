@@ -28,7 +28,7 @@ export class Renderer extends WebGLRenderer {
 
   constructor() {
     super({
-      antialias: !DeviceDetector.isMobile && !DeviceDetector.isTV,
+      antialias: DeviceDetector.isHighEnd,
       powerPreference: 'high-performance'
     });
     this.outputColorSpace = LinearSRGBColorSpace;

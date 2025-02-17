@@ -1,4 +1,3 @@
-import { BodyGroup } from 'detect-collisions';
 import { Billboard } from './billboard';
 import { DynamicBody } from './billboard-body';
 import { Level } from './level';
@@ -11,7 +10,7 @@ export class MovingBillboard extends Billboard {
   static readonly moveSpeed = 3;
   static readonly rotateSpeed = 3;
   static readonly gravity = 9.1;
-  static readonly jumpSpeed = 2.1;
+  static readonly jumpSpeed = 3.14;
 
   velocity = 0;
   state: State;
@@ -52,28 +51,16 @@ export class MovingBillboard extends Billboard {
     const gear = this.gear;
 
     this.updateAngle(deltaTime, gear);
+    this.updateZ(deltaTime);
 
     const moveSpeed =
       (mouseGear || gear) * MovingBillboard.moveSpeed * deltaTime;
 
     if (moveSpeed) {
       this.body.move(moveSpeed);
-      this.body.system?.checkOne(
-        this.body,
-        ({ b: wall, overlapV: { x, y } }) => {
-          if (wall.isStatic) {
-            this.body.setPosition(this.body.x - x, this.body.y - y);
-          } else {
-            const offsetX = x * 0.5;
-            const offsetY = y * 0.5;
-            this.body.setPosition(this.body.x - offsetX, this.body.y - offsetY);
-            wall.setPosition(wall.x + offsetX, wall.y + offsetY);
-          }
-        }
-      );
     }
 
-    this.updateZ(deltaTime);
+    this.body.separate();
 
     if (mouseGear) {
       this.updateFrame(ms);
@@ -91,18 +78,20 @@ export class MovingBillboard extends Billboard {
 
   protected updateZ(deltaTime: number) {
     const floorZ = this.getFloorZ();
-    if (this.z > floorZ) {
-      this.velocity -= MovingBillboard.gravity * deltaTime;
-    } else {
-      this.velocity = this.state.keys.space ? MovingBillboard.jumpSpeed : 0;
-    }
+    const above = this.z > floorZ;
+    const standing = this.z === floorZ;
 
-    if (this.velocity !== 0 || this.z !== floorZ) {
-      this.z = Math.max(
-        this.z + deltaTime * MovingBillboard.jumpSpeed * this.velocity,
-        floorZ,
-        0
-      );
+    if (above || standing) {
+      if (this.state.keys.space && standing) {
+        this.velocity = MovingBillboard.jumpSpeed;
+      } else if (above) {
+        this.velocity -= MovingBillboard.gravity * deltaTime;
+      }
+
+      this.z += this.velocity * deltaTime;
+    } else {
+      this.z = floorZ;
+      this.velocity = 0;
     }
   }
 

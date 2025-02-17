@@ -3,6 +3,7 @@ import { Level } from './level';
 import { Player } from './player';
 import { Math_Half_PI } from './state';
 import { ViewLevel } from './view-level';
+import { DeviceDetector } from './detect';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1.5;
@@ -16,7 +17,7 @@ export class Camera extends PerspectiveCamera {
 
   static fov = 85;
   static near = 0.1;
-  static far = 25;
+  static far = DeviceDetector.isHighEnd ? 32 : 24;
 
   offsetX = 0;
   offsetY = 0;

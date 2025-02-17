@@ -10,6 +10,7 @@ import {
 } from 'three';
 import { CubeDirections, Material } from './model';
 import { loader, materialProps, Math_Double_PI, textures } from './state';
+import { DeviceDetector } from './detect';
 
 export const randomOf = (array: any[]) =>
   array[Math.floor(Math.random() * array.length)];
@@ -62,7 +63,9 @@ export const getTextureNameFromPath = (path: string) => {
 };
 
 export const pixelate = (texture: Texture) => {
-  texture.minFilter = NearestMipMapLinearFilter;
+  texture.minFilter = DeviceDetector.isHighEnd
+    ? NearestMipMapLinearFilter
+    : NearestFilter;
   texture.magFilter = NearestFilter;
   texture.colorSpace = NoColorSpace;
 };

@@ -26,7 +26,7 @@ export class StaticBody implements BodyLike {
 }
 
 export class DynamicBody extends Circle {
-  static readonly radius = 0.25;
+  static readonly radius = 0.2;
   static readonly padding = 0.1;
 
   angle = Math.random() * Math_Double_PI;
@@ -38,5 +38,18 @@ export class DynamicBody extends Circle {
     padding = DynamicBody.padding
   ) {
     super({ x, y }, radius, { group: floors[0], padding });
+  }
+
+  separate() {
+    this.system?.checkOne(this, ({ b: wall, overlapV: { x, y } }) => {
+      if (wall.isStatic) {
+        this.setPosition(this.x - x, this.y - y);
+      } else {
+        const offsetX = x * 0.5;
+        const offsetY = y * 0.5;
+        this.setPosition(this.x - offsetX, this.y - offsetY);
+        wall.setPosition(wall.x + offsetX, wall.y + offsetY);
+      }
+    });
   }
 }
