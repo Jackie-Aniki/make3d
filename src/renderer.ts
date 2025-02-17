@@ -48,6 +48,7 @@ export class Renderer extends WebGLRenderer {
   animation() {
     const now = Date.now();
     const ms = Math.min(100, now - this.now); // max 6 frame lag allowed
+    if (!ms) return;
 
     this.animations.forEach((animation) => animation(ms));
     this.camera.update(ms);

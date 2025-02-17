@@ -7,8 +7,9 @@ import { Cactus } from './cactus';
 import { Palm } from './palm';
 
 export class ViewLevel extends Level {
-  static readonly cactusSurviveChance = 0.1;
-  static readonly palmSurviceChance = 0.15;
+  static readonly floraFill = Level.fill * 0.85;
+  static readonly cactusSurviveChance = 0.24;
+  static readonly palmSurviceChance = 0.12;
   static readonly minHeightForPalm = maxLevelHeight - 3;
 
   mesh: Box;
@@ -29,7 +30,11 @@ export class ViewLevel extends Level {
   }
 
   createMesh(textures: Texture[]) {
-    const flora = this.createMap(Level.cols * 2, Level.rows * 2);
+    const flora = this.createMap(
+      Level.cols * 2,
+      Level.rows * 2,
+      ViewLevel.floraFill
+    );
     const mesh = new Box(textures, Level.cols, Level.rows);
     mesh.position.set(-Level.cols / 2, 0, -Level.rows / 2);
 
