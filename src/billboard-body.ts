@@ -5,6 +5,7 @@ export interface BodyLike {
   x: number;
   y: number;
   group: number;
+  angle: number;
   setPosition: (x: number, y: number) => void;
 }
 
@@ -12,6 +13,7 @@ export class StaticBody implements BodyLike {
   x!: number;
   y!: number;
   group = floors[0];
+  angle = 0;
 
   constructor(x: number, y: number) {
     this.setPosition(x, y);

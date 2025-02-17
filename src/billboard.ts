@@ -107,12 +107,8 @@ export class Billboard {
     map?.offset.set(x * this.invCols, y * this.invRows);
   }
 
-  protected getAngle() {
-    return 0;
-  }
-
   protected getDirection() {
-    const angle = normalizeAngle(this.getAngle() - state.player.body.angle);
+    const angle = normalizeAngle(this.body.angle - state.player.body.angle);
     const directionIndex = Math.floor((2 * angle) / Math.PI);
 
     return directions[directionIndex];

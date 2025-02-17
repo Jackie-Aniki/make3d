@@ -5,8 +5,8 @@ import { Math_Half_PI } from './state';
 import { ViewLevel } from './view-level';
 
 export class Camera extends PerspectiveCamera {
-  static readonly distance = 1.4;
-  static readonly height = 0.5;
+  static readonly distance = 1.3;
+  static readonly height = 0.75;
   static readonly lerpRatio = 0.005;
 
   protected static targetVector = new Vector3();

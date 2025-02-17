@@ -68,7 +68,7 @@ export class MovingBillboard extends Billboard {
         ? -1
         : this.state.keys.right
           ? 1
-          : this.state.mouse.x;
+          : Math.min(1, Math.max(-1, this.state.mouse.x * 2));
       if (scale !== 0) {
         this.body.angle = normalizeAngle(
           this.body.angle +
@@ -77,21 +77,33 @@ export class MovingBillboard extends Billboard {
       }
     }
 
-    const moveSpeed = gear * MovingBillboard.moveSpeed * deltaTime;
+    const mouseGear = this.state.mouseDown
+      ? Math.min(1, Math.max(-1, -this.state.mouse.y * 2))
+      : 0;
+    const moveSpeed =
+      (mouseGear || gear) * MovingBillboard.moveSpeed * deltaTime;
+
     if (moveSpeed) {
       this.body.move(moveSpeed);
       this.body.system?.separateBody(this.body);
     }
 
-    for (const key in this.state.keys) {
-      if (this.state.keys[key]) {
-        this.frame =
-          (this.frame + ms * this.invFrameDuration) % this.totalFrames;
-        break;
+    if (mouseGear) {
+      this.updateFrame(ms);
+    } else {
+      for (const key in this.state.keys) {
+        if (this.state.keys[key]) {
+          this.updateFrame(ms);
+          break;
+        }
       }
     }
 
     super.update(ms);
+  }
+
+  protected updateFrame(ms: number) {
+    this.frame = (this.frame + ms * this.invFrameDuration) % this.totalFrames;
   }
 
   protected createBody(x: number, y: number) {
@@ -121,9 +133,5 @@ export class MovingBillboard extends Billboard {
         this.scale
       );
     }
-  }
-
-  protected getAngle() {
-    return this.body.angle;
   }
 }

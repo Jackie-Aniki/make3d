@@ -21,7 +21,15 @@ export class Player extends MovingBillboard {
   protected getDirection() {
     return (
       directions.find((direction) => !!this.state.keys[direction]) ||
-      this.direction
+      (this.state.mouseDown
+        ? Math.abs(this.state.mouse.x) > Math.abs(this.state.mouse.y)
+          ? this.state.mouse.x > 0
+            ? 'right'
+            : 'left'
+          : this.state.mouse.y > 0
+            ? 'down'
+            : 'up'
+        : this.direction)
     );
   }
 }
