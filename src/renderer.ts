@@ -35,7 +35,7 @@ export class Renderer extends WebGLRenderer {
       this.setAnimationLoop(this.animation.bind(this));
     }
 
-    this.light = new AmbientLight(0xffeecc, 0.5);
+    this.light = new AmbientLight(0xffffff, 0.44);
     this.scene.add(this.light);
     this.scene.background = new Color(Renderer.backgroundColor);
     this.onResize();
