@@ -1,6 +1,5 @@
 import { Stats } from 'pixi-stats';
 import {
-  AmbientLight,
   Color,
   Fog,
   LinearSRGBColorSpace,
@@ -16,12 +15,11 @@ import { queryParams } from './query-params';
 import { Skybox } from './skybox';
 
 export class Renderer extends WebGLRenderer {
-  static backgroundColor = 0xbbf0ff;
+  static backgroundColor = 0x44ccf0;
 
   now = Date.now();
   scene = new Scene();
   camera = new Camera();
-  light: AmbientLight;
   animations: Array<(time: number) => void> = [];
   stats?: Stats;
   ocean?: Ocean;
@@ -40,15 +38,6 @@ export class Renderer extends WebGLRenderer {
     super(props);
     this.outputColorSpace = LinearSRGBColorSpace;
 
-    const animationFrame = () => this.animation();
-    if ('debug' in queryParams) {
-      setInterval(animationFrame, 40);
-    } else {
-      this.setAnimationLoop(animationFrame);
-    }
-
-    this.light = new AmbientLight(0xffffff, 0.44);
-    this.scene.add(this.light);
     this.scene.background = new Color(Renderer.backgroundColor);
     this.onResize();
     window.addEventListener('resize', () => this.onResize());
@@ -59,6 +48,13 @@ export class Renderer extends WebGLRenderer {
 
     if (!this.domElement.parentElement) {
       document.body.appendChild(this.domElement);
+    }
+
+    const animationFrame = () => this.animation();
+    if ('debug' in queryParams) {
+      setInterval(animationFrame, 40);
+    } else {
+      this.setAnimationLoop(animationFrame);
     }
   }
 
@@ -81,6 +77,7 @@ export class Renderer extends WebGLRenderer {
     this.camera.onResize(innerWidth, innerHeight);
     this.ocean?.onResize();
     this.scene.fog = this.createFog();
+    this.render(this.scene, this.camera);
   }
 
   protected createFog() {

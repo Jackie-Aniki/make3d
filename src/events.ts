@@ -26,30 +26,26 @@ export const setKey = (value: boolean) => {
 };
 
 export const addEventListeners = () => {
+  const block = { passive: false };
+
   window.addEventListener('keydown', setKey(true), { passive: true });
   window.addEventListener('keyup', setKey(false), { passive: true });
-  window.addEventListener('pointerdown', mouse.onPointerDown.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('pointermove', mouse.onPointerMove.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('touchmove', mouse.onPointerMove.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('pointerup', mouse.onPointerUp.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('touchend', mouse.onPointerUp.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('dblclick', mouse.preventEvent.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('dragstart', mouse.preventEvent.bind(mouse), {
-    passive: false
-  });
-  window.addEventListener('contextmenu', mouse.preventEvent.bind(mouse), {
-    passive: false
-  });
+  window.addEventListener(
+    'pointerdown',
+    mouse.onPointerDown.bind(mouse),
+    block
+  );
+  window.addEventListener(
+    'pointermove',
+    mouse.onPointerMove.bind(mouse),
+    block
+  );
+  window.addEventListener('touchstart', mouse.preventEvent.bind(mouse), block);
+  window.addEventListener('touchend', mouse.preventEvent.bind(mouse), block);
+  window.addEventListener('touchmove', mouse.onPointerMove.bind(mouse), block);
+  window.addEventListener('pointerup', mouse.onPointerUp.bind(mouse), block);
+  window.addEventListener('touchend', mouse.onPointerUp.bind(mouse), block);
+  window.addEventListener('dblclick', mouse.preventEvent.bind(mouse), block);
+  window.addEventListener('dragstart', mouse.preventEvent.bind(mouse), block);
+  window.addEventListener('contextmenu', mouse.preventEvent.bind(mouse), block);
 };
