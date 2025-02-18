@@ -1,4 +1,6 @@
 import { LoadingManager, Texture, TextureLoader } from 'three';
+import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 
 export class Loader extends LoadingManager {
   textureLoader?: TextureLoader;
@@ -21,18 +23,12 @@ export class Loader extends LoadingManager {
         case 'tga':
           if (!this.tgaLoader) {
             this.tgaLoader = true;
-            const { TGALoader } = await import(
-              'three/examples/jsm/loaders/TGALoader.js'
-            );
             this.addHandler(/\.tga$/i, new TGALoader());
           }
           break;
 
         case 'fbx':
           if (!this.fbxLoader) {
-            const { FBXLoader } = await import(
-              'three/examples/jsm/loaders/FBXLoader.js'
-            );
             this.fbxLoader = new FBXLoader(this);
           }
 
