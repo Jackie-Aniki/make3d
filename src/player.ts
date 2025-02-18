@@ -1,10 +1,12 @@
 import { Level } from './level';
-import { TexturedBillboardProps } from './model';
-import { directions, renderer, state } from './state';
+import { Direction, TexturedBillboardProps } from './model';
 import { MovingBillboard } from './moving-billboard';
+import { renderer, state } from './state';
 import { ViewLevel } from './view-level';
 
 export class Player extends MovingBillboard {
+  static readonly directions: Direction[] = ['left', 'right', 'down', 'up'];
+
   readonly isPlayer = true;
   readonly state = state;
 
@@ -25,7 +27,7 @@ export class Player extends MovingBillboard {
 
   protected getDirection() {
     return (
-      directions.find((direction) => !!this.state.keys[direction]) ||
+      Player.directions.find((direction) => !!this.state.keys[direction]) ||
       (this.state.mouseDown
         ? Math.abs(this.state.mouse.x) > Math.abs(this.state.mouse.y)
           ? this.state.mouse.x > 0

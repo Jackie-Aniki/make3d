@@ -1,9 +1,9 @@
-import { Euler, Mesh, PerspectiveCamera, Quaternion, Vector3 } from 'three';
+import { Mesh, PerspectiveCamera, Quaternion, Vector3 } from 'three';
+import { DeviceDetector } from './detect';
 import { Level } from './level';
 import { Player } from './player';
 import { Math_Half_PI } from './state';
 import { ViewLevel } from './view-level';
-import { DeviceDetector } from './detect';
 
 export class Camera extends PerspectiveCamera {
   static readonly distance = 1.5;
@@ -13,14 +13,11 @@ export class Camera extends PerspectiveCamera {
   protected static targetVector = new Vector3();
   protected static lookAtVector = new Vector3();
   protected static tempQuaternion = new Quaternion();
-  protected static tempEuler = new Euler();
 
   static fov = 85;
   static near = 0.1;
   static far = DeviceDetector.isHighEnd ? 32 : 24;
 
-  offsetX = 0;
-  offsetY = 0;
   ref?: Player;
   distance = Camera.distance;
 
@@ -56,10 +53,11 @@ export class Camera extends PerspectiveCamera {
     if (!this.ref) return;
     const { body, z, mesh } = this.ref;
     const angle = -body.angle + Math_Half_PI;
+    const gear = this.ref.gear || 1;
 
     // Przesunięcie kamery względem gracza
-    const offsetX = Math.sin(angle) * this.distance;
-    const offsetY = Math.cos(angle) * this.distance;
+    const offsetX = Math.sin(angle) * this.distance * gear;
+    const offsetY = Math.cos(angle) * this.distance * gear;
     const cameraX = body.x - offsetX;
     const cameraY = body.y - offsetY;
 
@@ -81,22 +79,18 @@ export class Camera extends PerspectiveCamera {
       body.y
     );
 
-    Camera.tempEuler.copy(this.rotation);
-
     if (ms) {
-      const distance = this.getDistanceTo(targetPosition);
-      const lerpFactor = Math.min(1, ms * Camera.lerpRatio * distance);
-
+      const lerpFactor = ms * Camera.lerpRatio;
       // Płynne przesunięcie pozycji kamery
       this.position.lerp(targetPosition, lerpFactor);
 
       // Płynna interpolacja rotacji
-      Camera.tempQuaternion.setFromEuler(Camera.tempEuler);
+      Camera.tempQuaternion.copy(this.quaternion);
       Camera.tempQuaternion.slerp(mesh.quaternion, lerpFactor);
       this.rotation.setFromQuaternion(Camera.tempQuaternion);
     } else {
       this.position.copy(targetPosition);
-      this.rotation.copy(Camera.tempEuler);
+      this.quaternion.copy(mesh.quaternion);
     }
 
     // Ustawienie kierunku patrzenia kamery
