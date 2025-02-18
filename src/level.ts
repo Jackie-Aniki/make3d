@@ -1,11 +1,12 @@
 import { Map } from 'rot-js';
 import { floors, maxLevelHeight, minLevelHeight, physics } from './state';
+import { DeviceDetector } from './detect';
 
 export class Level {
-  static readonly fill = 0.5;
-  static readonly mapIterations = 4;
-  static readonly cols = 24;
-  static readonly rows = 24;
+  static readonly fill = 0.44;
+  static readonly mapIterations = 6;
+  static readonly cols = DeviceDetector.isHighEnd ? 48 : 24;
+  static readonly rows = DeviceDetector.isHighEnd ? 48 : 24;
 
   heights: number[][] = [];
 

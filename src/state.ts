@@ -7,9 +7,9 @@ import { queryParams } from './query-params';
 import { Renderer } from './renderer';
 import { DeviceDetector } from './detect';
 
-export const minLevelHeight = 3;
+export const minLevelHeight = 2;
 
-export const maxLevelHeight = 9;
+export const maxLevelHeight = 10;
 
 export const waterZ = 0.5;
 

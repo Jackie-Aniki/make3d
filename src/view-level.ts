@@ -5,14 +5,14 @@ import { Level } from './level';
 import { Ocean } from './ocean';
 import { Palm } from './palm';
 import { Skybox } from './skybox';
-import { maxLevelHeight, renderer } from './state';
+import { renderer } from './state';
 import { getMatrix } from './utils';
 
 export class ViewLevel extends Level {
-  static readonly floraFill = Level.fill * 0.8;
+  static readonly floraFill = Level.fill * 0.9;
   static readonly cactusSurviveChance = 0.25;
   static readonly palmSurviceChance = 0.1;
-  static readonly minHeightForPalm = maxLevelHeight - 3;
+  static readonly minHeightForPalm = 3;
 
   mesh: Box;
 
@@ -64,12 +64,7 @@ export class ViewLevel extends Level {
       }
     });
 
-    const flora = this.createHeights(
-      Level.cols * 2,
-      Level.rows * 2,
-      ViewLevel.floraFill
-    );
-
+    const flora = this.createFloraHeights();
     this.forEachHeight(flora, (col, row, chance) => {
       const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)];
 
@@ -85,5 +80,14 @@ export class ViewLevel extends Level {
     });
 
     return box;
+  }
+
+  createFloraHeights() {
+    return this.createHeights(
+      Level.cols * 2,
+      Level.rows * 2,
+      ViewLevel.floraFill,
+      1
+    );
   }
 }

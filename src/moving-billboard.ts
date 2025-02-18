@@ -57,7 +57,7 @@ export class MovingBillboard extends Billboard {
     while (timeLeft > 0) {
       const timeScale = Math.min(1, timeLeft);
       this.body.move(moveSpeed * timeScale);
-      this.body.separate(this, timeScale);
+      this.body.separate(timeScale);
       this.updateZ(timeScale);
       timeLeft -= timeScale;
     }
@@ -80,21 +80,24 @@ export class MovingBillboard extends Billboard {
     const floorZ = this.getFloorZ();
     const standing = this.z === floorZ || this.velocity === 0;
     const above = this.z > floorZ;
+    const prev = this.z;
+    const jump = standing && this.state.keys.space;
 
-    if (standing && this.state.keys.space) {
-      this.velocity = MovingBillboard.jumpSpeed;
-      this.z += this.velocity * timeScale;
-    }
+    if (jump) this.velocity = MovingBillboard.jumpSpeed;
 
-    if (above) {
+    let next = 0;
+    if (jump || above) {
+      next = this.z + this.velocity * timeScale;
       this.velocity -= timeScale * MovingBillboard.gravity;
-      this.z += this.velocity * timeScale;
     }
 
-    if (this.z <= floorZ) {
+    if (!next) return;
+    if (next < floorZ) {
+      next = prev;
       this.velocity = 0;
-      this.z = floorZ;
     }
+
+    this.z = next;
   }
 
   protected updateAngle(deltaTime: number, gear: number) {
@@ -145,6 +148,6 @@ export class MovingBillboard extends Billboard {
 
   protected spawn(level: Level, x?: number, y?: number) {
     super.spawn(level, x, y);
-    this.body.separate(this);
+    this.body.separate();
   }
 }

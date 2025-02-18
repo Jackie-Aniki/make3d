@@ -19,10 +19,9 @@ export class Ocean {
   static readonly deepWaterZ = -0.25;
   static readonly shallowWater = {
     opacity: 0.5,
-    scale: 1,
     waveTime: 0.16,
     waveHeight: 0.16,
-    wavingSpeed: 2,
+    waveSpeed: 2,
     renderOrder: 1
   };
 
@@ -95,9 +94,8 @@ export class Ocean {
   }
 
   protected createShallowWater(texture: Texture) {
-    const { opacity, scale, renderOrder, waveTime, wavingSpeed, waveHeight } =
+    const { opacity, renderOrder, waveTime, waveSpeed, waveHeight } =
       Ocean.shallowWater;
-    const size = 2 / Ocean.textureRepeat;
     const radius = Math.hypot(this.cols, this.rows) / 2;
     const geometry = new CircleGeometry(radius);
     const map = texture.clone();
@@ -107,8 +105,8 @@ export class Ocean {
         time: { value: 0 },
         cameraX: { value: 0 },
         cameraY: { value: 0 },
-        textureRepeat: { value: Ocean.textureRepeat / scale },
-        wavingSpeed: { value: wavingSpeed },
+        cameraFar: { value: Camera.far },
+        waveSpeed: { value: waveSpeed },
         waveHeight: { value: waveHeight },
         waveTime: { value: waveTime },
         map: { value: map },
@@ -116,9 +114,9 @@ export class Ocean {
       },
       vertexShader: `
         uniform float time;
-        uniform float textureRepeat;
-        uniform float wavingSpeed;
+        uniform float waveSpeed;
         uniform float waveHeight;
+        uniform float cameraFar;
         uniform float cameraX;
         uniform float cameraY;
       
@@ -127,9 +125,9 @@ export class Ocean {
       
         void main() {
           vec3 pos = position;
-          vUv = uv * textureRepeat + vec2(cameraX, cameraY); // Powtarzanie tekstury          
-          float wave1 = sin(pos.x * 3.0 + time * wavingSpeed);
-          float wave2 = cos(pos.y * 1.5 + time * wavingSpeed * 1.5);
+          vUv = uv * cameraFar + vec2(cameraX, cameraY); // Powtarzanie tekstury          
+          float wave1 = sin(pos.x * 3.0 + time * waveSpeed);
+          float wave2 = cos(pos.y * 1.5 + time * waveSpeed * 1.5);
           
           wave = (wave1 + wave2) * 0.5;
           pos.z = wave * waveHeight; // Nowe wysokości fal
@@ -164,8 +162,8 @@ export class Ocean {
     this.animations.push((ms: number) => {
       material.uniforms.time.value =
         (material.uniforms.time.value + ms * 0.0001) % 1_000;
-      material.uniforms.cameraX.value = this.mesh.position.x * size;
-      material.uniforms.cameraY.value = -this.mesh.position.z * size;
+      material.uniforms.cameraX.value = this.mesh.position.x * 0.44;
+      material.uniforms.cameraY.value = -this.mesh.position.z * 0.44;
     });
 
     return mesh;
