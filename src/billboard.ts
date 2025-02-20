@@ -7,7 +7,7 @@ import { createMaterial, normalizeAngle } from './utils';
 
 export class Billboard {
   static billboards: Billboard[] = [];
-  static compensateGroupZ = 0.5;
+  static compensateGroupZ = 0.2;
 
   protected static tempVector = new Vector3();
   protected static tempVectorDivide = new Vector3(2, 2, 2);
@@ -96,7 +96,7 @@ export class Billboard {
 
   protected updateGroup() {
     this.body.group =
-      floors[Math.round(this.z * 2 - Billboard.compensateGroupZ)];
+      floors[Math.round((this.z - Billboard.compensateGroupZ) * 2)];
   }
 
   protected createBody(x: number, y: number) {
