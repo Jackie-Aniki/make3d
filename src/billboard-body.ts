@@ -28,31 +28,37 @@ export class StaticBody implements BodyLike {
 export class DynamicBody extends Circle {
   static readonly RADIUS = 0.2;
   static readonly PADDING = 0.1;
-  static readonly SEPARATE = 0.3;
+  static readonly SEPARATION_DYNAMIC = 0.33;
+  static readonly SEPARATION_STATIC = 0.5;
 
   angle = Math.random() * Math_Double_PI;
 
   constructor(
     x: number,
     y: number,
-    radius = DynamicBody.RADIUS,
-    padding = DynamicBody.PADDING
+    radius: number = DynamicBody.RADIUS,
+    padding: number = DynamicBody.PADDING
   ) {
     super({ x, y }, radius, { group: floors[0], padding });
   }
 
-  separate(timeScale = 1) {
-    const multiply = DynamicBody.SEPARATE * timeScale;
-    this.system?.separateBody(this, ({ b: body, overlapV: { x, y } }) => {
-      if (!body.isStatic) {
-        const offsetX = x * multiply;
-        const offsetY = y * multiply;
+  separate(timeScale: number = 1) {
+    const separationDynamic = timeScale * DynamicBody.SEPARATION_DYNAMIC;
+    const separationStatic = timeScale * DynamicBody.SEPARATION_STATIC;
 
-        this.setPosition(this.x - offsetX, this.y - offsetY);
-        body.setPosition(body.x + offsetX * 2, body.y + offsetY * 2);
+    this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {
+      if (b.isStatic) {
+        this.setPosition(
+          this.x - x * separationStatic,
+          this.y - y * separationStatic
+        );
+      } else {
+        const dx = x * separationDynamic;
+        const dy = y * separationDynamic;
+
+        this.setPosition(this.x - dx, this.y - dy);
+        b.setPosition(b.x + dx * 2, b.y + dy * 2);
       }
-
-      return body.isStatic;
     });
   }
 }

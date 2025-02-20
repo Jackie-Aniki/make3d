@@ -8,7 +8,8 @@ import { queryParams } from './query-params';
 
 export const minLevelHeight = 2;
 
-export const maxLevelHeight = 10;
+export const maxLevelHeight =
+  'height' in queryParams ? Number(queryParams.height) : 10;
 
 export const waterZ = 0.5;
 
