@@ -99,3 +99,10 @@ export const normalize = (n: number) => Math.min(1, Math.max(-1, n));
 
 export const randomFrom = <T>(elements: T[]) =>
   elements[Math.floor(Math.random() * elements.length)];
+
+export const distanceSq = (a: Vector3, b: Vector3) => {
+  const x = a.x - b.x;
+  const y = a.z - b.z;
+
+  return x * x + y * y;
+};

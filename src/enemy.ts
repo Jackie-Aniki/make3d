@@ -1,4 +1,5 @@
 import { MovingSprite } from './moving-sprite';
+import { Level } from './level';
 
 export class Enemy extends MovingSprite {
   static readonly MAX_SPEED = 0;
@@ -13,6 +14,15 @@ export class Enemy extends MovingSprite {
 
   update(ms = 0) {
     super.update(ms);
+
+    const dx = this.mesh.position.x;
+    const dy = this.mesh.position.z;
+    const radius = (Level.COLS + Level.ROWS) / 2;
+    const diff = Math.sqrt(dx * dx + dy * dy) - radius;
+
+    if (diff > 0 && Math.random() < diff / radius) {
+      this.body.angle = Math.atan2(-dy, -dx);
+    }
 
     this.speed -= ms;
     this.rotation -= ms;

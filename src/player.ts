@@ -24,6 +24,10 @@ export class Player extends MovingSprite {
     super.update(ms);
   }
 
+  protected spawn(level: Level) {
+    super.spawn(level, 0, 0);
+  }
+
   protected getDirection() {
     return (
       Player.DIRECTIONS.find((direction) => !!this.state.keys[direction]) ||
