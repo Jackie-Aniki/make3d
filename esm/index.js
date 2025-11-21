@@ -67198,6 +67198,16 @@ class Skybox {
   }
 }
 
+const treeProps = {
+  textureName: 'tree',
+  scale: 3
+}
+class Tree extends Sprite {
+  constructor(level, x, y) {
+    super(treeProps, level, x, y)
+  }
+}
+
 const setKey = (value) => {
   return (event) => {
     switch (event.key) {
@@ -67989,15 +67999,16 @@ function requireDist() {
 var distExports = requireDist()
 
 class Renderer extends WebGLRenderer {
-  /**
-   * @param {RendererProps} props
-   * @returns {Renderer}
-   */
   static create({ canvas, ocean, skybox }) {
-    if (state.renderer) return state.renderer
-    state.renderer = new Renderer(canvas)
-    state.renderer.ocean = ocean?.()
-    state.renderer.skybox = skybox?.()
+    if (!state.renderer) {
+      state.renderer = new Renderer(canvas)
+    }
+    if (!state.renderer.ocean) {
+      state.renderer.ocean = ocean?.()
+    }
+    if (!state.renderer.skybox) {
+      state.renderer.skybox = skybox?.()
+    }
     return state.renderer
   }
   constructor(canvas) {
@@ -68055,18 +68066,8 @@ class Renderer extends WebGLRenderer {
 }
 Renderer.backgroundColor = 0x44ccf0
 
-const treeProps = {
-  textureName: 'tree',
-  scale: 3
-}
-class Tree extends Sprite {
-  constructor(level, x, y) {
-    super(treeProps, level, x, y)
-  }
-}
-
 class ViewLevel extends Level {
-  constructor(textures, props) {
+  constructor({ textures, canvas, ocean, skybox }) {
     super()
     this.bushesHeights = this.createHeights(
       Level.COLS * 2,
@@ -68074,11 +68075,9 @@ class ViewLevel extends Level {
       ViewLevel.BUSHES_FILL,
       ViewLevel.BUSHES_ITERATIONS
     )
+    Renderer.create({ canvas, ocean, skybox })
+    Events.addEventListeners()
     this.mesh = this.createMesh(textures)
-    setTimeout(() => {
-      Renderer.create(props)
-      Events.addEventListeners()
-    })
   }
   createBoxMesh(textures) {
     const box = new Box(textures, Level.COLS, Level.ROWS)
@@ -68124,6 +68123,7 @@ class ViewLevel extends Level {
   createMesh(textures) {
     const mesh = this.createBoxMesh(textures)
     this.setLevelMesh(mesh)
+    this.createTrees()
     this.createBushes()
     return mesh
   }
@@ -68142,41 +68142,35 @@ ViewLevel.TREE_CHANCE = 0.1
 ViewLevel.TREE_HEIGHT_START = 3
 
 class CubeLevel extends ViewLevel {
-  /**
-   * @param {HTMLCanvasElement} canvas
-   * @param {CubeLevelProps} props
-   * @returns {Promise<CubeLevel>}
-   */
-  static async create(
-    canvas,
-    { skybox, ...props } = {
-      sides: 'sides.webp',
-      floor: 'floor.webp',
-      ocean: 'ocean.webp'
-    }
-  ) {
-    const textures = [props.sides, props.floor, props.ocean]
-    const [sides, floor, ocean] = await loadTextures(textures)
+  static async create(canvas, skybox) {
+    const [sides, floor, ocean] = await loadTextures([
+      'sides.webp',
+      'floor.webp',
+      'ocean.webp',
+      `${treeProps.textureName}.webp`,
+      `${bushProps.textureName}.webp`
+    ])
     return new CubeLevel(canvas, { sides, floor, ocean, skybox })
   }
-  constructor(canvas, { floor, sides, ocean, skybox }) {
-    super(
-      mapCubeTextures({
+  constructor(canvas, { sides, floor, ocean, skybox }) {
+    super({
+      ocean: ocean ? () => new Ocean(ocean) : undefined,
+      skybox: skybox ? () => skybox && new Skybox(skybox) : undefined,
+      canvas,
+      textures: mapCubeTextures({
         up: floor,
         down: floor,
         left: sides,
         right: sides,
         front: sides,
         back: sides
-      }),
-      {
-        ocean: () => new Ocean(ocean),
-        skybox: () => new Skybox(skybox),
-        canvas
-      }
-    )
+      })
+    })
   }
 }
+CubeLevel.SIDES = 'sides.webp'
+CubeLevel.FLOOR = 'floor.webp'
+CubeLevel.OCEAN = 'ocean.webp'
 
 class MovingBillboard extends Billboard {
   constructor(props, state = { keys: {}, mouse: new Mouse() }) {
