@@ -1,4 +1,4 @@
-import { Stats } from 'pixi-stats';
+import { Stats } from 'pixi-stats'
 import {
   Color,
   Fog,
@@ -6,83 +6,83 @@ import {
   Scene,
   WebGLRenderer,
   WebGLRendererParameters
-} from 'three';
-import { Billboard } from './billboard';
-import { Camera } from './camera';
-import { DeviceDetector } from './detect';
-import { Ocean } from './ocean';
-import { queryParams } from './query-params';
-import { Skybox } from './skybox';
+} from 'three'
+import { Billboard } from './billboard'
+import { Camera } from './camera'
+import { DeviceDetector } from './detect'
+import { Ocean } from './ocean'
+import { queryParams } from './query-params'
+import { Skybox } from './skybox'
 
 export class Renderer extends WebGLRenderer {
-  static backgroundColor = 0x44ccf0;
+  static backgroundColor = 0x44ccf0
 
-  now = Date.now();
-  scene = new Scene();
-  camera = new Camera();
-  animations: Array<(time: number) => void> = [];
-  stats?: Stats;
-  ocean?: Ocean;
-  skybox?: Skybox;
+  now = Date.now()
+  scene = new Scene()
+  camera = new Camera()
+  animations: Array<(time: number) => void> = []
+  stats?: Stats
+  ocean?: Ocean
+  skybox?: Skybox
 
   constructor(canvas?: HTMLCanvasElement) {
     const props: WebGLRendererParameters = {
       antialias: DeviceDetector.HIGH_END,
       powerPreference: 'high-performance' as const
-    };
-
-    if (canvas) {
-      props.canvas = canvas;
     }
 
-    super(props);
-    this.outputColorSpace = LinearSRGBColorSpace;
+    if (canvas) {
+      props.canvas = canvas
+    }
 
-    this.scene.background = new Color(Renderer.backgroundColor);
-    this.onResize();
-    window.addEventListener('resize', () => this.onResize());
+    super(props)
+    this.outputColorSpace = LinearSRGBColorSpace
+
+    this.scene.background = new Color(Renderer.backgroundColor)
+    this.onResize()
+    window.addEventListener('resize', () => this.onResize())
 
     if ('fps' in queryParams) {
-      this.stats = new Stats(this);
+      this.stats = new Stats(this)
     }
 
     if (!this.domElement.parentElement) {
-      document.body.appendChild(this.domElement);
+      document.body.appendChild(this.domElement)
     }
 
-    const animationFrame = () => this.animation();
+    const animationFrame = () => this.animation()
     if ('debug' in queryParams) {
-      setInterval(animationFrame, 40);
+      setInterval(animationFrame, 40)
     } else {
-      this.setAnimationLoop(animationFrame);
+      this.setAnimationLoop(animationFrame)
     }
   }
 
   animation() {
-    const now = Date.now();
-    const ms = Math.min(50, now - this.now); // max 3 frame lag allowed = 20 fps
-    if (!ms) return;
+    const now = Date.now()
+    const ms = Math.min(50, now - this.now) // max 3 frame lag allowed = 20 fps
+    if (!ms) return
 
-    this.animations.forEach((animation) => animation(ms));
-    this.camera.update(ms);
-    Billboard.billboards.forEach((billboard) => billboard.update(ms));
+    this.animations.forEach((animation) => animation(ms))
+    this.camera.update(ms)
+    Billboard.billboards.forEach((billboard) => billboard.update(ms))
 
-    this.ocean?.update(ms);
-    this.now = now;
-    this.render(this.scene, this.camera);
+    this.ocean?.update(ms)
+    this.now = now
+    this.render(this.scene, this.camera)
   }
 
   onResize() {
-    this.setSize(innerWidth, innerHeight);
-    this.camera.onResize(innerWidth, innerHeight);
-    this.ocean?.onResize();
-    this.scene.fog = this.createFog();
-    this.render(this.scene, this.camera);
+    this.setSize(innerWidth, innerHeight)
+    this.camera.onResize(innerWidth, innerHeight)
+    this.ocean?.onResize()
+    this.scene.fog = this.createFog()
+    this.render(this.scene, this.camera)
   }
 
   protected createFog() {
-    const far = this.camera.far - Camera.DISTANCE;
+    const far = this.camera.far - Camera.DISTANCE
 
-    return new Fog(Renderer.backgroundColor, far * 0.8, far);
+    return new Fog(Renderer.backgroundColor, far * 0.8, far)
   }
 }

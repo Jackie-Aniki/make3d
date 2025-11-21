@@ -22,15 +22,15 @@
   <body>
     <script>
       document.documentElement.dataset.theme =
-        localStorage.getItem('tsd-theme') || 'os';
-      document.body.style.display = 'none';
+        localStorage.getItem('tsd-theme') || 'os'
+      document.body.style.display = 'none'
       setTimeout(
         () =>
           window.app
             ? app.showPage()
             : document.body.style.removeProperty('display'),
         500
-      );
+      )
     </script>
     <header class="tsd-page-toolbar">
       <div class="tsd-toolbar-contents container">
@@ -89,7 +89,7 @@
           </ul>
           <h1>Class ViewLevel</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="2080">
+        <section class="tsd-panel tsd-hierarchy" data-refl="2081">
           <h4>
             Hierarchy (<a href="../hierarchy.html#ViewLevel">View Summary</a>)
           </h4>
@@ -379,10 +379,10 @@
                     ><span class="tsd-signature-symbol">,</span><br />    <span
                       class="tsd-kind-parameter"
                       >__namedParameters</span
-                    ><span class="tsd-signature-symbol">?:</span>
+                    ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-symbol">{</span
                     ><br />        <span class="tsd-kind-property">canvas</span
-                    ><span class="tsd-signature-symbol">?:</span>
+                    ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">HTMLCanvasElement</span
                     ><span class="tsd-signature-symbol">;</span
                     ><br />        <span class="tsd-kind-property">ocean</span
@@ -439,7 +439,7 @@
                               >__namedParameters</span
                             >: <span class="tsd-signature-symbol">{</span>
                             <span class="tsd-kind-property">canvas</span
-                            ><span class="tsd-signature-symbol">?:</span>
+                            ><span class="tsd-signature-symbol">:</span>
                             <span class="tsd-signature-type"
                               >HTMLCanvasElement</span
                             ><span class="tsd-signature-symbol">;</span>
@@ -461,10 +461,7 @@
                               class="tsd-signature-type tsd-kind-class"
                               >Skybox</a
                             >
-                            <span class="tsd-signature-symbol">}</span
-                            ><span class="tsd-signature-symbol">
-                              = {}</span
-                            ></span
+                            <span class="tsd-signature-symbol">}</span></span
                           >
                         </li>
                       </ul>

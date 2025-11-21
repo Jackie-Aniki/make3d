@@ -1,24 +1,36 @@
-import * as THREE from 'three';
-import { loader as loadingManager, state } from './state';
-import { mapCubeTextures, pixelate } from './utils';
-import { CubeDirections } from './model';
+import * as THREE from 'three'
+import { loader as loadingManager, state } from './state'
+import { mapCubeTextures, pixelate } from './utils'
+import { CubeDirections } from './model'
+
+/**
+ * {
+ *   up: 'skybox/posz.webp',
+ *   down: 'skybox/negz.webp',
+ *   left: 'skybox/negx.webp',
+ *   right: 'skybox/posx.webp',
+ *   front: 'skybox/posy.webp',
+ *   back: 'skybox/negy.webp'
+ * }
+ */
+export type SkyboxProps = Record<CubeDirections, string>
 
 export class Skybox {
   constructor(
-    textures: Record<CubeDirections, string> = {
-      front: 'skybox/posy.webp',
-      back: 'skybox/negy.webp',
+    textures: SkyboxProps = {
       up: 'skybox/posz.webp',
       down: 'skybox/negz.webp',
+      left: 'skybox/negx.webp',
       right: 'skybox/posx.webp',
-      left: 'skybox/negx.webp'
+      front: 'skybox/posy.webp',
+      back: 'skybox/negy.webp'
     }
   ) {
-    const loader = new THREE.CubeTextureLoader(loadingManager);
-    const skyboxTextures = mapCubeTextures(textures);
+    const loader = new THREE.CubeTextureLoader(loadingManager)
+    const skyboxTextures = mapCubeTextures(textures)
     const skyBox = loader.load(skyboxTextures, () => {
-      pixelate(skyBox);
-      state.renderer.scene.background = skyBox;
-    });
+      pixelate(skyBox)
+      state.renderer.scene.background = skyBox
+    })
   }
 }

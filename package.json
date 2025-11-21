@@ -1,7 +1,7 @@
 {
   "name": "make3d",
   "description": "make3d - ddd retro boomer game engine",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -34,6 +34,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.27.1",
     "@babel/preset-typescript": "^7.28.5",
     "@types/node": "^24.10.1",
+    "@types/react": "^19.2.6",
     "@types/three": "^0.181.0",
     "check2d": "^9.33.0",
     "chef-express": "^3.2.3",
@@ -41,6 +42,7 @@
     "globals": "^16.5.0",
     "pixi-stats": "^5.0.3",
     "prettier": "^3.6.2",
+    "react": "^19.2.0",
     "rimraf": "^6.1.0",
     "rot-js": "^2.2.1",
     "three": "^0.181.2",

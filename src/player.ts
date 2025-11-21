@@ -1,31 +1,31 @@
-import { Level } from './level';
-import { BillboardProps, Direction } from './model';
-import { MovingSprite } from './moving-sprite';
-import { state } from './state';
-import { ViewLevel } from './view-level';
+import { Level } from './level'
+import { BillboardProps, Direction } from './model'
+import { MovingSprite } from './moving-sprite'
+import { state } from './state'
+import { ViewLevel } from './view-level'
 
 export class Player extends MovingSprite {
-  static readonly DIRECTIONS: Direction[] = ['left', 'right', 'down', 'up'];
+  static readonly DIRECTIONS: Direction[] = ['left', 'right', 'down', 'up']
 
-  readonly isPlayer = true;
-  readonly state = state;
+  readonly isPlayer = true
+  readonly state = state
 
   constructor({ level, ...props }: BillboardProps & { level: Level }) {
-    super({ level, ...props }, state);
+    super({ level, ...props }, state)
 
     if (level instanceof ViewLevel) {
-      state.renderer.camera.ready({ level, ref: this });
-      state.renderer.scene.add(level.mesh);
+      state.renderer.camera.ready({ level, ref: this })
+      state.renderer.scene.add(level.mesh)
     }
   }
 
   update(ms: number) {
-    state.mouse.updateMouseXY();
-    super.update(ms);
+    state.mouse.updateMouseXY()
+    super.update(ms)
   }
 
   protected spawn(level: Level) {
-    super.spawn(level, 0, 0);
+    super.spawn(level, 0, 0)
   }
 
   protected getDirection() {
@@ -40,6 +40,6 @@ export class Player extends MovingSprite {
             ? 'down'
             : 'up'
         : this.direction)
-    );
+    )
   }
 }

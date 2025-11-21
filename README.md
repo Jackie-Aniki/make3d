@@ -9,42 +9,32 @@
 ### example usage
 
 ```ts
-import {
-  addEventListeners,
-  Enemy,
-  loadTextures,
-  Player,
-  state,
-  textures,
-  ViewLevel
-} from 'make3d';
+// Game.tsx
+import { CubeLevel, loadTextures, textures } from 'make3d'
+import { FC, useEffect, useRef } from 'react'
 
-export const start = async () => {
-  await loadTextures(['./elf.png', './grass-side.png', './skybox.jpg']);
-
-  const levelTextures = Array.from({ length: 6 }, () => textures.grassSide);
-  const level = new ViewLevel(levelTextures);
-  const props = {
-    textureName: 'elf',
-    totalFrames: 6,
-    frameDuration: 120,
-    cols: 3,
-    rows: 6,
-    directionsToRows: {
-      down: 0,
-      up: 2,
-      default: 4
-    }
-  };
-
-  state.player = new Player({ level, ...props });
-  state.enemies = Array.from(
-    { length: 64 },
-    () => new Enemy({ level, ...props })
-  );
-
-  addEventListeners();
+export const createLevel = async (canvas: HTMLCanvasElement) => {
+  await loadTextures(['biome/top.webp', 'biome/side.webp']);
+  return new CubeLevel(canvas, {
+    sides: textures.side,
+    floor: textures.top,
+    ocean: textures.ocean
+  });
 };
 
-start();
+export const Game: FC = () => {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+
+    if (canvas) {
+      createLevel(canvas).then((level) => {
+        // createObjects(level);
+      });
+    }
+  }, [ref]);
+
+  return <canvas ref={ref} id="game" />;
+};
 ```
