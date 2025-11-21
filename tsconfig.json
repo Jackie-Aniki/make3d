@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "node",
+    "target": "es2017",
+    "module": "none",
+    "outDir": "dist",
+    "rootDir": "src",
+    "skipLibCheck": true
+  },
+  "include": ["src/*.ts", "src/**/*.ts"],
+  "files": ["src/index.ts"]
+}
