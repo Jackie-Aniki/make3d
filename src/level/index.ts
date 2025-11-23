@@ -22,17 +22,18 @@ export class Level extends BaseLevel {
   static TREE_TEXTURE = Tree.DEFAULT_PROPS.textureName
   static BUSH_TEXTURE = Bush.DEFAULT_PROPS.textureName
 
-  static readonly BUSHES_FILL = Level.FILL * 0.9
-  static readonly BUSHES_ITERATIONS = 1
-  static readonly BUSH_CHANCE = 0.25
-  static readonly TREE_CHANCE = 0.1
-  static readonly TREE_HEIGHT_START = 3
-  static readonly SIDES = 'sides.webp'
-  static readonly FLOOR = 'floor.webp'
-  static readonly OCEAN = 'ocean.webp'
+  protected static readonly SIDES = 'sides.webp'
+  protected static readonly FLOOR = 'floor.webp'
+  protected static readonly OCEAN = 'ocean.webp'
+  protected static readonly BUSHES_FILL = Level.FILL * 0.9
+  protected static readonly BUSHES_ITERATIONS = 1
+  protected static readonly BUSH_CHANCE = 0.25
+  protected static readonly TREE_CHANCE = 0.1
+  protected static readonly TREE_HEIGHT_START = 3
 
   mesh: BoxMesh
-  bushesHeights = this.createHeights(
+
+  protected readonly bushesHeights = this.createHeights(
     Level.COLS * 2,
     Level.ROWS * 2,
     Level.BUSHES_FILL,
@@ -65,20 +66,21 @@ export class Level extends BaseLevel {
     this.mesh = this.createMesh(textures)
   }
 
-  createBoxMesh(textures: Texture[]) {
+  protected createBoxMesh(textures: Texture[]) {
     const box = new BoxMesh(textures, Level.COLS, Level.ROWS)
     box.position.set(-Level.COLS / 2, 0, -Level.ROWS / 2)
     return box
   }
 
-  setLevelMesh(mesh: BoxMesh) {
-    this.forEachHeight(this.heights, (col, row, height) => {
-      this.setLevelAt(col, row, height, mesh)
-      this.setColliderAt(col, row, height)
-    })
+  protected createMesh(textures: Texture[]) {
+    const mesh = this.createBoxMesh(textures)
+    this.setLevelMesh(mesh)
+    this.createTrees()
+    this.createBushes()
+    return mesh
   }
 
-  createTrees() {
+  protected createTrees() {
     if (Level.TREE_TEXTURE in loadedTextures) {
       this.forEachHeight(this.heights, (col, row) => {
         const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
@@ -93,7 +95,7 @@ export class Level extends BaseLevel {
     }
   }
 
-  createBushes() {
+  protected createBushes() {
     if (Level.BUSH_TEXTURE in loadedTextures) {
       this.forEachHeight(this.bushesHeights, (col, row, chance) => {
         const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
@@ -110,15 +112,19 @@ export class Level extends BaseLevel {
     }
   }
 
-  createMesh(textures: Texture[]) {
-    const mesh = this.createBoxMesh(textures)
-    this.setLevelMesh(mesh)
-    this.createTrees()
-    this.createBushes()
-    return mesh
+  protected setLevelMesh(mesh: BoxMesh) {
+    this.forEachHeight(this.heights, (col, row, height) => {
+      this.setLevelAt(col, row, height, mesh)
+      this.setColliderAt(col, row, height)
+    })
   }
 
-  setLevelAt(col: number, row: number, height: number, mesh: BoxMesh) {
+  protected setLevelAt(
+    col: number,
+    row: number,
+    height: number,
+    mesh: BoxMesh
+  ) {
     const matrix = getMatrix(
       new Vector3(col, height / 4 - 0.75, row),
       new Vector3(1, height / 2, 1)

@@ -3,12 +3,13 @@ import { floors, maxLevelHeight, minLevelHeight, physics } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 
 export abstract class BaseLevel {
-  static readonly FILL = 0.44
-  static readonly ITERATIONS = 6
   static readonly COLS = DeviceDetector.HIGH_END ? 48 : 24
   static readonly ROWS = DeviceDetector.HIGH_END ? 48 : 24
 
-  readonly heights: number[][] = []
+  protected static readonly FILL = 0.44
+  protected static readonly ITERATIONS = 6
+
+  protected readonly heights: number[][] = []
 
   constructor() {
     this.heights = Array.from({ length: maxLevelHeight + minLevelHeight }, () =>

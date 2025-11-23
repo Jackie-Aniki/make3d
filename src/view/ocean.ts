@@ -18,10 +18,10 @@ import {
 } from '../state'
 
 export class Ocean {
-  static readonly COLS = BaseLevel.COLS
-  static readonly ROWS = BaseLevel.ROWS
-  static readonly DEEP_WATER_Z = -0.25
-  static readonly SHALLOW_WATER = {
+  protected static readonly COLS = BaseLevel.COLS
+  protected static readonly ROWS = BaseLevel.ROWS
+  protected static readonly DEEP_WATER_Z = -0.25
+  protected static readonly SHALLOW_WATER = {
     opacity: 0.5,
     waveTime: 0.16,
     waveHeight: 0.16,
@@ -30,10 +30,12 @@ export class Ocean {
   }
 
   readonly mesh = new Group()
+
   protected readonly animations: Array<(time: number) => void> = []
   protected readonly repeat: number
   protected readonly cols: number
   protected readonly rows: number
+
   protected startTime = Date.now()
 
   constructor(texture: Texture, repeat = 1.1) {

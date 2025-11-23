@@ -3,10 +3,10 @@ import { floors, Math_Double_PI } from '../state'
 import { BaseBody } from '../model'
 
 export class DynamicBody extends Circle implements BaseBody {
-  static readonly RADIUS = 0.2
-  static readonly PADDING = 0.1
-  static readonly SEPARATION_DYNAMIC = 0.33
-  static readonly SEPARATION_STATIC = 0.5
+  protected static readonly RADIUS = 0.2
+  protected static readonly PADDING = 0.1
+  protected static readonly SEPARATION_DYNAMIC = 0.33
+  protected static readonly SEPARATION_STATIC = 0.5
 
   angle = Math.random() * Math_Double_PI
 

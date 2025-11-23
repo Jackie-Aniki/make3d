@@ -5,13 +5,13 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js'
 
 export class Loader extends LoadingManager {
-  static readonly DRACO_LOADER_PATH =
+  protected static readonly DRACO_LOADER_PATH =
     'https://www.gstatic.com/draco/versioned/decoders/1.5.7/'
 
-  textureLoader?: TextureLoader
-  gltfLoader?: GLTFLoader
-  fbxLoader?: FBXLoader
-  tgaLoader?: boolean
+  protected textureLoader?: TextureLoader
+  protected gltfLoader?: GLTFLoader
+  protected fbxLoader?: FBXLoader
+  protected tgaLoader?: boolean
 
   constructor(
     onLoad?: () => void,

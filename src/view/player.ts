@@ -1,5 +1,5 @@
 import { Level } from '../level'
-import { BillboardProps, Direction } from '../model'
+import { BillboardProps, Direction, State } from '../model'
 import { state } from '../state'
 import { getTextureName, loadTextures } from '../utils/view-utils'
 import { Sprite } from './sprite'
@@ -35,8 +35,7 @@ export class Player extends Sprite {
     return new Player({ level, textureName, ...props })
   }
 
-  readonly isPlayer = true
-  readonly state = state
+  readonly state: State
 
   constructor({ level, ...props }: BillboardProps) {
     super({ ...Player.DEFAULT_PROPS, level, ...props }, state)

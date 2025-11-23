@@ -2,15 +2,13 @@ import { BaseLevel } from '../level/base-level'
 import { Sprite } from './sprite'
 
 export class NPC extends Sprite {
-  static readonly MAX_SPEED = 0
-  static readonly MAX_ROTATION = 100
-  static readonly JUMP_CHANCE = 0.001
-  static readonly ROTATE_CHANCE = 0.03
+  protected static readonly MAX_SPEED = 0
+  protected static readonly MAX_ROTATION = 100
+  protected static readonly JUMP_CHANCE = 0.001
+  protected static readonly ROTATE_CHANCE = 0.03
 
-  readonly isPlayer = false
-
-  speed = NPC.MAX_SPEED
-  rotation = NPC.MAX_ROTATION
+  protected speed = NPC.MAX_SPEED
+  protected rotation = NPC.MAX_ROTATION
 
   update(ms = 0) {
     super.update(ms)

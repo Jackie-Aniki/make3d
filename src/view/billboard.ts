@@ -13,27 +13,27 @@ import { directions, floors, state } from '../state'
 import { createMaterial, normalizeAngle } from '../utils/view-utils'
 
 export class Billboard {
-  static compensateGroupZ = 0.2
-
+  protected static compensateGroupZ = 0.2
   protected static tempVector = new Vector3()
   protected static tempVectorDivide = new Vector3(2, 2, 2)
 
-  frame = 0
-  direction: Direction = 'up'
-  directionsToRows: DirectionsToRows
   mesh: Mesh | Object3D
-  body!: BaseBody
-  cols: number
-  rows: number
-  totalFrames: number
-  frameDuration: number
-  invCols: number
-  invRows: number
-  invFrameDuration: number
-  centerOffset: number
-  scaleX: number
-  scaleY: number
-  level?: Level
+  body: BaseBody
+
+  protected frame = 0
+  protected direction: Direction = 'up'
+  protected directionsToRows: DirectionsToRows
+  protected cols: number
+  protected rows: number
+  protected totalFrames: number
+  protected frameDuration: number
+  protected invCols: number
+  protected invRows: number
+  protected invFrameDuration: number
+  protected centerOffset: number
+  protected scaleX: number
+  protected scaleY: number
+  protected level?: Level
 
   get z() {
     return this._z

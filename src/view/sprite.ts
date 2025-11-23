@@ -7,14 +7,15 @@ import { physics } from '../state'
 import { normalizeAngle } from '../utils/view-utils'
 
 export class Sprite extends Billboard {
-  static readonly MOVE_SPEED = 0.05
-  static readonly ROTATE_SPEED = 3
-  static readonly GRAVITY = 0.005
-  static readonly JUMP_SPEED = 0.075
+  protected static readonly MOVE_SPEED = 0.05
+  protected static readonly ROTATE_SPEED = 3
+  protected static readonly GRAVITY = 0.005
+  protected static readonly JUMP_SPEED = 0.075
 
-  velocity = 0
-  state: State
   body: DynamicBody
+
+  protected velocity = 0
+  protected state: State
 
   constructor(
     props: BillboardProps,

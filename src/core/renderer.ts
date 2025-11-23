@@ -29,18 +29,17 @@ export interface RendererChild {
 }
 
 export class Renderer extends WebGLRenderer {
-  static backgroundColor = 0x44ccf0
+  protected static backgroundColor = 0x44ccf0
 
-  readonly children: RendererChild[] = []
-  readonly animations: Array<(time: number) => void> = []
-
-  now = Date.now()
   scene = new Scene()
   camera = new Camera()
-
   stats?: Stats
   ocean?: Ocean
   skybox?: Skybox
+
+  protected readonly children: RendererChild[] = []
+  protected readonly animations: Array<(time: number) => void> = []
+  protected now = Date.now()
 
   static create({ canvas, ocean, skybox }: RendererProps): Renderer {
     if (!state.renderer) {

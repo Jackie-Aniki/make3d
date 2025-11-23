@@ -6,22 +6,23 @@ import { Billboard } from '../view/billboard'
 
 export class Camera extends PerspectiveCamera {
   static readonly DISTANCE = 1.5
-  static readonly HEIGHT = 0.75
-  static readonly LERP_RATIO = 0.0033
-  static readonly FOV = 85
-  static readonly NEAR = 0.1
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 24
 
-  protected static targetVector = new Vector3(0, Camera.HEIGHT, 0)
-  protected static lookAtVector = new Vector3(0, Camera.HEIGHT, 0)
-  protected static tempQuaternion = new Quaternion()
+  protected static readonly HEIGHT = 0.75
+  protected static readonly LERP_RATIO = 0.0033
+  protected static readonly FOV = 85
+  protected static readonly NEAR = 0.1
+  protected static readonly targetVector = new Vector3(0, Camera.HEIGHT, 0)
+  protected static readonly lookAtVector = new Vector3(0, Camera.HEIGHT, 0)
+  protected static readonly tempQuaternion = new Quaternion()
 
   static getFar() {
     return state.renderer.camera.far / Camera.FAR
   }
 
-  distance = Camera.DISTANCE
   target?: Billboard
+
+  protected distance = Camera.DISTANCE
 
   constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
     super(fov, innerWidth / innerHeight, near, far)

@@ -26,13 +26,13 @@ export const setKey = (value: boolean) => {
 }
 
 export class Events {
-  static keyDown = setKey(true)
-  static keyUp = setKey(false)
-  static click = mouse.onPointerDown.bind(mouse)
-  static release = mouse.onPointerUp.bind(mouse)
-  static move = mouse.onPointerMove.bind(mouse)
-  static cancel = mouse.preventEvent.bind(mouse)
-  static events = {
+  protected static readonly keyDown = setKey(true)
+  protected static readonly keyUp = setKey(false)
+  protected static readonly click = mouse.onPointerDown.bind(mouse)
+  protected static readonly release = mouse.onPointerUp.bind(mouse)
+  protected static readonly move = mouse.onPointerMove.bind(mouse)
+  protected static readonly cancel = mouse.preventEvent.bind(mouse)
+  protected static readonly events = {
     pointerdown: Events.click,
     pointermove: Events.move,
     pointerup: Events.release,
@@ -43,7 +43,7 @@ export class Events {
     contextmenu: Events.cancel
   }
 
-  static eventListenersAdded = false
+  protected static eventListenersAdded = false
 
   static addEventListeners() {
     if (Events.eventListenersAdded) return
