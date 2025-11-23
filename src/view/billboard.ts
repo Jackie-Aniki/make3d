@@ -5,12 +5,12 @@ import {
   PlaneGeometry,
   Vector3
 } from 'three'
-import { AbstractLevel } from './abstract-level'
-import { BodyLike, StaticBody } from './billboard-body'
-import { type Level } from './level'
-import { BillboardProps, Direction, DirectionsToRows } from './model'
-import { directions, floors, state } from './state'
-import { createMaterial, normalizeAngle } from './utils'
+import { StaticBody } from '../body/static-body'
+import { type Level } from '../level'
+import { BaseLevel } from '../level/base-level'
+import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
+import { directions, floors, state } from '../state'
+import { createMaterial, normalizeAngle } from '../utils'
 
 export class Billboard {
   static compensateGroupZ = 0.2
@@ -22,7 +22,7 @@ export class Billboard {
   direction: Direction = 'up'
   directionsToRows: DirectionsToRows
   mesh: Mesh | Object3D
-  body!: BodyLike
+  body!: BaseBody
   cols: number
   rows: number
   totalFrames: number
@@ -128,8 +128,8 @@ export class Billboard {
 
   protected spawn(
     level: Level,
-    x = (Math.random() - 0.5) * (AbstractLevel.COLS * 0.5),
-    y = (Math.random() - 0.5) * (AbstractLevel.ROWS * 0.5)
+    x = (Math.random() - 0.5) * (BaseLevel.COLS * 0.5),
+    y = (Math.random() - 0.5) * (BaseLevel.ROWS * 0.5)
   ) {
     this.level = level
     this.body = this.createBody(x, y)

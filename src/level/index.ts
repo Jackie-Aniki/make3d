@@ -1,13 +1,13 @@
 import { Texture, Vector3 } from 'three'
-import { AbstractLevel } from './abstract-level'
-import { Box } from './box'
-import { Bush, bushProps } from './bush'
-import { Events } from './events'
-import { Renderer } from './renderer'
-import { SkyboxProps } from './skybox'
-import { loadedTextures } from './state'
-import { Tree, treeProps } from './tree'
-import { getMatrix, loadTextures, mapCubeTextures } from './utils'
+import { Box } from '../box'
+import { Events } from '../events'
+import { Renderer } from '../renderer'
+import { loadedTextures } from '../state'
+import { getMatrix, loadTextures, mapCubeTextures } from '../utils'
+import { Bush } from '../view/bush'
+import { SkyboxProps } from '../view/skybox'
+import { Tree } from '../view/tree'
+import { BaseLevel } from './base-level'
 
 export interface LevelProps<T = Texture> {
   textures: Texture[]
@@ -18,7 +18,10 @@ export interface LevelProps<T = Texture> {
   sides?: T
 }
 
-export class Level extends AbstractLevel {
+export class Level extends BaseLevel {
+  static TREE_TEXTURE = Tree.DEFAULT_PROPS.textureName
+  static BUSH_TEXTURE = Tree.DEFAULT_PROPS.textureName
+
   static readonly BUSHES_FILL = Level.FILL * 0.9
   static readonly BUSHES_ITERATIONS = 1
   static readonly BUSH_CHANCE = 0.25
@@ -41,8 +44,8 @@ export class Level extends AbstractLevel {
       'sides.webp',
       'floor.webp',
       'ocean.webp',
-      `${treeProps.textureName}.webp`,
-      `${bushProps.textureName}.webp`
+      `${Level.TREE_TEXTURE}.webp`,
+      `${Level.BUSH_TEXTURE}.webp`
     ])
     const textures = mapCubeTextures({
       up: floor,
@@ -76,7 +79,7 @@ export class Level extends AbstractLevel {
   }
 
   createTrees() {
-    if (treeProps.textureName in loadedTextures) {
+    if (Level.TREE_TEXTURE in loadedTextures) {
       this.forEachHeight(this.heights, (col, row) => {
         const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
         if (
@@ -91,7 +94,7 @@ export class Level extends AbstractLevel {
   }
 
   createBushes() {
-    if (bushProps.textureName in loadedTextures) {
+    if (Level.BUSH_TEXTURE in loadedTextures) {
       this.forEachHeight(this.bushesHeights, (col, row, chance) => {
         const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
         if (

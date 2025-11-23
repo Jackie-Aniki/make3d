@@ -1,4 +1,4 @@
-import { AbstractLevel } from './abstract-level'
+import { BaseLevel } from '../level/base-level'
 import { Sprite } from './sprite'
 
 export class NPC extends Sprite {
@@ -17,7 +17,7 @@ export class NPC extends Sprite {
 
     const dx = this.mesh.position.x
     const dy = this.mesh.position.z
-    const radius = (AbstractLevel.COLS + AbstractLevel.ROWS) / 2
+    const radius = (BaseLevel.COLS + BaseLevel.ROWS) / 2
     const diff = Math.sqrt(dx * dx + dy * dy) - radius
 
     if (diff > 0 && Math.random() < diff / radius) {

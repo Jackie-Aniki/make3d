@@ -1,8 +1,8 @@
 import { Map } from 'rot-js'
-import { floors, maxLevelHeight, minLevelHeight, physics } from './state'
-import { DeviceDetector } from './detect'
+import { floors, maxLevelHeight, minLevelHeight, physics } from '../state'
+import { DeviceDetector } from '../detect-mobile'
 
-export abstract class AbstractLevel {
+export abstract class BaseLevel {
   static readonly FILL = 0.44
   static readonly ITERATIONS = 6
   static readonly COLS = DeviceDetector.HIGH_END ? 48 : 24
@@ -30,8 +30,8 @@ export abstract class AbstractLevel {
 
   getXY(col: number, row: number) {
     return {
-      x: col - AbstractLevel.COLS / 2,
-      y: row - AbstractLevel.ROWS / 2
+      x: col - BaseLevel.COLS / 2,
+      y: row - BaseLevel.ROWS / 2
     }
   }
 
@@ -59,17 +59,17 @@ export abstract class AbstractLevel {
   }
 
   getFloor(x: number, y: number) {
-    const posX = Math.floor(x + AbstractLevel.COLS / 2)
-    const posY = Math.floor(y + AbstractLevel.ROWS / 2)
+    const posX = Math.floor(x + BaseLevel.COLS / 2)
+    const posY = Math.floor(y + BaseLevel.ROWS / 2)
 
     return this.heights[posX]?.[posY] || 0
   }
 
   protected createHeights(
-    cols = AbstractLevel.COLS,
-    rows = AbstractLevel.ROWS,
-    fill = AbstractLevel.FILL,
-    iterations = AbstractLevel.ITERATIONS
+    cols = BaseLevel.COLS,
+    rows = BaseLevel.ROWS,
+    fill = BaseLevel.FILL,
+    iterations = BaseLevel.ITERATIONS
   ) {
     const map = new Map.Cellular(cols, rows)
 

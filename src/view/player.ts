@@ -1,22 +1,8 @@
-import { Level } from './level'
-import { BillboardProps, Direction } from './model'
+import { Level } from '../level'
+import { BillboardProps, Direction } from '../model'
+import { state } from '../state'
+import { getTextureName, loadTextures } from '../utils'
 import { Sprite } from './sprite'
-import { state } from './state'
-import { getTextureName, loadTextures } from './utils'
-
-export const playerProps = {
-  textureName: 'player',
-  scale: 1.25,
-  totalFrames: 3,
-  cols: 3,
-  rows: 4,
-  directionsToRows: {
-    down: 0,
-    left: 1,
-    up: 2,
-    right: 3
-  }
-}
 
 export interface PlayerProps
   extends Omit<BillboardProps, 'level' | 'textureName'> {
@@ -25,6 +11,20 @@ export interface PlayerProps
 
 export class Player extends Sprite {
   static readonly DIRECTIONS: Direction[] = ['left', 'right', 'down', 'up']
+
+  static DEFAULT_PROPS = {
+    textureName: 'player',
+    scale: 1.25,
+    totalFrames: 3,
+    cols: 3,
+    rows: 4,
+    directionsToRows: {
+      down: 0,
+      left: 1,
+      up: 2,
+      right: 3
+    }
+  }
 
   static async create(
     level: Level,
@@ -39,7 +39,7 @@ export class Player extends Sprite {
   readonly state = state
 
   constructor({ level, ...props }: BillboardProps) {
-    super({ level, ...playerProps, ...props }, state)
+    super({ ...Player.DEFAULT_PROPS, level, ...props }, state)
 
     state.player = this
     state.renderer.ready({ level, target: this })

@@ -8,13 +8,18 @@ import {
   Texture,
   Vector3
 } from 'three'
-import { AbstractLevel } from './abstract-level'
-import { Camera } from './camera'
-import { Math_Half_PI, alphaMaterialProps, materialProps, state } from './state'
+import { Camera } from '../camera'
+import { BaseLevel } from '../level/base-level'
+import {
+  Math_Half_PI,
+  alphaMaterialProps,
+  materialProps,
+  state
+} from '../state'
 
 export class Ocean {
-  static readonly COLS = AbstractLevel.COLS
-  static readonly ROWS = AbstractLevel.ROWS
+  static readonly COLS = BaseLevel.COLS
+  static readonly ROWS = BaseLevel.ROWS
   static readonly DEEP_WATER_Z = -0.25
   static readonly SHALLOW_WATER = {
     opacity: 0.5,

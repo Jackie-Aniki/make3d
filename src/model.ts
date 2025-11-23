@@ -1,7 +1,7 @@
 import { type Level } from './level'
 import { type Mouse } from './mouse'
-import { type NPC } from './npc'
-import { type Player } from './player'
+import { type NPC } from './view/npc'
+import { type Player } from './view/player'
 import { type Renderer } from './renderer'
 
 export type Direction = 'down' | 'right' | 'up' | 'left'
@@ -38,4 +38,12 @@ export interface BillboardProps {
   scale?: number
   scaleX?: number
   scaleY?: number
+}
+
+export interface BaseBody {
+  x: number
+  y: number
+  group: number
+  angle: number
+  setPosition: (x: number, y: number) => void
 }

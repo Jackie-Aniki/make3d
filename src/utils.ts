@@ -8,7 +8,7 @@ import {
   Texture,
   Vector3
 } from 'three'
-import { DeviceDetector } from './detect'
+import { DeviceDetector } from './detect-mobile'
 import { CubeDirections } from './model'
 import {
   alphaMaterialProps,

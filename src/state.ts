@@ -1,6 +1,6 @@
 import { groupBits, System } from 'check2d'
 import { FrontSide, Texture } from 'three'
-import { DeviceDetector } from './detect'
+import { DeviceDetector } from './detect-mobile'
 import { Loader } from './loader'
 import { Direction, GameState, Key } from './model'
 import { Mouse } from './mouse'

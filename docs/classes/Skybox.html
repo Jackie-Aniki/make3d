@@ -94,8 +94,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/skybox.ts#L16"
-                >src/skybox.ts:16</a
+                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/skybox.ts#L8"
+                >src/view/skybox.ts:8</a
               >
             </li>
           </ul>
@@ -127,6 +127,34 @@
                       >
                         <use href="../assets/icons.svg#icon-512"></use></svg
                       ><span>constructor</span></a
+                    >
+                  </div>
+                </section>
+                <section class="tsd-index-section">
+                  <h3 class="tsd-index-heading">Properties</h3>
+                  <div class="tsd-index-list">
+                    <a href="#default_textures" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>DEFAULT_<wbr />TEXTURES</span></a
+                    >
+                  </div>
+                </section>
+                <section class="tsd-index-section">
+                  <h3 class="tsd-index-heading">Methods</h3>
+                  <div class="tsd-index-list">
+                    <a href="#default_callback" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Method"
+                      >
+                        <use href="../assets/icons.svg#icon-2048"></use></svg
+                      ><span>DEFAULT_<wbr />CALLBACK</span></a
                     >
                   </div>
                 </section>
@@ -170,14 +198,51 @@
                   >
                     <span class="tsd-signature-keyword">new</span>
                     <span class="tsd-kind-constructor-signature">Skybox</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">textures</span
+                    ><span class="tsd-signature-symbol">(</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >textures</span
                     ><span class="tsd-signature-symbol">?:</span>
-                    <a
-                      href="../types/SkyboxProps.html"
-                      class="tsd-signature-type tsd-kind-type-alias"
-                      >SkyboxProps</a
-                    ><span class="tsd-signature-symbol">)</span
+                    <span class="tsd-signature-symbol">{</span
+                    ><br />        <span class="tsd-kind-property">back</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">down</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">front</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">left</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">right</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span
+                    ><br />        <span class="tsd-kind-property">up</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">;</span><br />    <span
+                      class="tsd-signature-symbol"
+                      >}</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >callback</span
+                    ><span class="tsd-signature-symbol">?:</span>
+                    <span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">skyBox</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Texture</span
+                    ><span class="tsd-signature-symbol">)</span>
+                    <span class="tsd-signature-symbol">=&gt;</span>
+                    <span class="tsd-signature-type">void</span
+                    ><span class="tsd-signature-symbol">,</span><br /><span
+                      class="tsd-signature-symbol"
+                      >)</span
                     ><span class="tsd-signature-symbol">:</span>
                     <a href="" class="tsd-signature-type tsd-kind-class"
                       >Skybox</a
@@ -196,12 +261,54 @@
                         <li>
                           <span
                             ><span class="tsd-kind-parameter">textures</span>:
-                            <a
-                              href="../types/SkyboxProps.html"
-                              class="tsd-signature-type tsd-kind-type-alias"
-                              >SkyboxProps</a
+                            <span class="tsd-signature-symbol">{</span
+                            ><br />    <span class="tsd-kind-property"
+                              >back</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br />    <span class="tsd-kind-property"
+                              >down</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br />    <span class="tsd-kind-property"
+                              >front</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br />    <span class="tsd-kind-property"
+                              >left</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br />    <span class="tsd-kind-property"
+                              >right</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br />    <span class="tsd-kind-property">up</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">;</span
+                            ><br /><span class="tsd-signature-symbol">}</span
                             ><span class="tsd-signature-symbol">
-                              = ...</span
+                              = Skybox.DEFAULT_TEXTURES</span
+                            ></span
+                          >
+                        </li>
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">callback</span>:
+                            <span class="tsd-signature-symbol">(</span
+                            ><span class="tsd-kind-parameter">skyBox</span
+                            ><span class="tsd-signature-symbol">:</span>
+                            <span class="tsd-signature-type">Texture</span
+                            ><span class="tsd-signature-symbol">)</span>
+                            <span class="tsd-signature-symbol">=&gt;</span>
+                            <span class="tsd-signature-type">void</span
+                            ><span class="tsd-signature-symbol">
+                              = Skybox.DEFAULT_CALLBACK</span
                             ></span
                           >
                         </li>
@@ -218,8 +325,170 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/skybox.ts#L17"
-                            >src/skybox.ts:17</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/skybox.ts#L23"
+                            >src/view/skybox.ts:23</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </section>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Properties">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="../assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Properties</h2>
+          </summary>
+          <section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="default_textures">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code
+                ><span>DEFAULT_<wbr />TEXTURES</span
+                ><a
+                  href="#default_textures"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">DEFAULT_TEXTURES</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-symbol">{</span><br />    <span
+                  class="tsd-kind-property"
+                  >back</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br />    <span
+                  class="tsd-kind-property"
+                  >down</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br />    <span
+                  class="tsd-kind-property"
+                  >front</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br />    <span
+                  class="tsd-kind-property"
+                  >left</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br />    <span
+                  class="tsd-kind-property"
+                  >right</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br />    <span
+                  class="tsd-kind-property"
+                  >up</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">;</span><br /><span
+                  class="tsd-signature-symbol"
+                  >}</span
+                ><span class="tsd-signature-symbol"> = ...</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/skybox.ts#L14"
+                      >src/view/skybox.ts:14</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+          </section>
+        </details>
+        <details class="tsd-panel-group tsd-member-group tsd-accordion" open>
+          <summary class="tsd-accordion-summary" data-key="section-Methods">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <use href="../assets/icons.svg#icon-chevronDown"></use>
+            </svg>
+            <h2>Methods</h2>
+          </summary>
+          <section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="default_callback">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code
+                ><span>DEFAULT_<wbr />CALLBACK</span
+                ><a
+                  href="#default_callback"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures">
+                <li class="">
+                  <div
+                    class="tsd-signature tsd-anchor-link"
+                    id="default_callback-1"
+                  >
+                    <span class="tsd-kind-call-signature">DEFAULT_CALLBACK</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">skyBox</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Texture</span
+                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">void</span
+                    ><a
+                      href="#default_callback-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">skyBox</span>:
+                            <span class="tsd-signature-type"
+                              >Texture</span
+                            ></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">void</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/skybox.ts#L9"
+                            >src/view/skybox.ts:9</a
                           >
                         </li>
                       </ul>
@@ -399,6 +668,60 @@
                     >
                       <use href="../assets/icons.svg#icon-512"></use></svg
                     ><span>constructor</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Properties"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="../assets/icons.svg#icon-chevronDown"></use></svg
+                  >Properties
+                </summary>
+                <div>
+                  <a href="#default_textures"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>DEFAULT_<wbr />TEXTURES</span></a
+                  >
+                </div>
+              </details>
+              <details open class="tsd-accordion tsd-page-navigation-section">
+                <summary
+                  class="tsd-accordion-summary"
+                  data-key="section-Methods"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <use href="../assets/icons.svg#icon-chevronDown"></use></svg
+                  >Methods
+                </summary>
+                <div>
+                  <a href="#default_callback"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Method"
+                    >
+                      <use href="../assets/icons.svg#icon-2048"></use></svg
+                    ><span>DEFAULT_<wbr />CALLBACK</span></a
                   >
                 </div>
               </details>

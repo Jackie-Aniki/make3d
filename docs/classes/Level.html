@@ -89,16 +89,14 @@
           </ul>
           <h1>Class Level</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="1220">
+        <section class="tsd-panel tsd-hierarchy" data-refl="1423">
           <h4>
             Hierarchy (<a href="../hierarchy.html#Level">View Summary</a>)
           </h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
-              <a
-                href="AbstractLevel.html"
-                class="tsd-signature-type tsd-kind-class"
-                >AbstractLevel</a
+              <a href="BaseLevel.html" class="tsd-signature-type tsd-kind-class"
+                >BaseLevel</a
               >
               <ul class="tsd-hierarchy">
                 <li class="tsd-hierarchy-item">
@@ -113,8 +111,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L21"
-                >src/level.ts:21</a
+                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L21"
+                >src/level/index.ts:21</a
               >
             </li>
           </ul>
@@ -187,6 +185,15 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>BUSH_<wbr />CHANCE</span></a
+                    >
+                    <a href="#bush_texture" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>BUSH_<wbr />TEXTURE</span></a
                     >
                     <a href="#bushes_fill" class="tsd-index-link"
                       ><svg
@@ -288,6 +295,15 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>TREE_<wbr />HEIGHT_<wbr />START</span></a
+                    >
+                    <a href="#tree_texture" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>TREE_<wbr />TEXTURE</span></a
                     >
                   </div>
                 </section>
@@ -495,9 +511,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Overrides
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#constructor"
+                        Overrides <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#constructor"
                           >constructor</a
                         >
                       </p>
@@ -505,8 +520,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L58"
-                            >src/level.ts:58</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L61"
+                            >src/level/index.ts:61</a
                           >
                         </li>
                       </ul>
@@ -555,8 +570,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L32"
-                      >src/level.ts:32</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L35"
+                      >src/level/index.ts:35</a
                     >
                   </li>
                 </ul>
@@ -583,9 +598,8 @@
               </div>
               <aside class="tsd-sources">
                 <p>
-                  Inherited from
-                  <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                    href="AbstractLevel.html#heights"
+                  Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                    href="BaseLevel.html#heights"
                     >heights</a
                   >
                 </p>
@@ -593,8 +607,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L11"
-                      >src/abstract-level.ts:11</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L11"
+                      >src/level/base-level.ts:11</a
                     >
                   </li>
                 </ul>
@@ -620,8 +634,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L31"
-                      >src/level.ts:31</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L34"
+                      >src/level/index.ts:34</a
                     >
                   </li>
                 </ul>
@@ -650,8 +664,40 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L24"
-                      >src/level.ts:24</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L27"
+                      >src/level/index.ts:27</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="bush_texture">
+                <code class="tsd-tag">Static</code
+                ><span>BUSH_<wbr />TEXTURE</span
+                ><a
+                  href="#bush_texture"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">BUSH_TEXTURE</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">
+                  = Tree.DEFAULT_PROPS.textureName</span
+                >
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L23"
+                      >src/level/index.ts:23</a
                     >
                   </li>
                 </ul>
@@ -681,8 +727,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L22"
-                      >src/level.ts:22</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L25"
+                      >src/level/index.ts:25</a
                     >
                   </li>
                 </ul>
@@ -711,8 +757,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L23"
-                      >src/level.ts:23</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L26"
+                      >src/level/index.ts:26</a
                     >
                   </li>
                 </ul>
@@ -737,9 +783,8 @@
               </div>
               <aside class="tsd-sources">
                 <p>
-                  Inherited from
-                  <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                    href="AbstractLevel.html#cols"
+                  Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                    href="BaseLevel.html#cols"
                     >COLS</a
                   >
                 </p>
@@ -747,8 +792,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L8"
-                      >src/abstract-level.ts:8</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L8"
+                      >src/level/base-level.ts:8</a
                     >
                   </li>
                 </ul>
@@ -770,9 +815,8 @@
               </div>
               <aside class="tsd-sources">
                 <p>
-                  Inherited from
-                  <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                    href="AbstractLevel.html#fill"
+                  Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                    href="BaseLevel.html#fill"
                     >FILL</a
                   >
                 </p>
@@ -780,8 +824,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L6"
-                      >src/abstract-level.ts:6</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L6"
+                      >src/level/base-level.ts:6</a
                     >
                   </li>
                 </ul>
@@ -809,8 +853,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L28"
-                      >src/level.ts:28</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L31"
+                      >src/level/index.ts:31</a
                     >
                   </li>
                 </ul>
@@ -835,9 +879,8 @@
               </div>
               <aside class="tsd-sources">
                 <p>
-                  Inherited from
-                  <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                    href="AbstractLevel.html#iterations"
+                  Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                    href="BaseLevel.html#iterations"
                     >ITERATIONS</a
                   >
                 </p>
@@ -845,8 +888,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L7"
-                      >src/abstract-level.ts:7</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L7"
+                      >src/level/base-level.ts:7</a
                     >
                   </li>
                 </ul>
@@ -874,8 +917,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L29"
-                      >src/level.ts:29</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L32"
+                      >src/level/index.ts:32</a
                     >
                   </li>
                 </ul>
@@ -900,9 +943,8 @@
               </div>
               <aside class="tsd-sources">
                 <p>
-                  Inherited from
-                  <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                    href="AbstractLevel.html#rows"
+                  Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                    href="BaseLevel.html#rows"
                     >ROWS</a
                   >
                 </p>
@@ -910,8 +952,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L9"
-                      >src/abstract-level.ts:9</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L9"
+                      >src/level/base-level.ts:9</a
                     >
                   </li>
                 </ul>
@@ -939,8 +981,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L27"
-                      >src/level.ts:27</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L30"
+                      >src/level/index.ts:30</a
                     >
                   </li>
                 </ul>
@@ -969,8 +1011,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L25"
-                      >src/level.ts:25</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L28"
+                      >src/level/index.ts:28</a
                     >
                   </li>
                 </ul>
@@ -999,8 +1041,40 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L26"
-                      >src/level.ts:26</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L29"
+                      >src/level/index.ts:29</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="tree_texture">
+                <code class="tsd-tag">Static</code
+                ><span>TREE_<wbr />TEXTURE</span
+                ><a
+                  href="#tree_texture"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">TREE_TEXTURE</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">
+                  = Tree.DEFAULT_PROPS.textureName</span
+                >
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L22"
+                      >src/level/index.ts:22</a
                     >
                   </li>
                 </ul>
@@ -1089,8 +1163,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L65"
-                            >src/level.ts:65</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L68"
+                            >src/level/index.ts:68</a
                           >
                         </li>
                       </ul>
@@ -1137,8 +1211,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L93"
-                            >src/level.ts:93</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L96"
+                            >src/level/index.ts:96</a
                           >
                         </li>
                       </ul>
@@ -1212,7 +1286,7 @@
                             ><span class="tsd-kind-parameter">cols</span>:
                             <span class="tsd-signature-type">number</span
                             ><span class="tsd-signature-symbol">
-                              = AbstractLevel.COLS</span
+                              = BaseLevel.COLS</span
                             ></span
                           >
                         </li>
@@ -1221,7 +1295,7 @@
                             ><span class="tsd-kind-parameter">rows</span>:
                             <span class="tsd-signature-type">number</span
                             ><span class="tsd-signature-symbol">
-                              = AbstractLevel.ROWS</span
+                              = BaseLevel.ROWS</span
                             ></span
                           >
                         </li>
@@ -1230,7 +1304,7 @@
                             ><span class="tsd-kind-parameter">fill</span>:
                             <span class="tsd-signature-type">number</span
                             ><span class="tsd-signature-symbol">
-                              = AbstractLevel.FILL</span
+                              = BaseLevel.FILL</span
                             ></span
                           >
                         </li>
@@ -1239,7 +1313,7 @@
                             ><span class="tsd-kind-parameter">iterations</span>:
                             <span class="tsd-signature-type">number</span
                             ><span class="tsd-signature-symbol">
-                              = AbstractLevel.ITERATIONS</span
+                              = BaseLevel.ITERATIONS</span
                             ></span
                           >
                         </li>
@@ -1252,9 +1326,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Inherited from
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#createheights"
+                        Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#createheights"
                           >createHeights</a
                         >
                       </p>
@@ -1262,8 +1335,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L68"
-                            >src/abstract-level.ts:68</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L68"
+                            >src/level/base-level.ts:68</a
                           >
                         </li>
                       </ul>
@@ -1336,8 +1409,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L110"
-                            >src/level.ts:110</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L113"
+                            >src/level/index.ts:113</a
                           >
                         </li>
                       </ul>
@@ -1381,8 +1454,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L78"
-                            >src/level.ts:78</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L81"
+                            >src/level/index.ts:81</a
                           >
                         </li>
                       </ul>
@@ -1490,9 +1563,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Inherited from
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#foreachheight"
+                        Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#foreachheight"
                           >forEachHeight</a
                         >
                       </p>
@@ -1500,8 +1572,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L48"
-                            >src/abstract-level.ts:48</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L48"
+                            >src/level/base-level.ts:48</a
                           >
                         </li>
                       </ul>
@@ -1567,9 +1639,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Inherited from
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#getfloor"
+                        Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#getfloor"
                           >getFloor</a
                         >
                       </p>
@@ -1577,8 +1648,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L61"
-                            >src/abstract-level.ts:61</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L61"
+                            >src/level/base-level.ts:61</a
                           >
                         </li>
                       </ul>
@@ -1657,9 +1728,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Inherited from
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#getxy"
+                        Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#getxy"
                           >getXY</a
                         >
                       </p>
@@ -1667,8 +1737,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L31"
-                            >src/abstract-level.ts:31</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L31"
+                            >src/level/base-level.ts:31</a
                           >
                         </li>
                       </ul>
@@ -1747,9 +1817,8 @@
                     </h4>
                     <aside class="tsd-sources">
                       <p>
-                        Inherited from
-                        <a href="AbstractLevel.html">AbstractLevel</a>.<a
-                          href="AbstractLevel.html#setcolliderat"
+                        Inherited from <a href="BaseLevel.html">BaseLevel</a>.<a
+                          href="BaseLevel.html#setcolliderat"
                           >setColliderAt</a
                         >
                       </p>
@@ -1757,8 +1826,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/abstract-level.ts#L38"
-                            >src/abstract-level.ts:38</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/base-level.ts#L38"
+                            >src/level/base-level.ts:38</a
                           >
                         </li>
                       </ul>
@@ -1852,8 +1921,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L118"
-                            >src/level.ts:118</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L121"
+                            >src/level/index.ts:121</a
                           >
                         </li>
                       </ul>
@@ -1920,8 +1989,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L71"
-                            >src/level.ts:71</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L74"
+                            >src/level/index.ts:74</a
                           >
                         </li>
                       </ul>
@@ -1991,8 +2060,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level.ts#L39"
-                            >src/level.ts:39</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/index.ts#L42"
+                            >src/level/index.ts:42</a
                           >
                         </li>
                       </ul>
@@ -2223,6 +2292,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>BUSH_<wbr />CHANCE</span></a
+                  ><a href="#bush_texture"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>BUSH_<wbr />TEXTURE</span></a
                   ><a href="#bushes_fill"
                     ><svg
                       class="tsd-kind-icon"
@@ -2311,6 +2388,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>TREE_<wbr />HEIGHT_<wbr />START</span></a
+                  ><a href="#tree_texture"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>TREE_<wbr />TEXTURE</span></a
                   >
                 </div>
               </details>
