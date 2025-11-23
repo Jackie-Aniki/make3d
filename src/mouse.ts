@@ -10,7 +10,6 @@ export class Mouse extends Vector2 {
     const pointer = event instanceof TouchEvent ? event.touches[0] : event
     if (pointer && state.player) {
       event.preventDefault()
-
       this.pageX = pointer.pageX
       this.pageY = pointer.pageY
     }
@@ -29,7 +28,7 @@ export class Mouse extends Vector2 {
   }
 
   getCenterY() {
-    return state.player.getScreenPosition().y
+    return state.player?.getScreenPosition().y || innerHeight / 2
   }
 
   getMultiply() {

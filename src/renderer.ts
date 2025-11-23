@@ -34,7 +34,7 @@ export class Renderer extends WebGLRenderer {
       state.renderer.ocean = new Ocean(ocean)
     }
 
-    if (!state.renderer.skybox && skybox) {
+    if (!state.renderer.skybox) {
       state.renderer.skybox = new Skybox(skybox)
     }
 
