@@ -26,7 +26,7 @@
     "build:esm": "rollup -c",
     "prebuild:docs": "rimraf docs",
     "build:docs": "typedoc --customCss typedoc.css",
-    "postbuild:docs": "yarn docs-from-master && ln -s demo docs/demo",
+    "postbuild:docs": "yarn docs-from-master",
     "docs-from-master-macos": "find docs -type f -name '*.html' -exec sed -i '' -r 's_/blob/[^/]+/_/blob/main/_g' {} +",
     "docs-from-master-linux": "find docs -type f -name '*.html' -exec sed -i -r 's_/blob/[^/]+/_/blob/main/_g' {} +",
     "docs-from-master": "yarn docs-from-master-macos || yarn docs-from-master-linux",
