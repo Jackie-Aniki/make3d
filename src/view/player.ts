@@ -25,11 +25,12 @@ export class Player extends Sprite {
     }
   }
 
-  static async create(
+  static override async create(
     level: Level,
-    props: BillboardCreateProps = { texture: 'player.webp' }
+    props: BillboardCreateProps = { texture: 'player.webp' },
+    Class: any = Player
   ) {
-    return super.create(level, props)
+    return Sprite.create(level, props, Class)
   }
 
   readonly state: SpriteState

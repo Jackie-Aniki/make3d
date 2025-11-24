@@ -47,11 +47,12 @@ export class Billboard {
 
   static async create(
     level: Level,
-    { texture, ...props }: BillboardCreateProps
+    { texture, ...props }: BillboardCreateProps,
+    Class: any = Billboard
   ) {
     await loadTextures([texture])
     const textureName = getTextureName(texture)
-    return new this({ level, textureName, ...props })
+    return new Class({ level, textureName, ...props })
   }
 
   get z() {
