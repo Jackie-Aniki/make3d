@@ -37,20 +37,6 @@ export class Level extends BaseLevel {
 
   mesh: BoxMesh
 
-  protected readonly treeHeights = this.createHeights(
-    Level.COLS,
-    Level.ROWS,
-    Level.TREE_FILL,
-    Level.TREE_ITERATIONS
-  )
-
-  protected readonly bushesHeights = this.createHeights(
-    Level.COLS * 2,
-    Level.ROWS * 2,
-    Level.BUSH_FILL,
-    Level.BUSH_ITERATIONS
-  )
-
   static async create(
     canvas?: HTMLCanvasElement,
     props?: LevelCreateProps
@@ -96,8 +82,14 @@ export class Level extends BaseLevel {
 
   protected createTrees() {
     if (Level.TREE_TEXTURE in loadedTextures) {
+      const treeHeights = this.createHeights(
+        Level.COLS,
+        Level.ROWS,
+        Level.TREE_FILL,
+        Level.TREE_ITERATIONS
+      )
       this.forEachHeight(this.heights, (col, row, height) => {
-        const allow = this.treeHeights[col][row]
+        const allow = treeHeights[col][row]
         if (
           allow &&
           height >= Level.TREE_HEIGHT_START &&
@@ -112,7 +104,14 @@ export class Level extends BaseLevel {
 
   protected createBushes() {
     if (Level.BUSH_TEXTURE in loadedTextures) {
-      this.forEachHeight(this.bushesHeights, (col, row, allow) => {
+      const bushesHeights = this.createHeights(
+        Level.COLS * 2,
+        Level.ROWS * 2,
+        Level.BUSH_FILL,
+        Level.BUSH_ITERATIONS
+      )
+
+      this.forEachHeight(bushesHeights, (col, row, allow) => {
         const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
         if (
           allow &&
