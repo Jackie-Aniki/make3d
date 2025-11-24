@@ -1,7 +1,7 @@
 import { Level } from '../level'
 import { BillboardProps, Direction, SpriteState } from '../model'
 import { state } from '../state'
-import { getTextureName, loadTextures } from '../utils/view-utils'
+import { BillboardCreateProps } from './billboard'
 import { Sprite } from './sprite'
 
 export interface PlayerProps
@@ -11,8 +11,7 @@ export interface PlayerProps
 
 export class Player extends Sprite {
   static readonly DIRECTIONS: Direction[] = ['left', 'right', 'down', 'up']
-
-  static DEFAULT_PROPS = {
+  static readonly DEFAULT_PROPS = {
     textureName: 'player',
     scale: 1.25,
     totalFrames: 3,
@@ -28,11 +27,9 @@ export class Player extends Sprite {
 
   static async create(
     level: Level,
-    { texture, ...props }: PlayerProps = { texture: 'player.webp' }
+    props: BillboardCreateProps = { texture: 'player.webp' }
   ) {
-    await loadTextures([texture])
-    const textureName = getTextureName(texture)
-    return new Player({ level, textureName, ...props })
+    return super.create(level, props)
   }
 
   readonly state: SpriteState

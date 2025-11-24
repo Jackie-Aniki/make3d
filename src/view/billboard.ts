@@ -10,7 +10,17 @@ import { type Level } from '../level'
 import { BaseLevel } from '../level/base-level'
 import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
 import { directions, floors, state } from '../state'
-import { createMaterial, normalizeAngle } from '../utils/view-utils'
+import {
+  createMaterial,
+  getTextureName,
+  loadTextures,
+  normalizeAngle
+} from '../utils/view-utils'
+
+export interface BillboardCreateProps
+  extends Omit<BillboardProps, 'textureName' | 'level'> {
+  texture: string
+}
 
 export class Billboard {
   protected static compensateGroupZ = 0.2
@@ -34,6 +44,15 @@ export class Billboard {
   protected scaleX: number
   protected scaleY: number
   protected level?: Level
+
+  static async create(
+    level: Level,
+    { texture, ...props }: BillboardCreateProps
+  ) {
+    await loadTextures([texture])
+    const textureName = getTextureName(texture)
+    return new this({ level, textureName, ...props })
+  }
 
   get z() {
     return this._z

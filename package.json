@@ -1,7 +1,7 @@
 {
   "name": "make3d",
   "description": "make3d - ddd retro boomer game engine",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./esm/index.js",
@@ -31,7 +31,7 @@
     "docs-from-master-linux": "find docs -type f -name '*.html' -exec sed -i -r 's_/blob/[^/]+/_/blob/main/_g' {} +",
     "docs-from-master": "yarn docs-from-master-macos || yarn docs-from-master-linux",
     "lint": "eslint 'src/**/*.ts' --fix",
-    "format": "prettier . --write",
+    "format": "prettier src --write",
     "precommit": "yarn lint && yarn build && yarn build:docs && yarn format",
     "amend": "yarn precommit && git commit -a --am --no-edit"
   },
