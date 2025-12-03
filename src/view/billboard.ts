@@ -40,7 +40,6 @@ export class Billboard {
 
   protected static compensateGroupZ = 0.2
   protected static tempVector = new Vector3()
-  protected static tempVectorDivide = new Vector3(2, 2, 2)
 
   mesh: Mesh | Object3D
   body!: BaseBody
@@ -107,13 +106,18 @@ export class Billboard {
     this.direction = this.getDirection()
 
     this.mesh.position.set(this.body.x, this.z + this.centerOffset, this.body.y)
-    this.mesh.lookAt(
-      Billboard.tempVector.set(
-        state.renderer.camera.position.x,
-        this.mesh.position.y,
-        state.renderer.camera.position.z
-      )
-    )
+
+    const playerPos = state.player?.mesh.position
+
+    if (!playerPos) {
+      return
+    }
+
+    const cameraPos = state.renderer.camera.position
+    const x = cameraPos.x - (playerPos.x - cameraPos.x) * 2
+    const z = cameraPos.z - (playerPos.z - cameraPos.z) * 2
+
+    this.mesh.lookAt(Billboard.tempVector.set(x, cameraPos.y, z))
 
     if (this.totalFrames > 1) {
       this.updateTexture()

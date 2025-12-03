@@ -1,9 +1,10 @@
-import { Billboard } from './billboard'
 import { Level } from '../level'
+import { Billboard } from './billboard'
 
 export class Bush extends Billboard {
   static readonly DEFAULT_PROPS = {
-    textureName: 'bush'
+    textureName: 'bush',
+    scale: 1
   }
 
   constructor(level: Level, x?: number, y?: number) {

@@ -12,12 +12,12 @@ export class Camera extends PerspectiveCamera {
   static readonly DISTANCE = 1.5
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
 
-  protected static readonly HEIGHT = 0.75
+  protected static readonly HEIGHT = 0.5
   protected static readonly LERP_RATIO = 0.0033
-  protected static readonly FOV = 85
+  protected static readonly FOV = 80
   protected static readonly NEAR = 0.1
   protected static readonly targetVector = new Vector3(0, Camera.HEIGHT, 0)
-  protected static readonly lookAtVector = new Vector3(0, Camera.HEIGHT, 0)
+  protected static readonly lookAtVector = new Vector3(0, 0, 0)
   protected static readonly tempQuaternion = new Quaternion()
 
   target?: Billboard
@@ -103,7 +103,7 @@ export class Camera extends PerspectiveCamera {
     const positionHeight = Math.max(floorHeight, height) + Camera.HEIGHT
     const position = Camera.targetVector.set(x, positionHeight, y)
 
-    const lookHeight = height / 2 + Camera.HEIGHT
+    const lookHeight = height / 2 + Camera.HEIGHT * 1.5
     const lookAt = Camera.lookAtVector.set(body.x, lookHeight, body.y)
 
     const quaternion = this.target.mesh.quaternion

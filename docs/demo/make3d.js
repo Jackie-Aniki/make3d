@@ -70501,7 +70501,7 @@ class Camera extends PerspectiveCamera {
         const floorHeight = this.getFloor(x, y) / 2;
         const positionHeight = Math.max(floorHeight, height) + Camera.HEIGHT;
         const position = Camera.targetVector.set(x, positionHeight, y);
-        const lookHeight = height / 2 + Camera.HEIGHT;
+        const lookHeight = height / 2 + Camera.HEIGHT * 1.5;
         const lookAt = Camera.lookAtVector.set(body.x, lookHeight, body.y);
         const quaternion = this.target.mesh.quaternion;
         return { position, lookAt, quaternion };
@@ -70509,12 +70509,12 @@ class Camera extends PerspectiveCamera {
 }
 Camera.DISTANCE = 1.5;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.HEIGHT = 0.75;
+Camera.HEIGHT = 0.5;
 Camera.LERP_RATIO = 0.0033;
-Camera.FOV = 85;
+Camera.FOV = 80;
 Camera.NEAR = 0.1;
 Camera.targetVector = new Vector3(0, Camera.HEIGHT, 0);
-Camera.lookAtVector = new Vector3(0, Camera.HEIGHT, 0);
+Camera.lookAtVector = new Vector3(0, 0, 0);
 Camera.tempQuaternion = new Quaternion();
 
 /**
@@ -71553,7 +71553,14 @@ class Billboard {
     update(_ms) {
         this.direction = this.getDirection();
         this.mesh.position.set(this.body.x, this.z + this.centerOffset, this.body.y);
-        this.mesh.lookAt(Billboard.tempVector.set(state.renderer.camera.position.x, this.mesh.position.y, state.renderer.camera.position.z));
+        const playerPos = state.player?.mesh.position;
+        if (!playerPos) {
+            return;
+        }
+        const cameraPos = state.renderer.camera.position;
+        const x = cameraPos.x - (playerPos.x - cameraPos.x) * 2;
+        const z = cameraPos.z - (playerPos.z - cameraPos.z) * 2;
+        this.mesh.lookAt(Billboard.tempVector.set(x, cameraPos.y, z));
         if (this.totalFrames > 1) {
             this.updateTexture();
         }
@@ -71623,7 +71630,6 @@ class Billboard {
 }
 Billboard.compensateGroupZ = 0.2;
 Billboard.tempVector = new Vector3();
-Billboard.tempVectorDivide = new Vector3(2, 2, 2);
 
 class Bush extends Billboard {
     constructor(level, x, y) {
@@ -71631,7 +71637,8 @@ class Bush extends Billboard {
     }
 }
 Bush.DEFAULT_PROPS = {
-    textureName: 'bush'
+    textureName: 'bush',
+    scale: 1,
 };
 
 class DynamicBody extends Circle {
@@ -71872,7 +71879,7 @@ class Tree extends Billboard {
 }
 Tree.DEFAULT_PROPS = {
     textureName: 'tree',
-    scale: 3
+    scale: 2
 };
 
 class BoxMesh extends InstancedMesh {
