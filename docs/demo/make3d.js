@@ -70472,8 +70472,8 @@ Camera.LERP_RATIO = 0.0025;
 Camera.FOV = 75;
 Camera.NEAR = 0.01;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.cameraPosition = new Vector3(0, Camera.HEIGHT, 0);
-Camera.cameraTargetPosition = new Vector3();
+Camera.cameraPosition = new Vector3(0, maxLevelHeight / 2 + Camera.HEIGHT, 0);
+Camera.cameraTargetPosition = new Vector3(0, maxLevelHeight / 2, 0);
 Camera.cameraProject = new Vector3();
 
 /**

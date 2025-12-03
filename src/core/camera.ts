@@ -1,6 +1,6 @@
 import { PerspectiveCamera, Vector3 } from 'three'
 import { Level } from '../level'
-import { Math_Half_PI, state } from '../state'
+import { Math_Half_PI, maxLevelHeight, state } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { Billboard } from '../view/billboard'
 
@@ -15,8 +15,12 @@ export class Camera extends PerspectiveCamera {
   static readonly FOV = 75
   static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
-  static readonly cameraPosition = new Vector3(0, Camera.HEIGHT, 0)
-  static readonly cameraTargetPosition = new Vector3()
+  static readonly cameraPosition = new Vector3(
+    0,
+    maxLevelHeight / 2 + Camera.HEIGHT,
+    0
+  )
+  static readonly cameraTargetPosition = new Vector3(0, maxLevelHeight / 2, 0)
   static readonly cameraProject = new Vector3()
 
   target?: Billboard
