@@ -89,7 +89,7 @@
           </ul>
           <h1>Class NPC</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="1112">
+        <section class="tsd-panel tsd-hierarchy" data-refl="1111">
           <h4>Hierarchy (<a href="../hierarchy.html#NPC">View Summary</a>)</h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
@@ -554,6 +554,17 @@
                       ><span>get<wbr />Mouse<wbr />Gear</span></a
                     >
                     <a
+                      href="#getprojection"
+                      class="tsd-index-link tsd-is-protected tsd-is-inherited"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Method"
+                      >
+                        <use href="../assets/icons.svg#icon-2048"></use></svg
+                      ><span>get<wbr />Projection</span></a
+                    >
+                    <a
                       href="#getrow"
                       class="tsd-index-link tsd-is-protected tsd-is-inherited"
                       ><svg
@@ -564,27 +575,23 @@
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>get<wbr />Row</span></a
                     >
-                    <a
-                      href="#getscreenpositionx"
-                      class="tsd-index-link tsd-is-inherited"
+                    <a href="#getworldx" class="tsd-index-link tsd-is-inherited"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Screen<wbr />Position<wbr />X</span></a
+                      ><span>get<wbr />World<wbr />X</span></a
                     >
-                    <a
-                      href="#getscreenpositiony"
-                      class="tsd-index-link tsd-is-inherited"
+                    <a href="#getworldy" class="tsd-index-link tsd-is-inherited"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Screen<wbr />Position<wbr />Y</span></a
+                      ><span>get<wbr />World<wbr />Y</span></a
                     >
                     <a
                       href="#handleframeupdate"
@@ -660,17 +667,6 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>update<wbr />Group</span></a
-                    >
-                    <a
-                      href="#updatescreenposition"
-                      class="tsd-index-link tsd-is-protected tsd-is-inherited"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>update<wbr />Screen<wbr />Position</span></a
                     >
                     <a
                       href="#updatetexture"
@@ -2442,6 +2438,67 @@
             <section
               class="tsd-panel tsd-member tsd-is-protected tsd-is-inherited"
             >
+              <h3 class="tsd-anchor-link" id="getprojection">
+                <code class="tsd-tag">Protected</code
+                ><span>get<wbr />Projection</span
+                ><a
+                  href="#getprojection"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures tsd-is-protected tsd-is-inherited">
+                <li class="tsd-is-inherited">
+                  <div
+                    class="tsd-signature tsd-anchor-link"
+                    id="getprojection-1"
+                  >
+                    <span class="tsd-kind-call-signature">getProjection</span
+                    ><span class="tsd-signature-symbol">()</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Vector3</span>
+                    <span class="tsd-signature-symbol">|</span>
+                    <span class="tsd-signature-type">undefined</span
+                    ><a
+                      href="#getprojection-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">Vector3</span>
+                      <span class="tsd-signature-symbol">|</span>
+                      <span class="tsd-signature-type">undefined</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <p>
+                        Inherited from <a href="Sprite.html">Sprite</a>.<a
+                          href="Sprite.html#getprojection"
+                          >getProjection</a
+                        >
+                      </p>
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/billboard.ts#L133"
+                            >src/view/billboard.ts:133</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section
+              class="tsd-panel tsd-member tsd-is-protected tsd-is-inherited"
+            >
               <h3 class="tsd-anchor-link" id="getrow">
                 <code class="tsd-tag">Protected</code><span>get<wbr />Row</span
                 ><a
@@ -2515,10 +2572,10 @@
               </ul>
             </section>
             <section class="tsd-panel tsd-member tsd-is-inherited">
-              <h3 class="tsd-anchor-link" id="getscreenpositionx">
-                <span>get<wbr />Screen<wbr />Position<wbr />X</span
+              <h3 class="tsd-anchor-link" id="getworldx">
+                <span>get<wbr />World<wbr />X</span
                 ><a
-                  href="#getscreenpositionx"
+                  href="#getworldx"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2527,17 +2584,13 @@
               </h3>
               <ul class="tsd-signatures tsd-is-inherited">
                 <li class="tsd-is-inherited">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="getscreenpositionx-1"
-                  >
-                    <span class="tsd-kind-call-signature"
-                      >getScreenPositionX</span
+                  <div class="tsd-signature tsd-anchor-link" id="getworldx-1">
+                    <span class="tsd-kind-call-signature">getWorldX</span
                     ><span class="tsd-signature-symbol">()</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">number</span
                     ><a
-                      href="#getscreenpositionx-1"
+                      href="#getworldx-1"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2551,8 +2604,8 @@
                     <aside class="tsd-sources">
                       <p>
                         Inherited from <a href="Sprite.html">Sprite</a>.<a
-                          href="Sprite.html#getscreenpositionx"
-                          >getScreenPositionX</a
+                          href="Sprite.html#getworldx"
+                          >getWorldX</a
                         >
                       </p>
                       <ul>
@@ -2570,10 +2623,10 @@
               </ul>
             </section>
             <section class="tsd-panel tsd-member tsd-is-inherited">
-              <h3 class="tsd-anchor-link" id="getscreenpositiony">
-                <span>get<wbr />Screen<wbr />Position<wbr />Y</span
+              <h3 class="tsd-anchor-link" id="getworldy">
+                <span>get<wbr />World<wbr />Y</span
                 ><a
-                  href="#getscreenpositiony"
+                  href="#getworldy"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2582,17 +2635,13 @@
               </h3>
               <ul class="tsd-signatures tsd-is-inherited">
                 <li class="tsd-is-inherited">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="getscreenpositiony-1"
-                  >
-                    <span class="tsd-kind-call-signature"
-                      >getScreenPositionY</span
+                  <div class="tsd-signature tsd-anchor-link" id="getworldy-1">
+                    <span class="tsd-kind-call-signature">getWorldY</span
                     ><span class="tsd-signature-symbol">()</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">number</span
                     ><a
-                      href="#getscreenpositiony-1"
+                      href="#getworldy-1"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2606,16 +2655,16 @@
                     <aside class="tsd-sources">
                       <p>
                         Inherited from <a href="Sprite.html">Sprite</a>.<a
-                          href="Sprite.html#getscreenpositiony"
-                          >getScreenPositionY</a
+                          href="Sprite.html#getworldy"
+                          >getWorldY</a
                         >
                       </p>
                       <ul>
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/billboard.ts#L130"
-                            >src/view/billboard.ts:130</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/billboard.ts#L129"
+                            >src/view/billboard.ts:129</a
                           >
                         </li>
                       </ul>
@@ -3136,147 +3185,6 @@
                           <a
                             href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/billboard.ts#L175"
                             >src/view/billboard.ts:175</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section
-              class="tsd-panel tsd-member tsd-is-protected tsd-is-inherited"
-            >
-              <h3 class="tsd-anchor-link" id="updatescreenposition">
-                <code class="tsd-tag">Protected</code
-                ><span>update<wbr />Screen<wbr />Position</span
-                ><a
-                  href="#updatescreenposition"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures tsd-is-protected tsd-is-inherited">
-                <li class="tsd-is-inherited">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="updatescreenposition-1"
-                  >
-                    <span class="tsd-kind-call-signature"
-                      >updateScreenPosition</span
-                    ><span class="tsd-signature-symbol">(</span><br />    <span
-                      class="tsd-kind-parameter"
-                      >mesh</span
-                    ><span class="tsd-signature-symbol">?:</span
-                    ><br />        <span class="tsd-signature-symbol">|</span>
-                    <span class="tsd-signature-type">Object3D</span
-                    ><span class="tsd-signature-symbol">&lt;</span
-                    ><span class="tsd-signature-type">Object3DEventMap</span
-                    ><span class="tsd-signature-symbol">&gt;</span
-                    ><br />        <span class="tsd-signature-symbol">|</span>
-                    <span class="tsd-signature-type">Mesh</span
-                    ><span class="tsd-signature-symbol">&lt;</span
-                    ><br />            <span class="tsd-signature-type"
-                      >BufferGeometry</span
-                    ><span class="tsd-signature-symbol">&lt;</span
-                    ><span class="tsd-signature-type"
-                      >NormalBufferAttributes</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-signature-type"
-                      >BufferGeometryEventMap</span
-                    ><span class="tsd-signature-symbol">&gt;</span
-                    ><span class="tsd-signature-symbol">,</span
-                    ><br />            <span class="tsd-signature-type"
-                      >Material</span
-                    >
-                    <span class="tsd-signature-symbol">|</span>
-                    <span class="tsd-signature-type">Material</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">,</span
-                    ><br />            <span class="tsd-signature-type"
-                      >Object3DEventMap</span
-                    ><span class="tsd-signature-symbol">,</span
-                    ><br />        <span class="tsd-signature-symbol">&gt;</span
-                    ><span class="tsd-signature-symbol">,</span><br /><span
-                      class="tsd-signature-symbol"
-                      >)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">void</span
-                    ><a
-                      href="#updatescreenposition-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">mesh</span>:
-                            <br />    <span class="tsd-signature-symbol"
-                              >|</span
-                            >
-                            <span class="tsd-signature-type">Object3D</span
-                            ><span class="tsd-signature-symbol">&lt;</span
-                            ><span class="tsd-signature-type"
-                              >Object3DEventMap</span
-                            ><span class="tsd-signature-symbol">&gt;</span
-                            ><br />    <span class="tsd-signature-symbol"
-                              >|</span
-                            >
-                            <span class="tsd-signature-type">Mesh</span
-                            ><span class="tsd-signature-symbol">&lt;</span
-                            ><br />        <span class="tsd-signature-type"
-                              >BufferGeometry</span
-                            ><span class="tsd-signature-symbol">&lt;</span
-                            ><span class="tsd-signature-type"
-                              >NormalBufferAttributes</span
-                            ><span class="tsd-signature-symbol">,</span>
-                            <span class="tsd-signature-type"
-                              >BufferGeometryEventMap</span
-                            ><span class="tsd-signature-symbol">&gt;</span
-                            ><span class="tsd-signature-symbol">,</span
-                            ><br />        <span class="tsd-signature-type"
-                              >Material</span
-                            >
-                            <span class="tsd-signature-symbol">|</span>
-                            <span class="tsd-signature-type">Material</span
-                            ><span class="tsd-signature-symbol">[]</span
-                            ><span class="tsd-signature-symbol">,</span
-                            ><br />        <span class="tsd-signature-type"
-                              >Object3DEventMap</span
-                            ><span class="tsd-signature-symbol">,</span
-                            ><br />    <span class="tsd-signature-symbol"
-                              >&gt;</span
-                            ><span class="tsd-signature-symbol">
-                              = ...</span
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">void</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <p>
-                        Inherited from <a href="Sprite.html">Sprite</a>.<a
-                          href="Sprite.html#updatescreenposition"
-                          >updateScreenPosition</a
-                        >
-                      </p>
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/view/billboard.ts#L135"
-                            >src/view/billboard.ts:135</a
                           >
                         </li>
                       </ul>
@@ -4106,6 +4014,16 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>get<wbr />Mouse<wbr />Gear</span></a
+                  ><a
+                    href="#getprojection"
+                    class="tsd-is-protected tsd-is-inherited"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Method"
+                    >
+                      <use href="../assets/icons.svg#icon-2048"></use></svg
+                    ><span>get<wbr />Projection</span></a
                   ><a href="#getrow" class="tsd-is-protected tsd-is-inherited"
                     ><svg
                       class="tsd-kind-icon"
@@ -4114,22 +4032,22 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>get<wbr />Row</span></a
-                  ><a href="#getscreenpositionx" class="tsd-is-inherited"
+                  ><a href="#getworldx" class="tsd-is-inherited"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Screen<wbr />Position<wbr />X</span></a
-                  ><a href="#getscreenpositiony" class="tsd-is-inherited"
+                    ><span>get<wbr />World<wbr />X</span></a
+                  ><a href="#getworldy" class="tsd-is-inherited"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Screen<wbr />Position<wbr />Y</span></a
+                    ><span>get<wbr />World<wbr />Y</span></a
                   ><a
                     href="#handleframeupdate"
                     class="tsd-is-protected tsd-is-inherited"
@@ -4196,16 +4114,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>update<wbr />Group</span></a
-                  ><a
-                    href="#updatescreenposition"
-                    class="tsd-is-protected tsd-is-inherited"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>update<wbr />Screen<wbr />Position</span></a
                   ><a
                     href="#updatetexture"
                     class="tsd-is-protected tsd-is-inherited"

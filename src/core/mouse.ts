@@ -35,13 +35,17 @@ export class Mouse extends Vector2 {
     const pointer = event instanceof TouchEvent ? event.touches[0] : event
     if (pointer) {
       event.preventDefault()
+
       this.pageX = pointer.pageX
       this.pageY = pointer.pageY
 
       const HALF_WIDTH = innerWidth / 2
       const HALF_HEIGHT = innerHeight / 2
+      const playerY = state.player?.getWorldY() || 0
+      const y = (playerY + 1) * HALF_HEIGHT
+
       this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH)
-      this.y = this.clampNumber((this.pageY - HALF_HEIGHT) / HALF_HEIGHT)
+      this.y = this.clampNumber((this.pageY - y) / HALF_HEIGHT)
     }
   }
 

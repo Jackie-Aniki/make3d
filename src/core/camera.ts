@@ -4,6 +4,8 @@ import { Math_Half_PI, maxLevelHeight, state } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { Billboard } from '../view/billboard'
 
+const MIN_HEIGHT = maxLevelHeight / 2
+
 export class Camera extends PerspectiveCamera {
   static getFar() {
     return state.renderer.camera.far / Camera.FAR
@@ -11,17 +13,13 @@ export class Camera extends PerspectiveCamera {
 
   static readonly HEIGHT = 0.75
   static readonly DISTANCE = 2
-  static readonly LERP_RATIO = 0.0025
+  static readonly LERP_RATIO = 0.004
   static readonly FOV = 75
   static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
-  static readonly cameraPosition = new Vector3(
-    0,
-    maxLevelHeight / 2 + Camera.HEIGHT,
-    0
-  )
-  static readonly cameraTargetPosition = new Vector3(0, maxLevelHeight / 2, 0)
-  static readonly cameraProject = new Vector3()
+  static readonly cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0)
+  static readonly cameraLookAt = new Vector3(0, MIN_HEIGHT, 0)
+  static readonly projection = new Vector3()
 
   target?: Billboard
 
@@ -29,8 +27,9 @@ export class Camera extends PerspectiveCamera {
 
   constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
     super(fov, innerWidth / innerHeight, near, far)
-    this.position.copy(Camera.cameraPosition)
-    this.lookAt(Camera.cameraTargetPosition)
+
+    this.position.copy(Camera.cameraGoal)
+    this.lookAt(Camera.cameraLookAt)
   }
 
   onResize(width: number, height: number) {
@@ -40,15 +39,12 @@ export class Camera extends PerspectiveCamera {
   }
 
   update(ms = 0) {
-    this.updatePosition(ms)
-    this.lookAt(Camera.cameraTargetPosition)
-  }
+    if (!ms) return
 
-  updatePosition(ms = 0) {
-    if (!ms || !this.target) return
-
-    this.updateVectors(this.target)
-    this.position.lerp(Camera.cameraPosition, ms * Camera.LERP_RATIO)
+    this.updateGoal()
+    this.lerpToGoal(ms)
+    this.updateLookAt()
+    this.lookAt(Camera.cameraLookAt)
   }
 
   setLevel(level: Level) {
@@ -73,11 +69,26 @@ export class Camera extends PerspectiveCamera {
     return [cameraX, cameraY]
   }
 
-  protected updateVectors({ body, z }: Billboard) {
-    Camera.cameraTargetPosition.set(body.x, z, body.y)
+  protected updateLookAt() {
+    if (this.target) {
+      Camera.cameraLookAt.set(
+        this.target.body.x,
+        this.target.z + Camera.HEIGHT,
+        this.target.body.y
+      )
+    }
+  }
 
-    const [x, y] = this.getPositionBehind(body)
-    const from = this.getFloor(x, y) / 2
-    Camera.cameraPosition.set(x, Math.max(from, z) + Camera.HEIGHT, y)
+  protected updateGoal() {
+    if (this.target) {
+      const [x, y] = this.getPositionBehind(this.target.body)
+      const from = this.getFloor(x, y) / 2
+
+      Camera.cameraGoal.set(x, Math.max(from, this.target.z) + Camera.HEIGHT, y)
+    }
+  }
+
+  protected lerpToGoal(ms: number) {
+    this.position.lerp(Camera.cameraGoal, ms * Camera.LERP_RATIO)
   }
 }

@@ -122,20 +122,20 @@ export class Billboard {
     }
   }
 
-  getScreenPositionX() {
-    this.updateScreenPosition()
-    return (1 - Camera.cameraProject.x) * innerWidth
+  getWorldX() {
+    return this.getProjection()?.x || 0
   }
 
-  getScreenPositionY() {
-    this.updateScreenPosition()
-    return (1 - Camera.cameraProject.y) * innerHeight
+  getWorldY() {
+    return -(this.getProjection()?.y || 0)
   }
 
-  protected updateScreenPosition(mesh = this.mesh) {
+  protected getProjection() {
     if (state.renderer?.camera) {
-      mesh.getWorldPosition(Camera.cameraProject)
-      Camera.cameraProject.project(state.renderer.camera)
+      this.mesh.getWorldPosition(Camera.projection)
+      Camera.projection.project(state.renderer.camera)
+
+      return Camera.projection
     }
   }
 

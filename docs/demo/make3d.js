@@ -69718,8 +69718,10 @@ class Mouse extends Vector2 {
             this.pageY = pointer.pageY;
             const HALF_WIDTH = innerWidth / 2;
             const HALF_HEIGHT = innerHeight / 2;
+            const playerY = state.player?.getWorldY() || 0;
+            const y = (playerY + 1) * HALF_HEIGHT;
             this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH);
-            this.y = this.clampNumber((this.pageY - HALF_HEIGHT) / HALF_HEIGHT);
+            this.y = this.clampNumber((this.pageY - y) / HALF_HEIGHT);
         }
     }
     preventEvent(event) {
@@ -70417,6 +70419,7 @@ function requireDist () {
 
 var distExports = requireDist();
 
+const MIN_HEIGHT = maxLevelHeight / 2;
 class Camera extends PerspectiveCamera {
     static getFar() {
         return state.renderer.camera.far / Camera.FAR;
@@ -70424,8 +70427,8 @@ class Camera extends PerspectiveCamera {
     constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
         super(fov, innerWidth / innerHeight, near, far);
         this.distance = Camera.DISTANCE;
-        this.position.copy(Camera.cameraPosition);
-        this.lookAt(Camera.cameraTargetPosition);
+        this.position.copy(Camera.cameraGoal);
+        this.lookAt(Camera.cameraLookAt);
     }
     onResize(width, height) {
         this.aspect = width / height;
@@ -70433,14 +70436,12 @@ class Camera extends PerspectiveCamera {
         this.updateProjectionMatrix();
     }
     update(ms = 0) {
-        this.updatePosition(ms);
-        this.lookAt(Camera.cameraTargetPosition);
-    }
-    updatePosition(ms = 0) {
-        if (!ms || !this.target)
+        if (!ms)
             return;
-        this.updateVectors(this.target);
-        this.position.lerp(Camera.cameraPosition, ms * Camera.LERP_RATIO);
+        this.updateGoal();
+        this.lerpToGoal(ms);
+        this.updateLookAt();
+        this.lookAt(Camera.cameraLookAt);
     }
     setLevel(level) {
         this.getFloor = (x, y) => level.getFloor(x, y);
@@ -70459,22 +70460,31 @@ class Camera extends PerspectiveCamera {
         const cameraY = y - offsetY;
         return [cameraX, cameraY];
     }
-    updateVectors({ body, z }) {
-        Camera.cameraTargetPosition.set(body.x, z, body.y);
-        const [x, y] = this.getPositionBehind(body);
-        const from = this.getFloor(x, y) / 2;
-        Camera.cameraPosition.set(x, Math.max(from, z) + Camera.HEIGHT, y);
+    updateLookAt() {
+        if (this.target) {
+            Camera.cameraLookAt.set(this.target.body.x, this.target.z + Camera.HEIGHT, this.target.body.y);
+        }
+    }
+    updateGoal() {
+        if (this.target) {
+            const [x, y] = this.getPositionBehind(this.target.body);
+            const from = this.getFloor(x, y) / 2;
+            Camera.cameraGoal.set(x, Math.max(from, this.target.z) + Camera.HEIGHT, y);
+        }
+    }
+    lerpToGoal(ms) {
+        this.position.lerp(Camera.cameraGoal, ms * Camera.LERP_RATIO);
     }
 }
 Camera.HEIGHT = 0.75;
 Camera.DISTANCE = 2;
-Camera.LERP_RATIO = 0.0025;
+Camera.LERP_RATIO = 0.004;
 Camera.FOV = 75;
 Camera.NEAR = 0.01;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.cameraPosition = new Vector3(0, maxLevelHeight / 2 + Camera.HEIGHT, 0);
-Camera.cameraTargetPosition = new Vector3(0, maxLevelHeight / 2, 0);
-Camera.cameraProject = new Vector3();
+Camera.cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0);
+Camera.cameraLookAt = new Vector3(0, MIN_HEIGHT, 0);
+Camera.projection = new Vector3();
 
 /**
  * This code is an implementation of Alea algorithm; (C) 2010 Johannes Baagøe.
@@ -71519,18 +71529,17 @@ class Billboard {
             this.updateTexture();
         }
     }
-    getScreenPositionX() {
-        this.updateScreenPosition();
-        return (1 - Camera.cameraProject.x) * innerWidth;
+    getWorldX() {
+        return this.getProjection()?.x || 0;
     }
-    getScreenPositionY() {
-        this.updateScreenPosition();
-        return (1 - Camera.cameraProject.y) * innerHeight;
+    getWorldY() {
+        return -(this.getProjection()?.y || 0);
     }
-    updateScreenPosition(mesh = this.mesh) {
+    getProjection() {
         if (state.renderer?.camera) {
-            mesh.getWorldPosition(Camera.cameraProject);
-            Camera.cameraProject.project(state.renderer.camera);
+            this.mesh.getWorldPosition(Camera.projection);
+            Camera.projection.project(state.renderer.camera);
+            return Camera.projection;
         }
     }
     createMesh(textureName) {

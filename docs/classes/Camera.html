@@ -107,8 +107,8 @@
             <li>
               Defined in
               <a
-                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L7"
-                >src/core/camera.ts:7</a
+                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L9"
+                >src/core/camera.ts:9</a
               >
             </li>
           </ul>
@@ -696,32 +696,23 @@
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>zoom</span></a
                     >
-                    <a href="#cameraposition" class="tsd-index-link"
+                    <a href="#cameragoal" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>camera<wbr />Position</span></a
+                      ><span>camera<wbr />Goal</span></a
                     >
-                    <a href="#cameraproject" class="tsd-index-link"
+                    <a href="#cameralookat" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>camera<wbr />Project</span></a
-                    >
-                    <a href="#cameratargetposition" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>camera<wbr />Target<wbr />Position</span></a
+                      ><span>camera<wbr />Look<wbr />At</span></a
                     >
                     <a
                       href="#default_matrix_auto_update"
@@ -813,6 +804,15 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>NEAR</span></a
+                    >
+                    <a href="#projection" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>projection</span></a
                     >
                   </div>
                 </section>
@@ -1129,6 +1129,17 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>has<wbr />Event<wbr />Listener</span></a
+                    >
+                    <a
+                      href="#lerptogoal"
+                      class="tsd-index-link tsd-is-protected"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Method"
+                      >
+                        <use href="../assets/icons.svg#icon-2048"></use></svg
+                      ><span>lerp<wbr />To<wbr />Goal</span></a
                     >
                     <a
                       href="#localtoworld"
@@ -1503,6 +1514,28 @@
                       ><span>update</span></a
                     >
                     <a
+                      href="#updategoal"
+                      class="tsd-index-link tsd-is-protected"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Method"
+                      >
+                        <use href="../assets/icons.svg#icon-2048"></use></svg
+                      ><span>update<wbr />Goal</span></a
+                    >
+                    <a
+                      href="#updatelookat"
+                      class="tsd-index-link tsd-is-protected"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Method"
+                      >
+                        <use href="../assets/icons.svg#icon-2048"></use></svg
+                      ><span>update<wbr />Look<wbr />At</span></a
+                    >
+                    <a
                       href="#updatematrix"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
                       ><svg
@@ -1524,15 +1557,6 @@
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>update<wbr />Matrix<wbr />World</span></a
                     >
-                    <a href="#updateposition" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>update<wbr />Position</span></a
-                    >
                     <a
                       href="#updateprojectionmatrix"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
@@ -1543,17 +1567,6 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>update<wbr />Projection<wbr />Matrix</span></a
-                    >
-                    <a
-                      href="#updatevectors"
-                      class="tsd-index-link tsd-is-protected"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>update<wbr />Vectors</span></a
                     >
                     <a
                       href="#updateworldmatrix"
@@ -1697,8 +1710,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L26"
-                            >src/core/camera.ts:26</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L28"
+                            >src/core/camera.ts:28</a
                           >
                         </li>
                       </ul>
@@ -2131,8 +2144,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L24"
-                      >src/core/camera.ts:24</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L26"
+                      >src/core/camera.ts:26</a
                     >
                   </li>
                 </ul>
@@ -3845,8 +3858,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L22"
-                      >src/core/camera.ts:22</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L24"
+                      >src/core/camera.ts:24</a
                     >
                   </li>
                 </ul>
@@ -4269,12 +4282,12 @@
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="cameraposition">
+              <h3 class="tsd-anchor-link" id="cameragoal">
                 <code class="tsd-tag">Static</code>
                 <code class="tsd-tag">Readonly</code
-                ><span>camera<wbr />Position</span
+                ><span>camera<wbr />Goal</span
                 ><a
-                  href="#cameraposition"
+                  href="#cameragoal"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -4282,38 +4295,7 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">cameraPosition</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">Vector3</span
-                ><span class="tsd-signature-symbol"> = ...</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L18"
-                      >src/core/camera.ts:18</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="cameraproject">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code
-                ><span>camera<wbr />Project</span
-                ><a
-                  href="#cameraproject"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">cameraProject</span
+                <span class="tsd-kind-property">cameraGoal</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">Vector3</span
                 ><span class="tsd-signature-symbol"> = ...</span>
@@ -4331,12 +4313,12 @@
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="cameratargetposition">
+              <h3 class="tsd-anchor-link" id="cameralookat">
                 <code class="tsd-tag">Static</code>
                 <code class="tsd-tag">Readonly</code
-                ><span>camera<wbr />Target<wbr />Position</span
+                ><span>camera<wbr />Look<wbr />At</span
                 ><a
-                  href="#cameratargetposition"
+                  href="#cameralookat"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -4344,7 +4326,7 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">cameraTargetPosition</span
+                <span class="tsd-kind-property">cameraLookAt</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">Vector3</span
                 ><span class="tsd-signature-symbol"> = ...</span>
@@ -4354,8 +4336,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L19"
-                      >src/core/camera.ts:19</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L21"
+                      >src/core/camera.ts:21</a
                     >
                   </li>
                 </ul>
@@ -4546,8 +4528,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L13"
-                      >src/core/camera.ts:13</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L15"
+                      >src/core/camera.ts:15</a
                     >
                   </li>
                 </ul>
@@ -4575,8 +4557,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L17"
-                      >src/core/camera.ts:17</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L19"
+                      >src/core/camera.ts:19</a
                     >
                   </li>
                 </ul>
@@ -4601,8 +4583,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L15"
-                      >src/core/camera.ts:15</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L17"
+                      >src/core/camera.ts:17</a
                     >
                   </li>
                 </ul>
@@ -4630,8 +4612,8 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L12"
-                      >src/core/camera.ts:12</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L14"
+                      >src/core/camera.ts:14</a
                     >
                   </li>
                 </ul>
@@ -4653,15 +4635,15 @@
               <div class="tsd-signature">
                 <span class="tsd-kind-property">LERP_RATIO</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.0025</span>
+                <span class="tsd-signature-type">0.004</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L14"
-                      >src/core/camera.ts:14</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L16"
+                      >src/core/camera.ts:16</a
                     >
                   </li>
                 </ul>
@@ -4689,8 +4671,38 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L16"
-                      >src/core/camera.ts:16</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L18"
+                      >src/core/camera.ts:18</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="projection">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code><span>projection</span
+                ><a
+                  href="#projection"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">projection</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">Vector3</span
+                ><span class="tsd-signature-symbol"> = ...</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L22"
+                      >src/core/camera.ts:22</a
                     >
                   </li>
                 </ul>
@@ -7258,6 +7270,67 @@
                 </li>
               </ul>
             </section>
+            <section class="tsd-panel tsd-member tsd-is-protected">
+              <h3 class="tsd-anchor-link" id="lerptogoal">
+                <code class="tsd-tag">Protected</code
+                ><span>lerp<wbr />To<wbr />Goal</span
+                ><a
+                  href="#lerptogoal"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures tsd-is-protected">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="lerptogoal-1">
+                    <span class="tsd-kind-call-signature">lerpToGoal</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">ms</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">number</span
+                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">void</span
+                    ><a
+                      href="#lerptogoal-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">ms</span>:
+                            <span class="tsd-signature-type">number</span></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">void</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L91"
+                            >src/core/camera.ts:91</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
@@ -8250,8 +8323,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L32"
-                            >src/core/camera.ts:32</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L35"
+                            >src/core/camera.ts:35</a
                           >
                         </li>
                       </ul>
@@ -10791,8 +10864,103 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L38"
-                            >src/core/camera.ts:38</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L41"
+                            >src/core/camera.ts:41</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-protected">
+              <h3 class="tsd-anchor-link" id="updategoal">
+                <code class="tsd-tag">Protected</code
+                ><span>update<wbr />Goal</span
+                ><a
+                  href="#updategoal"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures tsd-is-protected">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="updategoal-1">
+                    <span class="tsd-kind-call-signature">updateGoal</span
+                    ><span class="tsd-signature-symbol">()</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">void</span
+                    ><a
+                      href="#updategoal-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">void</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L82"
+                            >src/core/camera.ts:82</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member tsd-is-protected">
+              <h3 class="tsd-anchor-link" id="updatelookat">
+                <code class="tsd-tag">Protected</code
+                ><span>update<wbr />Look<wbr />At</span
+                ><a
+                  href="#updatelookat"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures tsd-is-protected">
+                <li class="">
+                  <div
+                    class="tsd-signature tsd-anchor-link"
+                    id="updatelookat-1"
+                  >
+                    <span class="tsd-kind-call-signature">updateLookAt</span
+                    ><span class="tsd-signature-symbol">()</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">void</span
+                    ><a
+                      href="#updatelookat-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">void</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L72"
+                            >src/core/camera.ts:72</a
                           >
                         </li>
                       </ul>
@@ -10956,72 +11124,6 @@
                 </li>
               </ul>
             </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="updateposition">
-                <span>update<wbr />Position</span
-                ><a
-                  href="#updateposition"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="updateposition-1"
-                  >
-                    <span class="tsd-kind-call-signature">updatePosition</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">ms</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">void</span
-                    ><a
-                      href="#updateposition-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">ms</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">
-                              = 0</span
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">void</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L43"
-                            >src/core/camera.ts:43</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
@@ -11085,79 +11187,6 @@
                         <li>
                           Defined in
                           node_modules/@types/three/src/cameras/PerspectiveCamera.d.ts:246
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <h3 class="tsd-anchor-link" id="updatevectors">
-                <code class="tsd-tag">Protected</code
-                ><span>update<wbr />Vectors</span
-                ><a
-                  href="#updatevectors"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures tsd-is-protected">
-                <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="updatevectors-1"
-                  >
-                    <span class="tsd-kind-call-signature">updateVectors</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">__namedParameters</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <a
-                      href="Billboard.html"
-                      class="tsd-signature-type tsd-kind-class"
-                      >Billboard</a
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">void</span
-                    ><a
-                      href="#updatevectors-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter"
-                              >__namedParameters</span
-                            >:
-                            <a
-                              href="Billboard.html"
-                              class="tsd-signature-type tsd-kind-class"
-                              >Billboard</a
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">void</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L72"
-                            >src/core/camera.ts:72</a
-                          >
                         </li>
                       </ul>
                     </aside>
@@ -11372,8 +11401,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L8"
-                            >src/core/camera.ts:8</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L10"
+                            >src/core/camera.ts:10</a
                           >
                         </li>
                       </ul>
@@ -12014,30 +12043,22 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>zoom</span></a
-                  ><a href="#cameraposition"
+                  ><a href="#cameragoal"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>camera<wbr />Position</span></a
-                  ><a href="#cameraproject"
+                    ><span>camera<wbr />Goal</span></a
+                  ><a href="#cameralookat"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>camera<wbr />Project</span></a
-                  ><a href="#cameratargetposition"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>camera<wbr />Target<wbr />Position</span></a
+                    ><span>camera<wbr />Look<wbr />At</span></a
                   ><a
                     href="#default_matrix_auto_update"
                     class="tsd-is-inherited tsd-is-external"
@@ -12120,6 +12141,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>NEAR</span></a
+                  ><a href="#projection"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>projection</span></a
                   >
                 </div>
               </details>
@@ -12424,6 +12453,14 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>has<wbr />Event<wbr />Listener</span></a
+                  ><a href="#lerptogoal" class="tsd-is-protected"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Method"
+                    >
+                      <use href="../assets/icons.svg#icon-2048"></use></svg
+                    ><span>lerp<wbr />To<wbr />Goal</span></a
                   ><a
                     href="#localtoworld"
                     class="tsd-is-inherited tsd-is-external"
@@ -12742,6 +12779,22 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>update</span></a
+                  ><a href="#updategoal" class="tsd-is-protected"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Method"
+                    >
+                      <use href="../assets/icons.svg#icon-2048"></use></svg
+                    ><span>update<wbr />Goal</span></a
+                  ><a href="#updatelookat" class="tsd-is-protected"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Method"
+                    >
+                      <use href="../assets/icons.svg#icon-2048"></use></svg
+                    ><span>update<wbr />Look<wbr />At</span></a
                   ><a
                     href="#updatematrix"
                     class="tsd-is-inherited tsd-is-external"
@@ -12762,14 +12815,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>update<wbr />Matrix<wbr />World</span></a
-                  ><a href="#updateposition"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>update<wbr />Position</span></a
                   ><a
                     href="#updateprojectionmatrix"
                     class="tsd-is-inherited tsd-is-external"
@@ -12780,14 +12825,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>update<wbr />Projection<wbr />Matrix</span></a
-                  ><a href="#updatevectors" class="tsd-is-protected"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>update<wbr />Vectors</span></a
                   ><a
                     href="#updateworldmatrix"
                     class="tsd-is-inherited tsd-is-external"
