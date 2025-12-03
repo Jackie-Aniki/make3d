@@ -51,11 +51,6 @@ export class Player extends Sprite {
     }
   }
 
-  update(ms: number) {
-    this.state.mouse.updateMouseXY()
-    super.update(ms)
-  }
-
   protected spawn(level: Level) {
     super.spawn(level, 0, 0)
   }

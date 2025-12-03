@@ -4,7 +4,7 @@ import { Billboard } from './billboard'
 export class Tree extends Billboard {
   static readonly DEFAULT_PROPS = {
     textureName: 'tree',
-    scale: 2
+    scale: 1.5
   }
 
   constructor(level: Level, x?: number, y?: number) {

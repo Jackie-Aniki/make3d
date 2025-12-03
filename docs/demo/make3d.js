@@ -69712,34 +69712,21 @@ class Mouse extends Vector2 {
     }
     onPointerMove(event) {
         const pointer = event instanceof TouchEvent ? event.touches[0] : event;
-        if (pointer && state.player) {
+        if (pointer) {
             event.preventDefault();
             this.pageX = pointer.pageX;
             this.pageY = pointer.pageY;
+            const HALF_WIDTH = innerWidth / 2;
+            const HALF_HEIGHT = innerHeight / 2;
+            this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH);
+            this.y = this.clampNumber((this.pageY - HALF_HEIGHT) / HALF_HEIGHT);
         }
-    }
-    updateMouseXY() {
-        const multiply = this.getMultiply();
-        this.x = this.clampX(this.pageX - innerWidth / 2, multiply);
-        this.y = this.clampY(this.pageY - this.getCenterY(), multiply);
-    }
-    getCenterY() {
-        return state.player?.getScreenPosition().y || innerHeight / 2;
-    }
-    getMultiply() {
-        return 2 / Math.min(innerWidth, innerHeight);
-    }
-    clampX(x, multiply) {
-        return this.clampNumber(x * multiply * 1.33);
-    }
-    clampY(y, multiply) {
-        return this.clampNumber(y * multiply * 2);
     }
     preventEvent(event) {
         event.preventDefault();
     }
-    clampNumber(n) {
-        return Math.max(-1, Math.min(1, n));
+    clampNumber(n, multiply = 2) {
+        return Math.max(-1, Math.min(1, n * multiply));
     }
 }
 const mouse = new Mouse();
@@ -70437,9 +70424,8 @@ class Camera extends PerspectiveCamera {
     constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
         super(fov, innerWidth / innerHeight, near, far);
         this.distance = Camera.DISTANCE;
-        this.position.copy(Camera.targetVector);
-        this.quaternion.copy(Camera.tempQuaternion);
-        this.lookAt(Camera.lookAtVector);
+        this.position.copy(Camera.cameraPosition);
+        this.lookAt(Camera.cameraTargetPosition);
     }
     onResize(width, height) {
         this.aspect = width / height;
@@ -70447,30 +70433,14 @@ class Camera extends PerspectiveCamera {
         this.updateProjectionMatrix();
     }
     update(ms = 0) {
-        const target = this.getTargetPosition();
-        if (!target)
-            return;
-        if (ms) {
-            const lerpFactor = ms * Camera.LERP_RATIO;
-            this.position.lerp(target.position, lerpFactor);
-            Camera.tempQuaternion.copy(this.quaternion);
-            Camera.tempQuaternion.slerp(target.quaternion, lerpFactor);
-            this.rotation.setFromQuaternion(Camera.tempQuaternion);
-        }
-        else {
-            this.position.copy(target.position);
-            this.quaternion.copy(target.quaternion);
-        }
-        this.lookAt(target.lookAt);
+        this.updatePosition(ms);
+        this.lookAt(Camera.cameraTargetPosition);
     }
-    getScreenPosition(target) {
-        target.getWorldPosition(Camera.targetVector);
-        Camera.targetVector.project(this);
-        const halfWidth = innerWidth / 2;
-        const halfHeight = innerHeight / 2;
-        const screenX = Camera.targetVector.x * halfWidth + halfWidth;
-        const screenY = -Camera.targetVector.y * halfHeight + halfHeight;
-        return { x: screenX, y: screenY };
+    updatePosition(ms = 0) {
+        if (!ms || !this.target)
+            return;
+        this.updateVectors(this.target);
+        this.position.lerp(Camera.cameraPosition, ms * Camera.LERP_RATIO);
     }
     setLevel(level) {
         this.getFloor = (x, y) => level.getFloor(x, y);
@@ -70481,41 +70451,30 @@ class Camera extends PerspectiveCamera {
     getFloor(_x, _y) {
         return 0;
     }
-    getCameraPosition({ x = 0, y = 0, angle = 0 } = {}, height = 0) {
-        const adjustedAngle = -angle + Math_Half_PI;
+    getPositionBehind({ x = 0, y = 0, angle = 0 } = {}) {
+        const adjustedAngle = Math_Half_PI - angle;
         const offsetX = Math.sin(adjustedAngle) * this.distance;
         const offsetY = Math.cos(adjustedAngle) * this.distance;
         const cameraX = x - offsetX;
         const cameraY = y - offsetY;
-        return {
-            x: cameraX,
-            y: cameraY,
-            height
-        };
+        return [cameraX, cameraY];
     }
-    getTargetPosition() {
-        if (!this.target)
-            return;
-        const { body } = this.target;
-        const { x, y, height } = this.getCameraPosition(body, this.target.z);
-        const floorHeight = this.getFloor(x, y) / 2;
-        const positionHeight = Math.max(floorHeight, height) + Camera.HEIGHT;
-        const position = Camera.targetVector.set(x, positionHeight, y);
-        const lookHeight = height / 2 + Camera.HEIGHT * 1.5;
-        const lookAt = Camera.lookAtVector.set(body.x, lookHeight, body.y);
-        const quaternion = this.target.mesh.quaternion;
-        return { position, lookAt, quaternion };
+    updateVectors({ body, z }) {
+        Camera.cameraTargetPosition.set(body.x, z, body.y);
+        const [x, y] = this.getPositionBehind(body);
+        const from = this.getFloor(x, y) / 2;
+        Camera.cameraPosition.set(x, Math.max(from, z) + Camera.HEIGHT, y);
     }
 }
-Camera.DISTANCE = 1.5;
+Camera.HEIGHT = 0.75;
+Camera.DISTANCE = 2;
+Camera.LERP_RATIO = 0.0025;
+Camera.FOV = 75;
+Camera.NEAR = 0.01;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.HEIGHT = 0.5;
-Camera.LERP_RATIO = 0.0033;
-Camera.FOV = 80;
-Camera.NEAR = 0.1;
-Camera.targetVector = new Vector3(0, Camera.HEIGHT, 0);
-Camera.lookAtVector = new Vector3(0, 0, 0);
-Camera.tempQuaternion = new Quaternion();
+Camera.cameraPosition = new Vector3(0, Camera.HEIGHT, 0);
+Camera.cameraTargetPosition = new Vector3();
+Camera.cameraProject = new Vector3();
 
 /**
  * This code is an implementation of Alea algorithm; (C) 2010 Johannes Baagøe.
@@ -71565,8 +71524,19 @@ class Billboard {
             this.updateTexture();
         }
     }
-    getScreenPosition() {
-        return state.renderer.camera.getScreenPosition(this.mesh);
+    getScreenPositionX() {
+        this.updateScreenPosition();
+        return (1 - Camera.cameraProject.x) * innerWidth;
+    }
+    getScreenPositionY() {
+        this.updateScreenPosition();
+        return (1 - Camera.cameraProject.y) * innerHeight;
+    }
+    updateScreenPosition(mesh = this.mesh) {
+        if (state.renderer?.camera) {
+            mesh.getWorldPosition(Camera.cameraProject);
+            Camera.cameraProject.project(state.renderer.camera);
+        }
     }
     createMesh(textureName) {
         try {
@@ -71638,7 +71608,7 @@ class Bush extends Billboard {
 }
 Bush.DEFAULT_PROPS = {
     textureName: 'bush',
-    scale: 1,
+    scale: 1
 };
 
 class DynamicBody extends Circle {
@@ -71691,10 +71661,7 @@ class Sprite extends Billboard {
     }
     getMouseGear() {
         if (this.state.keys.up || this.state.keys.down) {
-            const mouseY = this.state.keys.up ? 0 : innerHeight;
-            const centerY = this.state.mouse.getCenterY();
-            const multiply = this.state.mouse.getMultiply();
-            return -this.state.mouse.clampY(mouseY - centerY, multiply);
+            return this.state.keys.up ? 1 : -1;
         }
         return this.state.mouseDown ? -this.state.mouse.y : 0;
     }
@@ -71730,7 +71697,9 @@ class Sprite extends Billboard {
     }
     updateAngle(deltaTime) {
         const scaleX = this.state.keys.left || this.state.keys.right
-            ? this.state.mouse.clampX((this.state.keys.left ? -0.5 : 0.5) * innerWidth, this.state.mouse.getMultiply())
+            ? this.state.keys.left
+                ? -1
+                : 1
             : this.state.mouseDown
                 ? this.state.mouse.x
                 : 0;
@@ -71788,10 +71757,6 @@ class Player extends Sprite {
             state.player = this;
             state.renderer.setTarget(this);
         }
-    }
-    update(ms) {
-        this.state.mouse.updateMouseXY();
-        super.update(ms);
     }
     spawn(level) {
         super.spawn(level, 0, 0);
@@ -71879,7 +71844,7 @@ class Tree extends Billboard {
 }
 Tree.DEFAULT_PROPS = {
     textureName: 'tree',
-    scale: 2
+    scale: 1.5
 };
 
 class BoxMesh extends InstancedMesh {

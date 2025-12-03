@@ -1,4 +1,4 @@
-import { Object3D, PerspectiveCamera, Quaternion, Vector3 } from 'three'
+import { PerspectiveCamera, Vector3 } from 'three'
 import { Level } from '../level'
 import { Math_Half_PI, state } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
@@ -9,16 +9,15 @@ export class Camera extends PerspectiveCamera {
     return state.renderer.camera.far / Camera.FAR
   }
 
-  static readonly DISTANCE = 1.5
+  static readonly HEIGHT = 0.75
+  static readonly DISTANCE = 2
+  static readonly LERP_RATIO = 0.0025
+  static readonly FOV = 75
+  static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
-
-  protected static readonly HEIGHT = 0.5
-  protected static readonly LERP_RATIO = 0.0033
-  protected static readonly FOV = 80
-  protected static readonly NEAR = 0.1
-  protected static readonly targetVector = new Vector3(0, Camera.HEIGHT, 0)
-  protected static readonly lookAtVector = new Vector3(0, 0, 0)
-  protected static readonly tempQuaternion = new Quaternion()
+  static readonly cameraPosition = new Vector3(0, Camera.HEIGHT, 0)
+  static readonly cameraTargetPosition = new Vector3()
+  static readonly cameraProject = new Vector3()
 
   target?: Billboard
 
@@ -26,9 +25,8 @@ export class Camera extends PerspectiveCamera {
 
   constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
     super(fov, innerWidth / innerHeight, near, far)
-    this.position.copy(Camera.targetVector)
-    this.quaternion.copy(Camera.tempQuaternion)
-    this.lookAt(Camera.lookAtVector)
+    this.position.copy(Camera.cameraPosition)
+    this.lookAt(Camera.cameraTargetPosition)
   }
 
   onResize(width: number, height: number) {
@@ -38,33 +36,15 @@ export class Camera extends PerspectiveCamera {
   }
 
   update(ms = 0) {
-    const target = this.getTargetPosition()
-    if (!target) return
-
-    if (ms) {
-      const lerpFactor = ms * Camera.LERP_RATIO
-      this.position.lerp(target.position, lerpFactor)
-      Camera.tempQuaternion.copy(this.quaternion)
-      Camera.tempQuaternion.slerp(target.quaternion, lerpFactor)
-      this.rotation.setFromQuaternion(Camera.tempQuaternion)
-    } else {
-      this.position.copy(target.position)
-      this.quaternion.copy(target.quaternion)
-    }
-
-    this.lookAt(target.lookAt)
+    this.updatePosition(ms)
+    this.lookAt(Camera.cameraTargetPosition)
   }
 
-  getScreenPosition(target: Object3D) {
-    target.getWorldPosition(Camera.targetVector)
-    Camera.targetVector.project(this)
+  updatePosition(ms = 0) {
+    if (!ms || !this.target) return
 
-    const halfWidth = innerWidth / 2
-    const halfHeight = innerHeight / 2
-    const screenX = Camera.targetVector.x * halfWidth + halfWidth
-    const screenY = -Camera.targetVector.y * halfHeight + halfHeight
-
-    return { x: screenX, y: screenY }
+    this.updateVectors(this.target)
+    this.position.lerp(Camera.cameraPosition, ms * Camera.LERP_RATIO)
   }
 
   setLevel(level: Level) {
@@ -79,35 +59,21 @@ export class Camera extends PerspectiveCamera {
     return 0
   }
 
-  protected getCameraPosition({ x = 0, y = 0, angle = 0 } = {}, height = 0) {
-    const adjustedAngle = -angle + Math_Half_PI
+  protected getPositionBehind({ x = 0, y = 0, angle = 0 } = {}) {
+    const adjustedAngle = Math_Half_PI - angle
     const offsetX = Math.sin(adjustedAngle) * this.distance
     const offsetY = Math.cos(adjustedAngle) * this.distance
     const cameraX = x - offsetX
     const cameraY = y - offsetY
 
-    return {
-      x: cameraX,
-      y: cameraY,
-      height
-    }
+    return [cameraX, cameraY]
   }
 
-  protected getTargetPosition() {
-    if (!this.target) return
+  protected updateVectors({ body, z }: Billboard) {
+    Camera.cameraTargetPosition.set(body.x, z, body.y)
 
-    const { body } = this.target
-    const { x, y, height } = this.getCameraPosition(body, this.target.z)
-
-    const floorHeight = this.getFloor(x, y) / 2
-    const positionHeight = Math.max(floorHeight, height) + Camera.HEIGHT
-    const position = Camera.targetVector.set(x, positionHeight, y)
-
-    const lookHeight = height / 2 + Camera.HEIGHT * 1.5
-    const lookAt = Camera.lookAtVector.set(body.x, lookHeight, body.y)
-
-    const quaternion = this.target.mesh.quaternion
-
-    return { position, lookAt, quaternion }
+    const [x, y] = this.getPositionBehind(body)
+    const from = this.getFloor(x, y) / 2
+    Camera.cameraPosition.set(x, Math.max(from, z) + Camera.HEIGHT, y)
   }
 }

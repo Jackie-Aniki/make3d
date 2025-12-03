@@ -89,7 +89,7 @@
           </ul>
           <h1>Class Mouse</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="695">
+        <section class="tsd-panel tsd-hierarchy" data-refl="684">
           <h4>Hierarchy</h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
@@ -358,9 +358,7 @@
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>clamp<wbr />Length</span></a
                     >
-                    <a
-                      href="#clampnumber"
-                      class="tsd-index-link tsd-is-protected"
+                    <a href="#clampnumber" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
@@ -379,24 +377,6 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>clamp<wbr />Scalar</span></a
-                    >
-                    <a href="#clampx" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>clamp<wbr />X</span></a
-                    >
-                    <a href="#clampy" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>clamp<wbr />Y</span></a
                     >
                     <a
                       href="#clone"
@@ -530,15 +510,6 @@
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>from<wbr />Buffer<wbr />Attribute</span></a
                     >
-                    <a href="#getcentery" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Center<wbr />Y</span></a
-                    >
                     <a
                       href="#getcomponent"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
@@ -549,15 +520,6 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>get<wbr />Component</span></a
-                    >
-                    <a href="#getmultiply" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Multiply</span></a
                     >
                     <a
                       href="#length"
@@ -880,15 +842,6 @@
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
                       ><span>to<wbr />Array</span></a
-                    >
-                    <a href="#updatemousexy" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>update<wbr />Mouse<wbr />XY</span></a
                     >
                   </div>
                 </section>
@@ -2018,10 +1971,9 @@
                 </li>
               </ul>
             </section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
+            <section class="tsd-panel tsd-member">
               <h3 class="tsd-anchor-link" id="clampnumber">
-                <code class="tsd-tag">Protected</code
-                ><span>clamp<wbr />Number</span
+                <span>clamp<wbr />Number</span
                 ><a
                   href="#clampnumber"
                   aria-label="Permalink"
@@ -2030,13 +1982,17 @@
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
-              <ul class="tsd-signatures tsd-is-protected">
+              <ul class="tsd-signatures">
                 <li class="">
                   <div class="tsd-signature tsd-anchor-link" id="clampnumber-1">
                     <span class="tsd-kind-call-signature">clampNumber</span
                     ><span class="tsd-signature-symbol">(</span
                     ><span class="tsd-kind-parameter">n</span
                     ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">number</span
+                    ><span class="tsd-signature-symbol">,</span>
+                    <span class="tsd-kind-parameter">multiply</span
+                    ><span class="tsd-signature-symbol">?:</span>
                     <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">)</span
                     ><span class="tsd-signature-symbol">:</span>
@@ -2059,6 +2015,15 @@
                             <span class="tsd-signature-type">number</span></span
                           >
                         </li>
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">multiply</span>:
+                            <span class="tsd-signature-type">number</span
+                            ><span class="tsd-signature-symbol">
+                              = 2</span
+                            ></span
+                          >
+                        </li>
                       </ul>
                     </div>
                     <h4 class="tsd-returns-title">
@@ -2069,8 +2034,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L69"
-                            >src/core/mouse.ts:69</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L52"
+                            >src/core/mouse.ts:52</a
                           >
                         </li>
                       </ul>
@@ -2162,146 +2127,6 @@
                         <li>
                           Defined in
                           node_modules/@types/three/src/math/Vector2.d.ts:155
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="clampx">
-                <span>clamp<wbr />X</span
-                ><a
-                  href="#clampx"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="clampx-1">
-                    <span class="tsd-kind-call-signature">clampX</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">x</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">multiply</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#clampx-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">x</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">multiply</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L57"
-                            >src/core/mouse.ts:57</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="clampy">
-                <span>clamp<wbr />Y</span
-                ><a
-                  href="#clampy"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="clampy-1">
-                    <span class="tsd-kind-call-signature">clampY</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">y</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">multiply</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#clampy-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">y</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">multiply</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L61"
-                            >src/core/mouse.ts:61</a
-                          >
                         </li>
                       </ul>
                     </aside>
@@ -3110,51 +2935,6 @@
                 </li>
               </ul>
             </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="getcentery">
-                <span>get<wbr />Center<wbr />Y</span
-                ><a
-                  href="#getcentery"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="getcentery-1">
-                    <span class="tsd-kind-call-signature">getCenterY</span
-                    ><span class="tsd-signature-symbol">()</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#getcentery-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L49"
-                            >src/core/mouse.ts:49</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
@@ -3214,51 +2994,6 @@
                         <li>
                           Defined in
                           node_modules/@types/three/src/math/Vector2.d.ts:58
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="getmultiply">
-                <span>get<wbr />Multiply</span
-                ><a
-                  href="#getmultiply"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="getmultiply-1">
-                    <span class="tsd-kind-call-signature">getMultiply</span
-                    ><span class="tsd-signature-symbol">()</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#getmultiply-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L53"
-                            >src/core/mouse.ts:53</a
-                          >
                         </li>
                       </ul>
                     </aside>
@@ -4300,8 +4035,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L65"
-                            >src/core/mouse.ts:65</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L48"
+                            >src/core/mouse.ts:48</a
                           >
                         </li>
                       </ul>
@@ -5384,54 +5119,6 @@
                 </li>
               </ul>
             </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="updatemousexy">
-                <span>update<wbr />Mouse<wbr />XY</span
-                ><a
-                  href="#updatemousexy"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="updatemousexy-1"
-                  >
-                    <span class="tsd-kind-call-signature">updateMouseXY</span
-                    ><span class="tsd-signature-symbol">()</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">void</span
-                    ><a
-                      href="#updatemousexy-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">void</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/mouse.ts#L43"
-                            >src/core/mouse.ts:43</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
           </section>
         </details>
       </div>
@@ -5801,7 +5488,7 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>clamp<wbr />Length</span></a
-                  ><a href="#clampnumber" class="tsd-is-protected"
+                  ><a href="#clampnumber"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
@@ -5819,22 +5506,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>clamp<wbr />Scalar</span></a
-                  ><a href="#clampx"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>clamp<wbr />X</span></a
-                  ><a href="#clampy"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>clamp<wbr />Y</span></a
                   ><a href="#clone" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
@@ -5939,14 +5610,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>from<wbr />Buffer<wbr />Attribute</span></a
-                  ><a href="#getcentery"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Center<wbr />Y</span></a
                   ><a
                     href="#getcomponent"
                     class="tsd-is-inherited tsd-is-external"
@@ -5957,14 +5620,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>get<wbr />Component</span></a
-                  ><a href="#getmultiply"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Multiply</span></a
                   ><a href="#length" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
@@ -6221,14 +5876,6 @@
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
                     ><span>to<wbr />Array</span></a
-                  ><a href="#updatemousexy"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>update<wbr />Mouse<wbr />XY</span></a
                   >
                 </div>
               </details>

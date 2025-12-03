@@ -16,6 +16,7 @@ import {
   loadTextures,
   normalizeAngle
 } from '../utils/view-utils'
+import { Camera } from '../core/camera'
 
 export interface BillboardCreateProps extends Omit<
   BillboardProps,
@@ -124,8 +125,21 @@ export class Billboard {
     }
   }
 
-  getScreenPosition() {
-    return state.renderer.camera.getScreenPosition(this.mesh)
+  getScreenPositionX() {
+    this.updateScreenPosition()
+    return (1 - Camera.cameraProject.x) * innerWidth
+  }
+
+  getScreenPositionY() {
+    this.updateScreenPosition()
+    return (1 - Camera.cameraProject.y) * innerHeight
+  }
+
+  protected updateScreenPosition(mesh = this.mesh) {
+    if (state.renderer?.camera) {
+      mesh.getWorldPosition(Camera.cameraProject)
+      Camera.cameraProject.project(state.renderer.camera)
+    }
   }
 
   protected createMesh(textureName: string) {

@@ -33,41 +33,24 @@ export class Mouse extends Vector2 {
 
   onPointerMove(event: MouseEvent | TouchEvent) {
     const pointer = event instanceof TouchEvent ? event.touches[0] : event
-    if (pointer && state.player) {
+    if (pointer) {
       event.preventDefault()
       this.pageX = pointer.pageX
       this.pageY = pointer.pageY
+
+      const HALF_WIDTH = innerWidth / 2
+      const HALF_HEIGHT = innerHeight / 2
+      this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH)
+      this.y = this.clampNumber((this.pageY - HALF_HEIGHT) / HALF_HEIGHT)
     }
-  }
-
-  updateMouseXY() {
-    const multiply = this.getMultiply()
-    this.x = this.clampX(this.pageX - innerWidth / 2, multiply)
-    this.y = this.clampY(this.pageY - this.getCenterY(), multiply)
-  }
-
-  getCenterY() {
-    return state.player?.getScreenPosition().y || innerHeight / 2
-  }
-
-  getMultiply() {
-    return 2 / Math.min(innerWidth, innerHeight)
-  }
-
-  clampX(x: number, multiply: number) {
-    return this.clampNumber(x * multiply * 1.33)
-  }
-
-  clampY(y: number, multiply: number) {
-    return this.clampNumber(y * multiply * 2)
   }
 
   preventEvent(event: Event) {
     event.preventDefault()
   }
 
-  protected clampNumber(n: number) {
-    return Math.max(-1, Math.min(1, n))
+  clampNumber(n: number, multiply = 2) {
+    return Math.max(-1, Math.min(1, n * multiply))
   }
 }
 
