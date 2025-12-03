@@ -89,7 +89,7 @@
           </ul>
           <h1>Class Loader</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="2104">
+        <section class="tsd-panel tsd-hierarchy" data-refl="2111">
           <h4>Hierarchy</h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
@@ -696,6 +696,8 @@
                 ><span class="tsd-signature-symbol">,</span>
                 <span class="tsd-signature-type">string</span
                 ><span class="tsd-signature-symbol">&gt;</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <aside class="tsd-sources">
                 <p>Inherited from LoadingManager.getHandler</p>
@@ -1088,8 +1090,9 @@
               </h3>
               <div class="tsd-signature">
                 <span class="tsd-kind-property">onStart</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-symbol">(</span
+                ><span class="tsd-signature-symbol">:</span> (<span
+                  class="tsd-signature-symbol"
+                  >(</span
                 ><span class="tsd-kind-parameter">url</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">string</span
@@ -1103,81 +1106,50 @@
                 <span class="tsd-signature-type">number</span
                 ><span class="tsd-signature-symbol">)</span>
                 <span class="tsd-signature-symbol">=&gt;</span>
-                <span class="tsd-signature-type">void</span>
+                <span class="tsd-signature-type">void</span>)
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">undefined</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>Will be called when loading of an item starts.</p>
               </div>
-              <div class="tsd-type-declaration">
-                <h4>Type Declaration</h4>
-                <ul class="tsd-parameters">
-                  <li class="tsd-parameter-signature">
-                    <ul class="tsd-signatures tsd-is-external">
-                      <li class="tsd-signature">
-                        <span class="tsd-signature-symbol">(</span
-                        ><span class="tsd-kind-parameter">url</span
-                        ><span class="tsd-signature-symbol">:</span>
-                        <span class="tsd-signature-type">string</span
-                        ><span class="tsd-signature-symbol">,</span>
-                        <span class="tsd-kind-parameter">loaded</span
-                        ><span class="tsd-signature-symbol">:</span>
-                        <span class="tsd-signature-type">number</span
-                        ><span class="tsd-signature-symbol">,</span>
-                        <span class="tsd-kind-parameter">total</span
-                        ><span class="tsd-signature-symbol">:</span>
-                        <span class="tsd-signature-type">number</span
-                        ><span class="tsd-signature-symbol">)</span
-                        ><span class="tsd-signature-symbol">:</span>
-                        <span class="tsd-signature-type">void</span>
-                      </li>
-                      <li class="tsd-description">
-                        <div class="tsd-parameters">
-                          <h4 class="tsd-parameters-title">Parameters</h4>
-                          <ul class="tsd-parameter-list">
-                            <li>
-                              <span
-                                ><span class="tsd-kind-parameter">url</span>:
-                                <span class="tsd-signature-type"
-                                  >string</span
-                                ></span
-                              >
-                              <div class="tsd-comment tsd-typography">
-                                <p>The url of the item that started loading.</p>
-                              </div>
-                            </li>
-                            <li>
-                              <span
-                                ><span class="tsd-kind-parameter">loaded</span>:
-                                <span class="tsd-signature-type"
-                                  >number</span
-                                ></span
-                              >
-                              <div class="tsd-comment tsd-typography">
-                                <p>
-                                  The number of items already loaded so far.
-                                </p>
-                              </div>
-                            </li>
-                            <li>
-                              <span
-                                ><span class="tsd-kind-parameter">total</span>:
-                                <span class="tsd-signature-type"
-                                  >number</span
-                                ></span
-                              >
-                              <div class="tsd-comment tsd-typography">
-                                <p>The total amount of items to be loaded.</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                        <h4 class="tsd-returns-title">
-                          Returns <span class="tsd-signature-type">void</span>
-                        </h4>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+              <div class="tsd-comment tsd-typography">
+                <div class="tsd-tag-param">
+                  <h4 class="tsd-anchor-link" id="param-url">
+                    Param: url<a
+                      href="#param-url"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>The url of the item that started loading.</p>
+                </div>
+                <div class="tsd-tag-param">
+                  <h4 class="tsd-anchor-link" id="param-loaded">
+                    Param: loaded<a
+                      href="#param-loaded"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>The number of items already loaded so far.</p>
+                </div>
+                <div class="tsd-tag-param">
+                  <h4 class="tsd-anchor-link" id="param-total">
+                    Param: total<a
+                      href="#param-total"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </h4>
+                  <p>The total amount of items to be loaded.</p>
+                </div>
               </div>
               <aside class="tsd-sources">
                 <p>Inherited from LoadingManager.onStart</p>

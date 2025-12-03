@@ -70,3 +70,5 @@ export class Mouse extends Vector2 {
     return Math.max(-1, Math.min(1, n))
   }
 }
+
+export const mouse = new Mouse()

@@ -15,8 +15,7 @@ export default {
     typescript({
       tsconfig: './tsconfig.esm.json',
       sourceMap: true,
-      declaration: false,
-      declarationMap: false
+      declaration: false
     })
   ]
 }

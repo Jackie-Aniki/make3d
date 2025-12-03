@@ -1,6 +1,5 @@
 import { groupBits, System } from 'check2d'
 import { FrontSide, Texture } from 'three'
-import { Mouse } from '../core/mouse'
 import { Loader } from '../loader'
 import { AppState, Direction, Key } from '../model'
 import { DeviceDetector } from '../utils/detect-mobile'
@@ -19,8 +18,6 @@ export const keys: Partial<Record<Key, boolean>> = {}
 
 export const loadedTextures: Record<string, Texture> = {}
 
-export const mouse = new Mouse()
-
 export const physics = new System()
 
 export const loader = new Loader()
@@ -32,11 +29,11 @@ export const floors = Array.from(
 
 export const state: AppState = {
   keys,
-  mouse,
+  mouse: null,
   renderer: null,
   player: null,
   npcs: []
-}
+} as any
 
 export const materialProps = {
   side: FrontSide

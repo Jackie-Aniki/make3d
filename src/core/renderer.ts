@@ -6,8 +6,7 @@ import {
   Object3D,
   Scene,
   Texture,
-  WebGLRenderer,
-  WebGLRendererParameters
+  WebGLRenderer
 } from 'three'
 import { SetProps } from '../model'
 import { state } from '../state'
@@ -56,45 +55,17 @@ export class Renderer extends WebGLRenderer {
   }
 
   constructor(canvas?: HTMLCanvasElement) {
-    const props: WebGLRendererParameters = {
+    super({
+      canvas,
       powerPreference: 'high-performance',
       antialias: true
-    }
+    })
 
-    if (canvas) {
-      props.canvas = canvas
-    }
-
-    super(props)
-    this.outputColorSpace = LinearSRGBColorSpace
-    this.scene.background = new Color(Renderer.backgroundColor)
-
-    if ('fps' in queryParams) {
-      this.stats = new Stats(this)
-    }
-
-    this.domElement.classList.add('make3d')
-    if (!this.domElement.parentElement) {
-      document.body.appendChild(this.domElement)
-    }
-
-    this.createFog()
-    this.setAnimationLoop(this.animation.bind(this))
-
-    this.onResize()
-    window.addEventListener('resize', () => this.onResize())
+    this.onCreate()
   }
 
   add(child: RendererChild) {
     this.children.push(child)
-  }
-
-  onResize() {
-    requestAnimationFrame(() => {
-      this.setSize(innerWidth, innerHeight)
-      this.camera.onResize(innerWidth, innerHeight)
-      this.render(this.scene, this.camera)
-    })
   }
 
   setTarget(target: SetProps['target']) {
@@ -107,6 +78,36 @@ export class Renderer extends WebGLRenderer {
   setLevel(level: SetProps['level']) {
     this.camera.setLevel(level)
     this.scene.add(level.mesh)
+  }
+
+  protected onCreate() {
+    this.outputColorSpace = LinearSRGBColorSpace
+    this.scene.background = new Color(Renderer.backgroundColor)
+
+    this.onResize()
+    this.createFog()
+    this.setAnimationLoop(this.animation.bind(this))
+
+    this.domElement.classList.add('make3d')
+    this.domElement.addEventListener('contextlost', console.warn)
+
+    window.addEventListener('resize', this.onResize.bind(this))
+
+    if (!this.domElement.parentElement) {
+      document.body.appendChild(this.domElement)
+    }
+
+    if ('fps' in queryParams) {
+      this.stats = new Stats(this)
+    }
+  }
+
+  protected onResize() {
+    requestAnimationFrame(() => {
+      this.setSize(innerWidth, innerHeight)
+      this.camera.onResize(innerWidth, innerHeight)
+      this.render(this.scene, this.camera)
+    })
   }
 
   protected animation() {

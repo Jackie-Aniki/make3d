@@ -1,11 +1,14 @@
+import { mouse } from '../core/mouse'
 import { Level } from '../level'
 import { BillboardProps, Direction, SpriteState } from '../model'
 import { state } from '../state'
 import { BillboardCreateProps } from './billboard'
 import { Sprite } from './sprite'
 
-export interface PlayerProps
-  extends Omit<BillboardProps, 'level' | 'textureName'> {
+export interface PlayerProps extends Omit<
+  BillboardProps,
+  'level' | 'textureName'
+> {
   texture: string
 }
 
@@ -36,19 +39,20 @@ export class Player extends Sprite {
     }
   }
 
-  readonly state: SpriteState
+  declare readonly state: SpriteState
 
   constructor({ level, ...props }: BillboardProps, setTarget = true) {
     super({ ...Player.DEFAULT_PROPS, level, ...props }, state)
 
     if (setTarget) {
+      state.mouse = mouse
       state.player = this
       state.renderer.setTarget(this)
     }
   }
 
   update(ms: number) {
-    state.mouse.updateMouseXY()
+    this.state.mouse.updateMouseXY()
     super.update(ms)
   }
 

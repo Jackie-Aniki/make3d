@@ -1,4 +1,5 @@
-import { keys, mouse } from './state'
+import { mouse } from './core/mouse'
+import { keys } from './state'
 
 export const setKey = (value: boolean) => {
   return (event: KeyboardEvent) => {
@@ -53,10 +54,18 @@ export class Events {
 
   protected static readonly keyDown = setKey(true)
   protected static readonly keyUp = setKey(false)
-  protected static readonly click = mouse.onPointerDown.bind(mouse)
-  protected static readonly release = mouse.onPointerUp.bind(mouse)
-  protected static readonly move = mouse.onPointerMove.bind(mouse)
-  protected static readonly cancel = mouse.preventEvent.bind(mouse)
+  protected static readonly click = mouse.onPointerDown.bind(
+    mouse
+  ) as EventListener
+  protected static readonly release = mouse.onPointerUp.bind(
+    mouse
+  ) as EventListener
+  protected static readonly move = mouse.onPointerMove.bind(
+    mouse
+  ) as EventListener
+  protected static readonly cancel = mouse.preventEvent.bind(
+    mouse
+  ) as EventListener
   protected static readonly events = {
     pointerdown: Events.click,
     pointermove: Events.move,

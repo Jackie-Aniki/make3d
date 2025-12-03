@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "types": ["node"],
+    "lib": ["es2020", "dom"],
     "experimentalDecorators": true,
     "esModuleInterop": true,
+    "strict": true,
     "allowJs": true,
+    "sourceMap": false,
     "declaration": true,
-    "declarationMap": true,
-    "moduleResolution": "node",
-    "target": "es2017",
-    "module": "none",
+    "declarationMap": false,
+    "moduleResolution": "bundler",
+    "target": "es2020",
+    "module": "es2020",
     "outDir": "dist",
-    "rootDir": "src",
-    "jsx": "react",
-    "skipLibCheck": true
+    "types": ["check2d", "pixi-stats", "rot-js", "sat", "three"]
   },
-  "include": ["src/*.ts", "src/**/*.ts"],
-  "files": ["src/index.ts"]
+  "files": ["src/index.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

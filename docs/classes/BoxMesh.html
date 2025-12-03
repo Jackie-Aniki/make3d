@@ -89,7 +89,7 @@
           </ul>
           <h1>Class BoxMesh</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="1724">
+        <section class="tsd-panel tsd-hierarchy" data-refl="1729">
           <h4>Hierarchy</h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
@@ -470,6 +470,17 @@
                       ><span>normal<wbr />Matrix</span></a
                     >
                     <a
+                      href="#occlusiontest"
+                      class="tsd-index-link tsd-is-inherited tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>occlusion<wbr />Test?</span></a
+                    >
+                    <a
                       href="#parent"
                       class="tsd-index-link tsd-is-inherited tsd-is-external"
                       ><svg
@@ -545,6 +556,17 @@
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>scale</span></a
+                    >
+                    <a
+                      href="#static"
+                      class="tsd-index-link tsd-is-inherited tsd-is-external"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>static?</span></a
                     >
                     <a
                       href="#type"
@@ -1500,6 +1522,8 @@
                 <span class="tsd-kind-property">boundingBox</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">Box3</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
@@ -1566,6 +1590,8 @@
                 <span class="tsd-kind-property">boundingSphere</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">Sphere</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
@@ -1863,7 +1889,9 @@
               <div class="tsd-comment tsd-typography">
                 <p>
                   Same as
-                  <a href="#customdepthmaterial" class="tsd-kind-property"
+                  <a
+                    href="Camera.html#customdepthmaterial"
+                    class="tsd-kind-property"
                     >customDepthMaterial</a
                   >, but used with THREE.Object3DPointLight | PointLight.
                 </p>
@@ -2056,6 +2084,8 @@
                 <span class="tsd-kind-property">instanceColor</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">InstancedBufferAttribute</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
@@ -2870,6 +2900,8 @@
                 <span class="tsd-kind-property">morphTexture</span
                 ><span class="tsd-signature-symbol">:</span>
                 <span class="tsd-signature-type">DataTexture</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
@@ -2988,6 +3020,35 @@
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
+              <h3 class="tsd-anchor-link" id="occlusiontest">
+                <code class="tsd-tag">Optional</code
+                ><span>occlusion<wbr />Test</span
+                ><a
+                  href="#occlusiontest"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">occlusionTest</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">boolean</span>
+              </div>
+              <aside class="tsd-sources">
+                <p>Inherited from InstancedMesh.occlusionTest</p>
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@types/three/src/renderers/common/Backend.d.ts:9
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section
+              class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
+            >
               <h3 class="tsd-anchor-link" id="parent">
                 <span>parent</span
                 ><a
@@ -3005,6 +3066,8 @@
                 ><span class="tsd-signature-symbol">&lt;</span
                 ><span class="tsd-signature-type">Object3DEventMap</span
                 ><span class="tsd-signature-symbol">&gt;</span>
+                <span class="tsd-signature-symbol">|</span>
+                <span class="tsd-signature-type">null</span>
               </div>
               <div class="tsd-comment tsd-typography">
                 <p>
@@ -3359,6 +3422,34 @@
             <section
               class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
             >
+              <h3 class="tsd-anchor-link" id="static">
+                <code class="tsd-tag">Optional</code><span>static</span
+                ><a
+                  href="#static"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">static</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">boolean</span>
+              </div>
+              <aside class="tsd-sources">
+                <p>Inherited from InstancedMesh.static</p>
+                <ul>
+                  <li>
+                    Defined in
+                    node_modules/@types/three/src/renderers/common/Backend.d.ts:11
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section
+              class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"
+            >
               <h3 class="tsd-anchor-link" id="type">
                 <code class="tsd-tag">Readonly</code><span>type</span
                 ><a href="#type" aria-label="Permalink" class="tsd-anchor-icon"
@@ -3631,7 +3722,9 @@
               <div class="tsd-comment tsd-typography">
                 <p>
                   The default setting for
-                  <a href="#matrixautoupdate" class="tsd-kind-property"
+                  <a
+                    href="Camera.html#matrixautoupdate"
+                    class="tsd-kind-property"
                     >matrixAutoUpdate</a
                   >
                   for newly created Object3Ds.
@@ -3685,7 +3778,9 @@
               <div class="tsd-comment tsd-typography">
                 <p>
                   The default setting for
-                  <a href="#matrixworldautoupdate" class="tsd-kind-property"
+                  <a
+                    href="Camera.html#matrixworldautoupdate"
+                    class="tsd-kind-property"
                     >matrixWorldAutoUpdate</a
                   >
                   for newly created Object3Ds.
@@ -3738,8 +3833,8 @@
               <div class="tsd-comment tsd-typography">
                 <p>
                   The default
-                  <a href="#up" class="tsd-kind-property">up</a> direction for
-                  objects, also used as the default position for
+                  <a href="Camera.html#up" class="tsd-kind-property">up</a>
+                  direction for objects, also used as the default position for
                   THREE.DirectionalLight | DirectionalLight,
                   THREE.HemisphereLight | HemisphereLight and THREE.Spotlight |
                   Spotlight (which creates lights shining from the top down).
@@ -5131,7 +5226,9 @@
                     <span class="tsd-signature-type">Object3D</span
                     ><span class="tsd-signature-symbol">&lt;</span
                     ><span class="tsd-signature-type">Object3DEventMap</span
-                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">&gt;</span>
+                    <span class="tsd-signature-symbol">|</span>
+                    <span class="tsd-signature-type">undefined</span
                     ><a
                       href="#getobjectbyid-1"
                       aria-label="Permalink"
@@ -5170,6 +5267,8 @@
                       ><span class="tsd-signature-symbol">&lt;</span
                       ><span class="tsd-signature-type">Object3DEventMap</span
                       ><span class="tsd-signature-symbol">&gt;</span>
+                      <span class="tsd-signature-symbol">|</span>
+                      <span class="tsd-signature-type">undefined</span>
                     </h4>
                     <div class="tsd-comment tsd-typography">
                       <div class="tsd-tag-remarks">
@@ -5252,7 +5351,9 @@
                     <span class="tsd-signature-type">Object3D</span
                     ><span class="tsd-signature-symbol">&lt;</span
                     ><span class="tsd-signature-type">Object3DEventMap</span
-                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">&gt;</span>
+                    <span class="tsd-signature-symbol">|</span>
+                    <span class="tsd-signature-type">undefined</span
                     ><a
                       href="#getobjectbyname-1"
                       aria-label="Permalink"
@@ -5292,6 +5393,8 @@
                       ><span class="tsd-signature-symbol">&lt;</span
                       ><span class="tsd-signature-type">Object3DEventMap</span
                       ><span class="tsd-signature-symbol">&gt;</span>
+                      <span class="tsd-signature-symbol">|</span>
+                      <span class="tsd-signature-type">undefined</span>
                     </h4>
                     <div class="tsd-comment tsd-typography">
                       <div class="tsd-tag-remarks">
@@ -5347,20 +5450,26 @@
                   >
                     <span class="tsd-kind-call-signature"
                       >getObjectByProperty</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">name</span
+                    ><span class="tsd-signature-symbol">(</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >name</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">string</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">value</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >value</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">any</span
-                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">,</span><br /><span
+                      class="tsd-signature-symbol"
+                      >)</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">Object3D</span
                     ><span class="tsd-signature-symbol">&lt;</span
                     ><span class="tsd-signature-type">Object3DEventMap</span
-                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">&gt;</span>
+                    <span class="tsd-signature-symbol">|</span>
+                    <span class="tsd-signature-type">undefined</span
                     ><a
                       href="#getobjectbyproperty-1"
                       aria-label="Permalink"
@@ -5405,6 +5514,8 @@
                       ><span class="tsd-signature-symbol">&lt;</span
                       ><span class="tsd-signature-type">Object3DEventMap</span
                       ><span class="tsd-signature-symbol">&gt;</span>
+                      <span class="tsd-signature-symbol">|</span>
+                      <span class="tsd-signature-type">undefined</span>
                     </h4>
                     <aside class="tsd-sources">
                       <p>Inherited from InstancedMesh.getObjectByProperty</p>
@@ -8232,7 +8343,9 @@
                           class="tsd-kind-parameter"
                           >angle</a
                         >) on the
-                        <a href="#quaternion" class="tsd-kind-property"
+                        <a
+                          href="Camera.html#quaternion"
+                          class="tsd-kind-property"
                           >.quaternion</a
                         >.
                       </p>
@@ -8326,7 +8439,9 @@
                           class="tsd-kind-parameter"
                           >euler</a
                         >) on the
-                        <a href="#quaternion" class="tsd-kind-property"
+                        <a
+                          href="Camera.html#quaternion"
+                          class="tsd-kind-property"
                           >.quaternion</a
                         >.
                       </p>
@@ -8406,7 +8521,9 @@
                           class="tsd-kind-parameter"
                           >m</a
                         >) on the
-                        <a href="#quaternion" class="tsd-kind-property"
+                        <a
+                          href="Camera.html#quaternion"
+                          class="tsd-kind-property"
                           >.quaternion</a
                         >.
                       </p>
@@ -8505,7 +8622,9 @@
                     <div class="tsd-comment tsd-typography">
                       <p>
                         Copy the given THREE.Quaternion | Quaternion into
-                        <a href="#quaternion" class="tsd-kind-property"
+                        <a
+                          href="Camera.html#quaternion"
+                          class="tsd-kind-property"
                           >.quaternion</a
                         >.
                       </p>
@@ -9345,7 +9464,7 @@
                         Updates the global transform of the object. And will
                         update the object descendants if
                         <a
-                          href="#matrixworldneedsupdate"
+                          href="Camera.html#matrixworldneedsupdate"
                           class="tsd-kind-property"
                           >.matrixWorldNeedsUpdate</a
                         >
@@ -9373,7 +9492,7 @@
                             <p>
                               A boolean that can be used to bypass
                               <a
-                                href="#matrixworldautoupdate"
+                                href="Camera.html#matrixworldautoupdate"
                                 class="tsd-kind-property"
                                 >.matrixWorldAutoUpdate</a
                               >, to recalculate the world matrix of the object
@@ -9381,7 +9500,7 @@
                               you cannot wait for the renderer to update it on
                               the next frame, assuming
                               <a
-                                href="#matrixworldautoupdate"
+                                href="Camera.html#matrixworldautoupdate"
                                 class="tsd-kind-property"
                                 >.matrixWorldAutoUpdate</a
                               >
@@ -10039,6 +10158,16 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>normal<wbr />Matrix</span></a
+                  ><a
+                    href="#occlusiontest"
+                    class="tsd-is-inherited tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>occlusion<wbr />Test</span></a
                   ><a href="#parent" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"
@@ -10101,6 +10230,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>scale</span></a
+                  ><a href="#static" class="tsd-is-inherited tsd-is-external"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>static</span></a
                   ><a href="#type" class="tsd-is-inherited tsd-is-external"
                     ><svg
                       class="tsd-kind-icon"

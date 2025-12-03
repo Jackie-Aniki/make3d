@@ -17,8 +17,10 @@ import {
   normalizeAngle
 } from '../utils/view-utils'
 
-export interface BillboardCreateProps
-  extends Omit<BillboardProps, 'textureName' | 'level'> {
+export interface BillboardCreateProps extends Omit<
+  BillboardProps,
+  'textureName' | 'level'
+> {
   texture: string
 }
 
@@ -41,7 +43,7 @@ export class Billboard {
   protected static tempVectorDivide = new Vector3(2, 2, 2)
 
   mesh: Mesh | Object3D
-  body: BaseBody
+  body!: BaseBody
 
   protected frame = 0
   protected direction: Direction = 'up'

@@ -23,7 +23,7 @@ export class Sprite extends Billboard {
   protected static readonly GRAVITY = 0.005
   protected static readonly JUMP_SPEED = 0.075
 
-  body: DynamicBody
+  declare readonly body: DynamicBody
 
   protected velocity = 0
   protected state: SpriteState
