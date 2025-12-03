@@ -12,8 +12,6 @@ export const maxLevelHeight =
 
 export const waterZ = 0.5
 
-export const doubleClickTime = 400
-
 export const keys: Partial<Record<Key, boolean>> = {}
 
 export const loadedTextures: Record<string, Texture> = {}

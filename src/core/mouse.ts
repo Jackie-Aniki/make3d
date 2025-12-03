@@ -1,34 +1,39 @@
 import { Vector2 } from 'three'
-import { doubleClickTime, state } from '../state'
+import { state } from '../state'
 
 export class Mouse extends Vector2 {
+  static readonly DBL_CLICK = 300
+
   protected pageX = innerWidth / 2
   protected pageY = innerWidth / 2
-  protected lastClickTime = 0
 
   onPointerDown(event: PointerEvent) {
-    const clickTime = Date.now()
-    if (clickTime - this.lastClickTime < doubleClickTime) {
-      state.keys.space = true
-      setTimeout(() => {
-        state.keys.space = false
-      }, 100)
-    }
-
-    this.lastClickTime = clickTime
-    state.mouseDown = true
-
     this.preventEvent(event)
     this.onPointerMove(event)
+
+    state.mouseDown = true
+    if (state.player) {
+      const now = Date.now()
+      if (now - state.player.clickTime > Mouse.DBL_CLICK) {
+        state.player.clickTime = now
+      } else {
+        state.player.jumpStart().then(() => {
+          state.player.jumpEnd()
+        })
+      }
+    }
   }
 
   onPointerUp(event: PointerEvent | TouchEvent) {
-    event.preventDefault()
+    this.preventEvent(event)
+
     state.mouseDown = false
     state.keys.up = false
     state.keys.down = false
     state.keys.left = false
     state.keys.right = false
+
+    state.player?.jumpEnd()
   }
 
   onPointerMove(event: MouseEvent | TouchEvent) {

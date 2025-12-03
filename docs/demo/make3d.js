@@ -69652,7 +69652,6 @@ DeviceDetector.HIGH_END = !DeviceDetector.LOW_END;
 const minLevelHeight = DeviceDetector.HIGH_END ? 2 : 1;
 const maxLevelHeight = 'height' in queryParams ? Number(queryParams.height) : 6;
 const waterZ = 0.5;
-const doubleClickTime = 400;
 const keys = {};
 const loadedTextures = {};
 const physics = new System();
@@ -69687,28 +69686,31 @@ class Mouse extends Vector2 {
         super(...arguments);
         this.pageX = innerWidth / 2;
         this.pageY = innerWidth / 2;
-        this.lastClickTime = 0;
     }
     onPointerDown(event) {
-        const clickTime = Date.now();
-        if (clickTime - this.lastClickTime < doubleClickTime) {
-            state.keys.space = true;
-            setTimeout(() => {
-                state.keys.space = false;
-            }, 100);
-        }
-        this.lastClickTime = clickTime;
-        state.mouseDown = true;
         this.preventEvent(event);
         this.onPointerMove(event);
+        state.mouseDown = true;
+        if (state.player) {
+            const now = Date.now();
+            if (now - state.player.clickTime > Mouse.DBL_CLICK) {
+                state.player.clickTime = now;
+            }
+            else {
+                state.player.jumpStart().then(() => {
+                    state.player.jumpEnd();
+                });
+            }
+        }
     }
     onPointerUp(event) {
-        event.preventDefault();
+        this.preventEvent(event);
         state.mouseDown = false;
         state.keys.up = false;
         state.keys.down = false;
         state.keys.left = false;
         state.keys.right = false;
+        state.player?.jumpEnd();
     }
     onPointerMove(event) {
         const pointer = event instanceof TouchEvent ? event.touches[0] : event;
@@ -69731,6 +69733,7 @@ class Mouse extends Vector2 {
         return Math.max(-1, Math.min(1, n * multiply));
     }
 }
+Mouse.DBL_CLICK = 300;
 const mouse = new Mouse();
 
 const setKey = (value) => {
@@ -71298,7 +71301,7 @@ Ocean.DEEP_WATER_Z = -0.2;
 Ocean.SHALLOW_WATER = {
     opacity: 0.7,
     waveLength: 0.12,
-    strength: 0.8,
+    strength: 0.8
 };
 
 const loadTextures = async (texturePaths) => {
@@ -71612,7 +71615,7 @@ class DynamicBody extends Circle {
         super({ x, y }, radius, { group: floors[0], padding });
         this.angle = Math.random() * Math_Double_PI;
     }
-    separate(timeScale = 1) {
+    separate(timeScale = 1, onCollide) {
         const separationDynamic = timeScale * DynamicBody.SEPARATION_DYNAMIC;
         const separationStatic = timeScale * DynamicBody.SEPARATION_STATIC;
         this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {
@@ -71625,13 +71628,14 @@ class DynamicBody extends Circle {
                 this.setPosition(this.x - dx, this.y - dy);
                 b.setPosition(b.x + dx * 2, b.y + dy * 2);
             }
+            onCollide?.();
         });
     }
 }
 DynamicBody.RADIUS = 0.2;
 DynamicBody.PADDING = 0.1;
 DynamicBody.SEPARATION_DYNAMIC = 0.33;
-DynamicBody.SEPARATION_STATIC = 0.5;
+DynamicBody.SEPARATION_STATIC = 1;
 
 class Sprite extends Billboard {
     static async create(level, props, Class = Sprite) {
@@ -71639,31 +71643,62 @@ class Sprite extends Billboard {
     }
     constructor(props, state = { keys: {}, mouse: new Mouse() }) {
         super(props);
+        this.clickTime = 0;
+        this.clickTimeout = 0;
         this.velocity = 0;
         this.state = state;
         this.spawn(props.level);
     }
     update(ms) {
         const deltaTime = ms * 0.001;
-        const mouseGear = this.getMouseGear();
-        const moveSpeed = mouseGear * Sprite.MOVE_SPEED;
+        const speed = this.getSpeed();
         this.updateAngle(deltaTime);
-        this.processMovement(deltaTime, moveSpeed);
-        this.handleFrameUpdate(ms, mouseGear);
+        this.processMovement(deltaTime, speed * Sprite.MOVE_SPEED);
+        this.handleFrameUpdate(ms, speed);
         super.update(ms);
     }
-    getMouseGear() {
-        if (this.state.keys.up || this.state.keys.down) {
-            return this.state.keys.up ? 1 : -1;
+    getSpeed() {
+        if (this.state.keys.up)
+            return 1;
+        if (this.state.keys.down)
+            return -1;
+        if (this.state.mouseDown)
+            return -this.state.mouse.y;
+        return 0;
+    }
+    jump() {
+        if (Date.now() - this.clickTime > Sprite.CLICK_PREVENT) {
+            this.jumpStart().then(() => {
+                this.jumpEnd();
+            });
         }
-        return this.state.mouseDown ? -this.state.mouse.y : 0;
+    }
+    jumpStart() {
+        return new Promise((resolve) => {
+            this.clickTime = Date.now();
+            this.state.keys.space = true;
+            if (this.clickTimeout) {
+                clearTimeout(this.clickTimeout);
+            }
+            this.clickTimeout = setTimeout(() => {
+                resolve();
+            }, Sprite.CLICK_DURATION);
+        });
+    }
+    jumpEnd() {
+        this.state.keys.space = false;
+    }
+    onCollide() {
+        if (this.getSpeed()) {
+            this.jump();
+        }
     }
     processMovement(deltaTime, moveSpeed) {
         let timeLeft = deltaTime * 60;
         while (timeLeft > 0) {
             const timeScale = Math.min(1, timeLeft);
             this.body.move(moveSpeed * timeScale);
-            this.body.separate(timeScale);
+            this.body.separate(timeScale, this.onCollide.bind(this));
             this.updateZ(timeScale);
             timeLeft -= timeScale;
         }
@@ -71733,8 +71768,10 @@ class Sprite extends Billboard {
 }
 Sprite.MOVE_SPEED = 0.05;
 Sprite.ROTATE_SPEED = 3;
-Sprite.GRAVITY = 0.005;
 Sprite.JUMP_SPEED = 0.075;
+Sprite.GRAVITY = 0.005;
+Sprite.CLICK_PREVENT = 600;
+Sprite.CLICK_DURATION = 200;
 
 class Player extends Sprite {
     static async create(level, props = { texture: 'player.webp' }, Class = Player) {
@@ -71946,5 +71983,5 @@ Level.BUSH_CHANCE = 0.6;
 Level.BUSH_HEIGHT_START = 1;
 Level.BUSH_ITERATIONS = 1;
 
-export { BaseLevel, Billboard, BoxMesh, Bush, Camera, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, Tree, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, doubleClickTime, floors, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
+export { BaseLevel, Billboard, BoxMesh, Bush, Camera, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, Tree, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, floors, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
 //# sourceMappingURL=index.js.map

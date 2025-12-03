@@ -6,7 +6,7 @@ export class DynamicBody extends Circle implements BaseBody {
   protected static readonly RADIUS = 0.2
   protected static readonly PADDING = 0.1
   protected static readonly SEPARATION_DYNAMIC = 0.33
-  protected static readonly SEPARATION_STATIC = 0.5
+  protected static readonly SEPARATION_STATIC = 1
 
   angle = Math.random() * Math_Double_PI
 
@@ -19,7 +19,7 @@ export class DynamicBody extends Circle implements BaseBody {
     super({ x, y }, radius, { group: floors[0], padding })
   }
 
-  separate(timeScale: number = 1) {
+  separate(timeScale: number = 1, onCollide?: () => void) {
     const separationDynamic = timeScale * DynamicBody.SEPARATION_DYNAMIC
     const separationStatic = timeScale * DynamicBody.SEPARATION_STATIC
 
@@ -36,6 +36,8 @@ export class DynamicBody extends Circle implements BaseBody {
         this.setPosition(this.x - dx, this.y - dy)
         b.setPosition(b.x + dx * 2, b.y + dy * 2)
       }
+
+      onCollide?.()
     })
   }
 }

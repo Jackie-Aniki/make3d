@@ -15,13 +15,18 @@ export class Sprite extends Billboard {
     return Billboard.create<T>(level, props, Class)
   }
 
-  protected static readonly MOVE_SPEED = 0.05
-  protected static readonly ROTATE_SPEED = 3
-  protected static readonly GRAVITY = 0.005
-  protected static readonly JUMP_SPEED = 0.075
+  static readonly MOVE_SPEED = 0.05
+  static readonly ROTATE_SPEED = 3
+  static readonly JUMP_SPEED = 0.075
+  static readonly GRAVITY = 0.005
+  static readonly CLICK_PREVENT = 600
+  static readonly CLICK_DURATION = 200
 
   declare readonly body: DynamicBody
 
+  clickTime = 0
+
+  protected clickTimeout = 0
   protected velocity = 0
   protected state: SpriteState
 
@@ -36,22 +41,56 @@ export class Sprite extends Billboard {
 
   update(ms: number) {
     const deltaTime = ms * 0.001
-    const mouseGear = this.getMouseGear()
-    const moveSpeed = mouseGear * Sprite.MOVE_SPEED
+    const speed = this.getSpeed()
 
     this.updateAngle(deltaTime)
-    this.processMovement(deltaTime, moveSpeed)
-    this.handleFrameUpdate(ms, mouseGear)
+    this.processMovement(deltaTime, speed * Sprite.MOVE_SPEED)
+    this.handleFrameUpdate(ms, speed)
 
     super.update(ms)
   }
 
-  getMouseGear() {
-    if (this.state.keys.up || this.state.keys.down) {
-      return this.state.keys.up ? 1 : -1
-    }
+  getSpeed() {
+    if (this.state.keys.up) return 1
 
-    return this.state.mouseDown ? -this.state.mouse.y : 0
+    if (this.state.keys.down) return -1
+
+    if (this.state.mouseDown) return -this.state.mouse.y
+
+    return 0
+  }
+
+  jump() {
+    if (Date.now() - this.clickTime > Sprite.CLICK_PREVENT) {
+      this.jumpStart().then(() => {
+        this.jumpEnd()
+      })
+    }
+  }
+
+  jumpStart() {
+    return new Promise<void>((resolve) => {
+      this.clickTime = Date.now()
+      this.state.keys.space = true
+
+      if (this.clickTimeout) {
+        clearTimeout(this.clickTimeout)
+      }
+
+      this.clickTimeout = setTimeout(() => {
+        resolve()
+      }, Sprite.CLICK_DURATION)
+    })
+  }
+
+  jumpEnd() {
+    this.state.keys.space = false
+  }
+
+  protected onCollide() {
+    if (this.getSpeed()) {
+      this.jump()
+    }
   }
 
   protected processMovement(deltaTime: number, moveSpeed: number) {
@@ -59,7 +98,7 @@ export class Sprite extends Billboard {
     while (timeLeft > 0) {
       const timeScale = Math.min(1, timeLeft)
       this.body.move(moveSpeed * timeScale)
-      this.body.separate(timeScale)
+      this.body.separate(timeScale, this.onCollide.bind(this))
       this.updateZ(timeScale)
       timeLeft -= timeScale
     }
