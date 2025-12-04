@@ -2,7 +2,6 @@ import { AbstractBody } from '../body/abstract-body'
 import { DynamicBody } from '../body/dynamic-body'
 import { Mouse } from '../core/mouse'
 import { Level } from '../level'
-import { AbstractLevel } from '../level/abstract-level'
 import { BaseBody, BillboardProps, SpriteState } from '../model'
 import { physics } from '../state'
 import { normalizeAngle } from '../utils/view-utils'
@@ -17,7 +16,7 @@ export class Sprite extends Billboard {
     return Billboard.create<T>(level, props, Class)
   }
 
-  static readonly JUMP_SPEED = 3 * AbstractLevel.STEP
+  static readonly JUMP_SPEED = 1.05
   static readonly ANIM_SPEED = 0.002
   static readonly SPIN_SPEED = 0.06
   static readonly MOVE_SPEED = 0.1
@@ -138,7 +137,7 @@ export class Sprite extends Billboard {
     this.body.move(speed)
 
     const diffs = this.body.separate(scale)
-    if (diffs.find((z) => z - AbstractLevel.STEP < 0.1)) {
+    if (diffs.find((z) => z < 0.75)) {
       this.onCollide()
     }
   }
@@ -168,6 +167,11 @@ export class Sprite extends Billboard {
     if (newScaleX && oldScaleX !== newScaleX) {
       this.mesh.scale.set(newScaleX, 1, 1)
     }
+  }
+
+  protected spawn(level: Level, x?: number, y?: number) {
+    super.spawn(level, x, y)
+    this.body.separate(1)
   }
 
   protected createBody(x: number, y: number, level: Level): BaseBody {

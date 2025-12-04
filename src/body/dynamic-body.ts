@@ -5,9 +5,8 @@ import { Math_Double_PI } from '../state'
 import { AbstractBody } from './abstract-body'
 
 export class DynamicBody extends Circle<BodyUserData> implements BaseBody {
-  protected static readonly RADIUS = 0.2
-  protected static readonly PADDING = 0.1
-  protected static readonly SEPARATION = 0.33
+  static readonly RADIUS = 0.2
+  static readonly PADDING = 0
 
   z = 0
   angle = Math.random() * Math_Double_PI
@@ -23,7 +22,7 @@ export class DynamicBody extends Circle<BodyUserData> implements BaseBody {
     super({ x, y }, radius, { padding, userData: { level } })
   }
 
-  separate(scale: number) {
+  separate(scale = 1) {
     const diffs: number[] = []
 
     this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {

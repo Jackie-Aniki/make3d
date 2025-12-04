@@ -3,7 +3,7 @@ import { maxLevelHeight, minLevelHeight, physics } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 
 export abstract class AbstractLevel {
-  static readonly STEP = 0.33
+  static readonly STEP = 0.25
   static readonly COLS = DeviceDetector.HIGH_END ? 48 : 24
   static readonly ROWS = DeviceDetector.HIGH_END ? 48 : 24
 

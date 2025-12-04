@@ -3,8 +3,9 @@ import { Math_Half_PI, maxLevelHeight, state } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { Sprite } from '../view/sprite'
 import { AbstractBody } from '../body/abstract-body'
+import { AbstractLevel } from '../level/abstract-level'
 
-const MIN_HEIGHT = maxLevelHeight / 2
+const MIN_HEIGHT = maxLevelHeight * AbstractLevel.STEP
 
 export class Camera extends PerspectiveCamera {
   static getFar() {

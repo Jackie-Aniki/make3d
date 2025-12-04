@@ -1,18 +1,18 @@
 import { System } from 'check2d'
-import { FrontSide, Texture } from 'three'
+import { FrontSide, MeshBasicMaterialParameters, Texture } from 'three'
 import { Loader } from '../loader'
 import { AppState, Direction, Key } from '../model'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { queryParams } from '../utils/query-params'
 
-export const minLevelHeight = DeviceDetector.HIGH_END ? 2 : 1
+export const minLevelHeight = DeviceDetector.HIGH_END ? 4 : 3
 
 export const maxLevelHeight =
   'height' in queryParams
     ? Number(queryParams.height)
     : DeviceDetector.HIGH_END
-      ? 8
-      : 6
+      ? 16
+      : 12
 
 export const waterZ = 0.5
 
@@ -32,11 +32,11 @@ export const state: AppState = {
   npcs: []
 } as any
 
-export const materialProps = {
+export const materialProps: MeshBasicMaterialParameters = {
   side: FrontSide
 }
 
-export const alphaMaterialProps = {
+export const alphaMaterialProps: MeshBasicMaterialParameters = {
   ...materialProps,
   transparent: true,
   alphaTest: 1

@@ -12,15 +12,19 @@ export class NPC extends Sprite {
     return Sprite.create<T>(level, props, Class)
   }
 
+  static randomProp() {
+    return (1 + Math.random()) * 0.1
+  }
+
   protected static readonly MAX_SPEED = 0
   protected static readonly MAX_ROTATION = 100
 
   protected speed = NPC.MAX_SPEED
   protected rotation = NPC.MAX_ROTATION
   protected props = {
-    SLOW_SPEED: 0.1,
-    SPIN_CHANCE: (0.5 + Math.random()) * 0.5,
-    JUMP_CHANCE: (0.5 + Math.random()) * 0.5
+    SLOW_SPEED: NPC.randomProp(),
+    SPIN_CHANCE: NPC.randomProp(),
+    JUMP_CHANCE: NPC.randomProp()
   }
 
   update(scale: number) {
