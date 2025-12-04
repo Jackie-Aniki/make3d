@@ -3,15 +3,13 @@ import { Inject } from 'inject.min'
 import { Texture, Vector3 } from 'three'
 import { Renderer } from '../core/renderer'
 import { Events } from '../events'
-import { state } from '../state'
+import { loadedTextures, state } from '../state'
 import {
   getMatrix,
   getTextureName,
   loadTextures,
   mapCubeTextures
 } from '../utils/view-utils'
-import { Bush } from '../view/bush'
-import { Tree } from '../view/tree'
 import { AbstractLevel } from './abstract-level'
 import { BoxMesh } from './box-mesh'
 import { LevelCreateProps, LevelObjects, LevelProps } from './model'
@@ -23,20 +21,22 @@ export class Level extends AbstractLevel {
   static SIDES = 'sides.webp'
   static FLOOR = 'floor.webp'
   static OCEAN = 'ocean.webp'
-  static TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`
-  static BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`
 
   static readonly DEFAULT_OBJECTS: LevelObjects = {
-    [Level.TREE]: {
+    ['tree.webp']: {
       fill: 0.5,
-      chance: 0.25,
-      minHeight: 2,
-      iterations: 2
+      chance: 0.4,
+      minHeight: 0.1,
+      maxHeight: 2,
+      iterations: 2,
+      scale: 2
     },
-    [Level.BUSH]: {
-      fill: 0.35,
-      chance: 0.6,
-      minHeight: 1
+    ['bush.webp']: {
+      fill: 0.4,
+      chance: 0.4,
+      minHeight: 0.5,
+      maxHeight: 3,
+      spread: 2
     }
   }
 
@@ -112,31 +112,46 @@ export class Level extends AbstractLevel {
     Object.entries(this.objects).forEach(
       ([
         texturePath,
-        { fill, iterations, minHeight, maxHeight, chance, spread = 1 }
+        {
+          minHeight,
+          maxHeight,
+          fill = 0.5,
+          chance = 0.5,
+          iterations = 1,
+          spread = 1,
+          scale = 1
+        }
       ]) => {
         const textureName = getTextureName(texturePath)
-        const offset = spread / 2
+        if (!loadedTextures[textureName]) return
+
         const heights = Level.createMatrix({
           fill,
           iterations
         })
 
         this.forEachHeight(heights, (col, row) => {
-          const posX = Math.floor(col * spread)
-          const posY = Math.floor(row * spread)
+          const posX = Math.floor(col)
+          const posY = Math.floor(row)
           const height = this.heights[posX][posY]
 
           if (minHeight && height < minHeight) return
           if (maxHeight && height > maxHeight) return
-          if (chance && Math.random() > chance) return
 
-          const { x, y } = this.getXY(col, row)
-          new Billboard({
-            textureName,
-            level: this,
-            x: x + offset,
-            y: y + offset
-          })
+          for (let spreadY = 0; spreadY < spread; spreadY++) {
+            for (let spreadX = 0; spreadX < spread; spreadX++) {
+              if (chance && Math.random() > chance) return
+
+              const { x, y } = this.getXY(col, row)
+              new Billboard({
+                x: x + (spreadX + 0.5) / spread,
+                y: y + (spreadY + 0.5) / spread,
+                textureName,
+                scale,
+                level: this
+              })
+            }
+          }
         })
       }
     )

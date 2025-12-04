@@ -14,14 +14,17 @@ export class NPC extends Sprite {
 
   protected static readonly MAX_SPEED = 0
   protected static readonly MAX_ROTATION = 100
-  protected static readonly JUMP_CHANCE = 0.001
-  protected static readonly ROTATE_CHANCE = 0.03
 
   protected speed = NPC.MAX_SPEED
   protected rotation = NPC.MAX_ROTATION
+  protected props = {
+    SLOW_SPEED: Math.random() * 0.5,
+    SPIN_CHANCE: Math.random() * 0.2,
+    JUMP_CHANCE: Math.random() * 0.02
+  }
 
-  update(ms = 0) {
-    super.update(ms)
+  update(scale: number) {
+    super.update(scale)
 
     const dx = this.mesh.position.x
     const dy = this.mesh.position.z
@@ -32,8 +35,8 @@ export class NPC extends Sprite {
       this.body.angle = Math.atan2(-dy, -dx)
     }
 
-    this.speed -= ms
-    this.rotation -= ms
+    this.speed -= scale * this.props.SLOW_SPEED
+    this.rotation -= scale * this.props.SLOW_SPEED
 
     if (this.rotation < 0) {
       this.rotation = NPC.MAX_ROTATION
@@ -43,7 +46,7 @@ export class NPC extends Sprite {
       this.state.keys.right = false
 
       // Losowa zmiana kierunku
-      if (Math.random() < ms * NPC.ROTATE_CHANCE) {
+      if (Math.random() < scale * this.props.SPIN_CHANCE) {
         this.state.keys[Math.random() < 0.5 ? 'left' : 'right'] = true
       }
     }
@@ -56,7 +59,7 @@ export class NPC extends Sprite {
     }
 
     // Skok (uniknięcie podwójnego `Math.random`)
-    const jumpChance = ms * NPC.JUMP_CHANCE
+    const jumpChance = scale * this.props.JUMP_CHANCE
     this.state.keys.space = Math.random() < jumpChance
   }
 }

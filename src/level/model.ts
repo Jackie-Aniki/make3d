@@ -10,6 +10,7 @@ export interface LevelObject {
   maxHeight?: number
   iterations?: number
   spread?: number
+  scale?: number
 }
 
 export type LevelObjects = Record<LevelObjectName, LevelObject>

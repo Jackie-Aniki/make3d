@@ -71119,7 +71119,7 @@ class AbstractLevel {
         });
     }
 }
-AbstractLevel.STEP = 0.33;
+AbstractLevel.STEP = 0.4;
 AbstractLevel.COLS = DeviceDetector.HIGH_END ? 48 : 24;
 AbstractLevel.ROWS = DeviceDetector.HIGH_END ? 48 : 24;
 AbstractLevel.FILL = 0.5;
@@ -71496,6 +71496,35 @@ class Renderer extends WebGLRenderer {
 }
 Renderer.backgroundColor = 0x44ccf0;
 
+class DynamicBody extends Circle {
+    constructor(x, y, level, radius = DynamicBody.RADIUS, padding = DynamicBody.PADDING) {
+        super({ x, y }, radius, { padding, userData: { level } });
+        this.z = 0;
+        this.angle = Math.random() * Math_Double_PI;
+    }
+    separate(scale) {
+        const diffs = [];
+        this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {
+            if (b.isStatic) {
+                const wallStep = AbstractBody.stepToZ(b.userData.step);
+                if (this.z < wallStep) {
+                    this.setPosition(this.x - x * scale, this.y - y * scale);
+                    diffs.push(wallStep - this.z);
+                }
+            }
+            else {
+                const c = scale / 2;
+                this.setPosition(this.x - x * c, this.y - y * c);
+                b.setPosition(b.x + x * c, b.y + y * c);
+            }
+        });
+        return diffs;
+    }
+}
+DynamicBody.RADIUS = 0.2;
+DynamicBody.PADDING = 0.1;
+DynamicBody.SEPARATION = 0.33;
+
 class StaticBody {
     constructor(x, y, level) {
         this.z = 0;
@@ -71616,45 +71645,6 @@ class Billboard {
 }
 Billboard.compensateGroupZ = 0.2;
 Billboard.tempVector = new Vector3();
-
-class Bush extends Billboard {
-    constructor(level, x, y) {
-        super({ ...Bush.DEFAULT_PROPS, level, x, y });
-    }
-}
-Bush.DEFAULT_PROPS = {
-    textureName: 'bush',
-    scale: 1
-};
-
-class DynamicBody extends Circle {
-    constructor(x, y, level, radius = DynamicBody.RADIUS, padding = DynamicBody.PADDING) {
-        super({ x, y }, radius, { padding, userData: { level } });
-        this.z = 0;
-        this.angle = Math.random() * Math_Double_PI;
-    }
-    separate(scale) {
-        const diffs = [];
-        this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {
-            if (b.isStatic) {
-                const wallStep = AbstractBody.stepToZ(b.userData.step);
-                if (this.z < wallStep) {
-                    this.setPosition(this.x - x * scale, this.y - y * scale);
-                    diffs.push(wallStep - this.z);
-                }
-            }
-            else {
-                const c = scale / 2;
-                this.setPosition(this.x - x * c, this.y - y * c);
-                b.setPosition(b.x + x * c, b.y + y * c);
-            }
-        });
-        return diffs;
-    }
-}
-DynamicBody.RADIUS = 0.2;
-DynamicBody.PADDING = 0.1;
-DynamicBody.SEPARATION = 0.33;
 
 class Sprite extends Billboard {
     static async create(level, props, Class = Sprite) {
@@ -71837,12 +71827,17 @@ class NPC extends Sprite {
         super(...arguments);
         this.speed = NPC.MAX_SPEED;
         this.rotation = NPC.MAX_ROTATION;
+        this.props = {
+            SLOW_SPEED: Math.random() * 0.5,
+            SPIN_CHANCE: Math.random() * 0.2,
+            JUMP_CHANCE: Math.random() * 0.02
+        };
     }
     static async create(level, props, Class = NPC) {
         return Sprite.create(level, props, Class);
     }
-    update(ms = 0) {
-        super.update(ms);
+    update(scale) {
+        super.update(scale);
         const dx = this.mesh.position.x;
         const dy = this.mesh.position.z;
         const radius = (AbstractLevel.COLS + AbstractLevel.ROWS) / 2;
@@ -71850,15 +71845,15 @@ class NPC extends Sprite {
         if (diff > 0 && Math.random() < diff / radius) {
             this.body.angle = Math.atan2(-dy, -dx);
         }
-        this.speed -= ms;
-        this.rotation -= ms;
+        this.speed -= scale * this.props.SLOW_SPEED;
+        this.rotation -= scale * this.props.SLOW_SPEED;
         if (this.rotation < 0) {
             this.rotation = NPC.MAX_ROTATION;
             // Reset kierunków bocznych (bez tworzenia tablicy)
             this.state.keys.left = false;
             this.state.keys.right = false;
             // Losowa zmiana kierunku
-            if (Math.random() < ms * NPC.ROTATE_CHANCE) {
+            if (Math.random() < scale * this.props.SPIN_CHANCE) {
                 this.state.keys[Math.random() < 0.5 ? 'left' : 'right'] = true;
             }
         }
@@ -71868,24 +71863,12 @@ class NPC extends Sprite {
             this.state.keys.up = Math.random() < 0.9;
         }
         // Skok (uniknięcie podwójnego `Math.random`)
-        const jumpChance = ms * NPC.JUMP_CHANCE;
+        const jumpChance = scale * this.props.JUMP_CHANCE;
         this.state.keys.space = Math.random() < jumpChance;
     }
 }
 NPC.MAX_SPEED = 0;
 NPC.MAX_ROTATION = 100;
-NPC.JUMP_CHANCE = 0.001;
-NPC.ROTATE_CHANCE = 0.03;
-
-class Tree extends Billboard {
-    constructor(level, x, y) {
-        super({ ...Tree.DEFAULT_PROPS, level, x, y });
-    }
-}
-Tree.DEFAULT_PROPS = {
-    textureName: 'tree',
-    scale: 1.5
-};
 
 class Debug {
     static set(innerHTML) {
@@ -72161,25 +72144,36 @@ class Level extends AbstractLevel {
         return box;
     }
     createObjects() {
-        Object.entries(this.objects).forEach(([texturePath, { fill, iterations, minHeight, maxHeight, chance, spread = 1 }]) => {
+        Object.entries(this.objects).forEach(([texturePath, { minHeight, maxHeight, fill = 0.5, chance = 0.5, iterations = 1, spread = 1, scale = 1 }]) => {
             const textureName = getTextureName(texturePath);
-            const offset = spread / 2;
+            if (!loadedTextures[textureName])
+                return;
             const heights = Level.createMatrix({
                 fill,
                 iterations
             });
             this.forEachHeight(heights, (col, row) => {
-                const posX = Math.floor(col * spread);
-                const posY = Math.floor(row * spread);
+                const posX = Math.floor(col);
+                const posY = Math.floor(row);
                 const height = this.heights[posX][posY];
                 if (minHeight && height < minHeight)
                     return;
                 if (maxHeight && height > maxHeight)
                     return;
-                if (chance && Math.random() > chance)
-                    return;
-                const { x, y } = this.getXY(col, row);
-                new Billboard({ textureName, level: this, x: x + offset, y: y + offset });
+                for (let spreadY = 0; spreadY < spread; spreadY++) {
+                    for (let spreadX = 0; spreadX < spread; spreadX++) {
+                        if (chance && Math.random() > chance)
+                            return;
+                        const { x, y } = this.getXY(col, row);
+                        new Billboard({
+                            x: x + (spreadX + 0.5) / spread,
+                            y: y + (spreadY + 0.5) / spread,
+                            textureName,
+                            scale,
+                            level: this
+                        });
+                    }
+                }
             });
         });
     }
@@ -72191,24 +72185,26 @@ class Level extends AbstractLevel {
 Level.SIDES = 'sides.webp';
 Level.FLOOR = 'floor.webp';
 Level.OCEAN = 'ocean.webp';
-Level.TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`;
-Level.BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`;
 Level.DEFAULT_OBJECTS = {
-    [Level.TREE]: {
+    ['tree.webp']: {
         fill: 0.5,
-        chance: 0.25,
-        minHeight: 2,
-        iterations: 2
+        chance: 0.4,
+        minHeight: 0.1,
+        maxHeight: 2,
+        iterations: 2,
+        scale: 2
     },
-    [Level.BUSH]: {
-        fill: 0.35,
-        chance: 0.6,
-        minHeight: 1
+    ['bush.webp']: {
+        fill: 0.4,
+        chance: 0.4,
+        minHeight: 0.5,
+        maxHeight: 3,
+        spread: 2
     }
 };
 __decorate([
     distExports.Inject(System)
 ], Level.prototype, "system", void 0);
 
-export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Bush, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, Tree, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, groups, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
+export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, groups, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
 //# sourceMappingURL=index.js.map
