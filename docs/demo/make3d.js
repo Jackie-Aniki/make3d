@@ -69660,7 +69660,7 @@ const keys = {};
 const loadedTextures = {};
 const physics = new System();
 const loader = new Loader();
-const floors = Array.from({ length: maxLevelHeight }, (_, power) => groupBits(128 * Math.pow(2, power)));
+const groups = Array.from({ length: maxLevelHeight }, (_, power) => groupBits(128 * Math.pow(2, power)));
 const state = {
     keys,
     mouse: null,
@@ -69802,7 +69802,7 @@ Events.events = {
 };
 Events.eventListenersAdded = false;
 
-var dist = {};
+var dist$1 = {};
 
 var statsConstants = {};
 
@@ -70393,13 +70393,13 @@ function requireStats () {
 	return stats;
 }
 
-var hasRequiredDist;
+var hasRequiredDist$1;
 
-function requireDist () {
-	if (hasRequiredDist) return dist;
-	hasRequiredDist = 1;
+function requireDist$1 () {
+	if (hasRequiredDist$1) return dist$1;
+	hasRequiredDist$1 = 1;
 	(function (exports$1) {
-		var __createBinding = (dist && dist.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+		var __createBinding = (dist$1 && dist$1.__createBinding) || (Object.create ? (function(o, m, k, k2) {
 		    if (k2 === undefined) k2 = k;
 		    var desc = Object.getOwnPropertyDescriptor(m, k);
 		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -70410,7 +70410,7 @@ function requireDist () {
 		    if (k2 === undefined) k2 = k;
 		    o[k2] = m[k];
 		}));
-		var __exportStar = (dist && dist.__exportStar) || function(m, exports$1) {
+		var __exportStar = (dist$1 && dist$1.__exportStar) || function(m, exports$1) {
 		    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$1, p)) __createBinding(exports$1, m, p);
 		};
 		Object.defineProperty(exports$1, "__esModule", { value: true });
@@ -70420,87 +70420,11 @@ function requireDist () {
 		__exportStar(requireStatStorage(), exports$1);
 		__exportStar(requireStats(), exports$1);
 		
-	} (dist));
-	return dist;
+	} (dist$1));
+	return dist$1;
 }
 
-var distExports = requireDist();
-
-class AbstractBody {
-    static getGroup({ z = 0 }) {
-        return floors[Math.round((z - AbstractBody.Z_OFFSET) * 2)];
-    }
-    static getFloor(body, x = body.x, y = body.y) {
-        return body.userData.level.getFloor(x, y);
-    }
-    static onSetPosition(body) {
-        body.z = Math.max(body.z, AbstractBody.getFloor(body) / 2);
-        body.group = AbstractBody.getGroup(body);
-    }
-}
-AbstractBody.Z_OFFSET = 0.2;
-
-const MIN_HEIGHT = maxLevelHeight / 2;
-class Camera extends PerspectiveCamera {
-    static getFar() {
-        return state.renderer.camera.far / Camera.FAR;
-    }
-    constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
-        super(fov, innerWidth / innerHeight, near, far);
-        this.distance = Camera.DISTANCE;
-        this.position.copy(Camera.cameraGoal);
-        this.lookAt(Camera.cameraLookAt);
-    }
-    onResize(width, height) {
-        this.aspect = width / height;
-        this.distance = Camera.DISTANCE / this.aspect;
-        this.updateProjectionMatrix();
-    }
-    update(ms = 0) {
-        if (!ms)
-            return;
-        this.updateGoal();
-        this.lerpToGoal(ms);
-        this.updateLookAt();
-        this.lookAt(Camera.cameraLookAt);
-    }
-    setTarget(target) {
-        this.target = target;
-    }
-    getPositionBehind({ x = 0, y = 0, angle = 0 } = {}) {
-        const adjustedAngle = Math_Half_PI - angle;
-        const offsetX = Math.sin(adjustedAngle) * this.distance;
-        const offsetY = Math.cos(adjustedAngle) * this.distance;
-        const cameraX = x - offsetX;
-        const cameraY = y - offsetY;
-        return [cameraX, cameraY];
-    }
-    updateLookAt() {
-        if (this.target) {
-            Camera.cameraLookAt.set(this.target.body.x, this.target.body.z + Camera.HEIGHT, this.target.body.y);
-        }
-    }
-    updateGoal() {
-        if (this.target) {
-            const [x, y] = this.getPositionBehind(this.target.body);
-            const from = AbstractBody.getFloor(this.target.body, x, y) / 2;
-            const z = Math.max(from, this.target.body.z) + Camera.HEIGHT;
-            Camera.cameraGoal.set(x, z, y);
-        }
-    }
-    lerpToGoal(ms) {
-        this.position.lerp(Camera.cameraGoal, ms * Camera.LERP_RATIO);
-    }
-}
-Camera.HEIGHT = 0.75;
-Camera.DISTANCE = 2;
-Camera.LERP_RATIO = 0.004;
-Camera.FOV = 75;
-Camera.NEAR = 0.01;
-Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0);
-Camera.cameraLookAt = new Vector3(0, MIN_HEIGHT, 0);
-Camera.projection = new Vector3();
+var distExports$1 = requireDist$1();
 
 /**
  * This code is an implementation of Alea algorithm; (C) 2010 Johannes Baagøe.
@@ -71144,11 +71068,11 @@ class Cellular extends Map$2 {
 
 var Map$1 = { Cellular};
 
-class BaseLevel {
+class AbstractLevel {
     static reducer(input, heights) {
         return heights.map((column, x) => column.map((value, y) => (input[x]?.[y] || 0) + value), []);
     }
-    static createMatrix({ min = 0, max = 1, iterations = BaseLevel.ITERATIONS, fill = BaseLevel.FILL, cols = BaseLevel.COLS, rows = BaseLevel.ROWS }) {
+    static createMatrix({ min = 0, max = 1, iterations = AbstractLevel.ITERATIONS, fill = AbstractLevel.FILL, cols = AbstractLevel.COLS, rows = AbstractLevel.ROWS }) {
         return Array.from({ length: max }, () => {
             const map = new Map$1.Cellular(cols, rows);
             map.randomize(fill);
@@ -71157,19 +71081,19 @@ class BaseLevel {
             }
             return map._map;
         })
-            .reduce(BaseLevel.reducer, [])
-            .map((arrays) => arrays.map((value) => Math.max(0, value - min)));
+            .reduce(AbstractLevel.reducer, [])
+            .map((arrays) => arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP));
     }
     constructor() {
         this.heights = [];
-        this.heights = BaseLevel.createMatrix({
+        this.heights = AbstractLevel.createMatrix({
             min: minLevelHeight,
             max: maxLevelHeight
         });
     }
-    getFloor(x, y) {
-        const posX = Math.floor(x + BaseLevel.COLS / 2);
-        const posY = Math.floor(y + BaseLevel.ROWS / 2);
+    getZ(x, y) {
+        const posX = Math.floor(x + AbstractLevel.COLS / 2);
+        const posY = Math.floor(y + AbstractLevel.ROWS / 2);
         return this.heights[posX]?.[posY] || 0;
     }
     forEachHeight(heights = this.heights, iterator) {
@@ -71183,24 +71107,101 @@ class BaseLevel {
     }
     getXY(col, row) {
         return {
-            x: col - BaseLevel.COLS / 2,
-            y: row - BaseLevel.ROWS / 2
+            x: col - AbstractLevel.COLS / 2,
+            y: row - AbstractLevel.ROWS / 2
         };
     }
-    setColliderAt(col, row, height) {
+    createCollider(col, row, z) {
         const { x, y } = this.getXY(col, row);
-        for (let floor = 0; floor < height; floor++) {
-            physics.createBox({ x, y }, 1, 1, {
-                isStatic: true,
-                group: floors[floor]
-            });
-        }
+        return physics.createBox({ x, y }, 1, 1, {
+            isStatic: true,
+            userData: { step: AbstractBody.zToStep(z) }
+        });
     }
 }
-BaseLevel.COLS = DeviceDetector.HIGH_END ? 48 : 24;
-BaseLevel.ROWS = DeviceDetector.HIGH_END ? 48 : 24;
-BaseLevel.FILL = 0.5;
-BaseLevel.ITERATIONS = 4;
+AbstractLevel.STEP = 0.33;
+AbstractLevel.COLS = DeviceDetector.HIGH_END ? 48 : 24;
+AbstractLevel.ROWS = DeviceDetector.HIGH_END ? 48 : 24;
+AbstractLevel.FILL = 0.5;
+AbstractLevel.ITERATIONS = 4;
+
+class AbstractBody {
+    static getZ(body, x = body.x, y = body.y) {
+        return body.userData.level.getZ(x, y);
+    }
+    static zToGroup(z = 0) {
+        const step = AbstractBody.zToStep(z);
+        return AbstractBody.stepToGroup(step);
+    }
+    static zToStep(z = 0) {
+        return Math.round(z / AbstractLevel.STEP);
+    }
+    static stepToZ(step = 0) {
+        return step * AbstractLevel.STEP;
+    }
+    static stepToGroup(step = 0) {
+        return groups[Math.max(0, step)];
+    }
+}
+
+const MIN_HEIGHT = maxLevelHeight / 2;
+class Camera extends PerspectiveCamera {
+    static getFar() {
+        return state.renderer.camera.far / Camera.FAR;
+    }
+    constructor(fov = Camera.FOV, near = Camera.NEAR, far = Camera.FAR) {
+        super(fov, innerWidth / innerHeight, near, far);
+        this.distance = Camera.DISTANCE;
+        this.position.copy(Camera.cameraGoal);
+        this.lookAt(Camera.cameraLookAt);
+    }
+    onResize(width, height) {
+        this.aspect = width / height;
+        this.distance = Camera.DISTANCE / this.aspect;
+        this.updateProjectionMatrix();
+    }
+    update(scale) {
+        this.updateGoal();
+        this.lerpToGoal(scale);
+        this.updateLookAt();
+        this.lookAt(Camera.cameraLookAt);
+    }
+    setTarget(target) {
+        this.target = target;
+    }
+    getPositionBehind({ x = 0, y = 0, angle = 0 } = {}) {
+        const adjustedAngle = Math_Half_PI - angle;
+        const offsetX = Math.sin(adjustedAngle) * this.distance;
+        const offsetY = Math.cos(adjustedAngle) * this.distance;
+        const cameraX = x - offsetX;
+        const cameraY = y - offsetY;
+        return [cameraX, cameraY];
+    }
+    updateLookAt() {
+        if (this.target) {
+            Camera.cameraLookAt.set(this.target.body.x, this.target.body.z + Camera.HEIGHT, this.target.body.y);
+        }
+    }
+    updateGoal() {
+        if (this.target) {
+            const [x, y] = this.getPositionBehind(this.target.body);
+            const z = AbstractBody.getZ(this.target.body, x, y);
+            Camera.cameraGoal.set(x, Math.max(z, this.target.body.z) + Camera.HEIGHT, y);
+        }
+    }
+    lerpToGoal(scale) {
+        this.position.lerp(Camera.cameraGoal, scale * Camera.LERP);
+    }
+}
+Camera.HEIGHT = 0.75;
+Camera.DISTANCE = 2;
+Camera.LERP = 0.2;
+Camera.FOV = 75;
+Camera.NEAR = 0.01;
+Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
+Camera.cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0);
+Camera.cameraLookAt = new Vector3(0, MIN_HEIGHT, 0);
+Camera.projection = new Vector3();
 
 class Ocean {
     constructor(texture, repeat = 1.1) {
@@ -71308,11 +71309,11 @@ class Ocean {
         return mesh;
     }
 }
-Ocean.COLS = BaseLevel.COLS;
-Ocean.ROWS = BaseLevel.ROWS;
 Ocean.DEEP_WATER_Z = -0.2;
+Ocean.COLS = AbstractLevel.COLS;
+Ocean.ROWS = AbstractLevel.ROWS;
 Ocean.SHALLOW_WATER = {
-    opacity: 0.7,
+    opacity: 0.6,
     waveLength: 0.12,
     strength: 0.8
 };
@@ -71362,8 +71363,8 @@ const createMaterial = (textureName, cols = 1, rows = 1) => {
         return {};
     }
 };
-const getTextureName = (path) => {
-    const fileName = path.split('/').pop()?.split('.')[0];
+const getTextureName = (texturePath) => {
+    const fileName = texturePath.split('/').pop()?.split('.')[0];
     if (!fileName) {
         return '';
     }
@@ -71436,7 +71437,9 @@ class Renderer extends WebGLRenderer {
         });
     }
     setLevel(level) {
+        this.scene.clear();
         this.scene.add(level.mesh);
+        this.level = level;
     }
     onCreate() {
         this.outputColorSpace = LinearSRGBColorSpace;
@@ -71451,7 +71454,7 @@ class Renderer extends WebGLRenderer {
             document.body.appendChild(this.domElement);
         }
         if ('fps' in queryParams) {
-            this.stats = new distExports.Stats(this);
+            this.stats = new distExports$1.Stats(this);
         }
     }
     onResize() {
@@ -71462,16 +71465,29 @@ class Renderer extends WebGLRenderer {
         });
     }
     animation() {
-        const now = Date.now();
-        const ms = Math.min(50, now - this.now); // max 3 frame lag allowed = 20 fps
-        if (!ms)
+        const scale = this.getTimeScale();
+        if (!scale)
             return;
         this.children.forEach((child) => {
-            child.update(ms);
+            child.update(scale);
         });
-        this.camera.update(ms);
-        this.now = now;
+        this.updateCamera(scale);
+    }
+    updateCamera(scale) {
+        this.camera.update(scale);
         this.render(this.scene, this.camera);
+    }
+    getTimeScale() {
+        const now = Date.now();
+        const passed = now - this.now;
+        if (!passed)
+            return 0;
+        this.now = now;
+        const minFPS = 30;
+        const minFPSinMS = 1000 / minFPS;
+        const ms = Math.min(passed, minFPSinMS);
+        const scale = ms / minFPSinMS;
+        return scale;
     }
     createFog() {
         const far = this.camera.far - Camera.DISTANCE;
@@ -71490,7 +71506,7 @@ class StaticBody {
     setPosition(x, y) {
         this.x = x;
         this.y = y;
-        AbstractBody.onSetPosition(this);
+        this.z = AbstractBody.getZ(this);
         return this;
     }
 }
@@ -71509,7 +71525,6 @@ class Billboard {
         this.invCols = 1 / this.cols;
         this.invRows = 1 / this.rows;
         this.frameDuration = frameDuration || 120;
-        this.invFrameDuration = 1 / this.frameDuration;
         this.totalFrames = totalFrames || 1;
         this.directionsToRows = props.directionsToRows || { default: 0 };
         this.scaleX = (scaleX || scale) / 2;
@@ -71519,7 +71534,7 @@ class Billboard {
         this.spawn(level, x, y);
         state.renderer.add(this);
     }
-    update(_ms) {
+    update(_) {
         this.direction = this.getDirection();
         this.mesh.position.set(this.body.x, this.body.z + this.centerOffset, this.body.y);
         const playerPos = state.player?.mesh.position;
@@ -71566,9 +71581,8 @@ class Billboard {
     createBody(x, y, level) {
         return new StaticBody(x, y, level);
     }
-    spawn(level, x = (Math.random() - 0.5) * (BaseLevel.COLS * 0.5), y = (Math.random() - 0.5) * (BaseLevel.ROWS * 0.5)) {
+    spawn(level, x = (Math.random() - 0.5) * (AbstractLevel.COLS * 0.5), y = (Math.random() - 0.5) * (AbstractLevel.ROWS * 0.5)) {
         this.body = this.createBody(x, y, level);
-        console.log(x, this.body.z, y);
         this.mesh.position.set(x, this.body.z, y);
     }
     updateTexture() {
@@ -71615,39 +71629,32 @@ Bush.DEFAULT_PROPS = {
 
 class DynamicBody extends Circle {
     constructor(x, y, level, radius = DynamicBody.RADIUS, padding = DynamicBody.PADDING) {
-        super({ x, y }, radius, { group: floors[0], padding, userData: { level } });
+        super({ x, y }, radius, { padding, userData: { level } });
         this.z = 0;
         this.angle = Math.random() * Math_Double_PI;
     }
-    setPosition(x, y, updateNow) {
-        super.setPosition(x, y, updateNow);
-        AbstractBody.onSetPosition(this);
-        return this;
-    }
-    separate(timeScale = 1, onCollide) {
-        const separationDynamic = timeScale * DynamicBody.SEPARATION_DYNAMIC;
-        const separationStatic = timeScale * DynamicBody.SEPARATION_STATIC;
+    separate(scale) {
+        const diffs = [];
         this.system?.checkOne(this, ({ b, overlapV: { x, y } }) => {
             if (b.isStatic) {
-                this.setPosition(this.x - x * separationStatic, this.y - y * separationStatic);
+                const wallStep = AbstractBody.stepToZ(b.userData.step);
+                if (this.z < wallStep) {
+                    this.setPosition(this.x - x * scale, this.y - y * scale);
+                    diffs.push(wallStep - this.z);
+                }
             }
             else {
-                const dx = x * separationDynamic;
-                const dy = y * separationDynamic;
-                this.setPosition(this.x - dx, this.y - dy);
-                b.setPosition(b.x + dx * 2, b.y + dy * 2);
-            }
-            if (b.isStatic &&
-                AbstractBody.getFloor(this, b.x, b.y) / 2 - this.z <= 0.5) {
-                onCollide?.();
+                const c = scale / 2;
+                this.setPosition(this.x - x * c, this.y - y * c);
+                b.setPosition(b.x + x * c, b.y + y * c);
             }
         });
+        return diffs;
     }
 }
 DynamicBody.RADIUS = 0.2;
 DynamicBody.PADDING = 0.1;
-DynamicBody.SEPARATION_DYNAMIC = 0.33;
-DynamicBody.SEPARATION_STATIC = 1;
+DynamicBody.SEPARATION = 0.33;
 
 class Sprite extends Billboard {
     static async create(level, props, Class = Sprite) {
@@ -71660,22 +71667,17 @@ class Sprite extends Billboard {
         this.velocity = 0;
         this.state = state;
     }
-    update(ms) {
-        const deltaTime = ms * 0.001;
-        const speed = this.getSpeed();
-        this.updateAngle(deltaTime);
-        this.processMovement(deltaTime, speed * Sprite.MOVE_SPEED);
-        this.handleFrameUpdate(ms, speed);
-        super.update(ms);
-    }
-    getSpeed() {
-        if (this.state.keys.up)
-            return 1;
-        if (this.state.keys.down)
-            return -1;
-        if (this.state.mouseDown)
-            return -this.state.mouse.y;
-        return 0;
+    update(scale) {
+        this.updateFall(scale);
+        const gear = this.getGear();
+        const { left, right } = this.state.keys;
+        if (gear || left || right) {
+            this.updateAngle(scale);
+            this.updateMove(scale * gear);
+            this.updateAnimation(scale);
+        }
+        // update mesh
+        super.update(scale);
     }
     jump() {
         if (Date.now() - this.clickTime > Sprite.CLICK_PREVENT) {
@@ -71700,42 +71702,22 @@ class Sprite extends Billboard {
         this.state.keys.space = false;
     }
     onCollide() {
-        if (this.getSpeed()) {
-            this.jump();
-        }
+        const gear = this.getGear();
+        if (!gear)
+            return;
+        this.jump();
     }
-    processMovement(deltaTime, moveSpeed) {
-        let timeLeft = deltaTime * 60;
-        while (timeLeft > 0) {
-            const timeScale = Math.min(1, timeLeft);
-            this.body.move(moveSpeed * timeScale);
-            this.body.separate(timeScale, this.onCollide.bind(this));
-            this.updateZ(timeScale);
-            timeLeft -= timeScale;
-        }
+    getGear() {
+        if (this.state.keys.up)
+            return 1;
+        if (this.state.keys.down)
+            return -1;
+        if (this.state.mouseDown)
+            return -this.state.mouse.y;
+        return 0;
     }
-    handleFrameUpdate(ms, mouseGear) {
-        if (mouseGear || Object.values(this.state.keys).some(Boolean)) {
-            this.updateFrame(ms);
-        }
-    }
-    updateZ(timeScale) {
-        const floorZ = AbstractBody.getFloor(this.body) / 2;
-        const isOnGround = this.body.z === floorZ || this.velocity === 0;
-        const isJumping = isOnGround && this.state.keys.space;
-        if (isJumping)
-            this.velocity = Sprite.JUMP_SPEED;
-        if (isJumping || this.body.z > floorZ) {
-            this.body.z += this.velocity * timeScale;
-            this.velocity -= timeScale * Sprite.GRAVITY;
-        }
-        if (this.body.z < floorZ) {
-            this.body.z = floorZ;
-            this.velocity = 0;
-        }
-        this.body.group = AbstractBody.getGroup(this.body);
-    }
-    updateAngle(deltaTime) {
+    updateAngle(scale) {
+        const speed = Sprite.SPIN_SPEED * scale;
         const scaleX = this.state.keys.left || this.state.keys.right
             ? this.state.keys.left
                 ? -1
@@ -71744,11 +71726,36 @@ class Sprite extends Billboard {
                 ? this.state.mouse.x
                 : 0;
         if (scaleX !== 0) {
-            this.body.angle = normalizeAngle(this.body.angle + Sprite.ROTATE_SPEED * deltaTime * scaleX);
+            this.body.angle = normalizeAngle(this.body.angle + speed * scaleX);
         }
     }
-    updateFrame(ms) {
-        this.frame = (this.frame + ms * this.invFrameDuration) % this.totalFrames;
+    updateFall(scale) {
+        const speed = Sprite.FALL_SPEED * scale;
+        const floor = AbstractBody.getZ(this.body);
+        const isOnGround = this.body.z === floor || this.velocity === 0;
+        const isJumping = isOnGround && this.state.keys.space;
+        if (isJumping)
+            this.velocity = Sprite.JUMP_SPEED;
+        if (isJumping || floor < this.body.z) {
+            this.velocity -= speed;
+            this.body.z += this.velocity * speed;
+        }
+        if (this.body.z < floor) {
+            this.velocity = 0;
+            this.body.z = floor;
+        }
+    }
+    updateMove(scale) {
+        const speed = scale * Sprite.MOVE_SPEED;
+        this.body.move(speed);
+        const diffs = this.body.separate(scale);
+        if (diffs.find((z) => z - AbstractLevel.STEP < 0.1)) {
+            this.onCollide();
+        }
+    }
+    updateAnimation(scale) {
+        const speed = scale * Sprite.ANIM_SPEED;
+        this.frame = (this.frame + speed * this.frameDuration) % this.totalFrames;
     }
     updateTexture() {
         super.updateTexture();
@@ -71773,17 +71780,14 @@ class Sprite extends Billboard {
         physics.insert(body);
         return body;
     }
-    spawn(level, x, y) {
-        super.spawn(level, x, y);
-        this.body.separate();
-    }
 }
-Sprite.ROTATE_SPEED = DeviceDetector.HIGH_END ? 3 : 1.5;
-Sprite.MOVE_SPEED = 0.05;
-Sprite.JUMP_SPEED = 0.075;
-Sprite.GRAVITY = 0.005;
-Sprite.CLICK_PREVENT = 600;
-Sprite.CLICK_DURATION = 200;
+Sprite.ANIM_SPEED = 0.002;
+Sprite.SPIN_SPEED = 0.06;
+Sprite.MOVE_SPEED = 0.1;
+Sprite.JUMP_SPEED = 1;
+Sprite.FALL_SPEED = 0.125;
+Sprite.CLICK_DURATION = 100;
+Sprite.CLICK_PREVENT = 500;
 
 class Player extends Sprite {
     static async create(level, props = { texture: 'player.webp' }, Class = Player) {
@@ -71841,7 +71845,7 @@ class NPC extends Sprite {
         super.update(ms);
         const dx = this.mesh.position.x;
         const dy = this.mesh.position.z;
-        const radius = (BaseLevel.COLS + BaseLevel.ROWS) / 2;
+        const radius = (AbstractLevel.COLS + AbstractLevel.ROWS) / 2;
         const diff = Math.sqrt(dx * dx + dy * dy) - radius;
         if (diff > 0 && Math.random() < diff / radius) {
             this.body.angle = Math.atan2(-dy, -dx);
@@ -71883,6 +71887,25 @@ Tree.DEFAULT_PROPS = {
     scale: 1.5
 };
 
+class Debug {
+    static set(innerHTML) {
+        Debug.get().innerHTML = innerHTML;
+    }
+    static get() {
+        if (!Debug.instance) {
+            Debug.instance = Debug.create();
+        }
+        return Debug.instance;
+    }
+    static create() {
+        const debug = document.createElement('div');
+        debug.id = 'debug';
+        debug.style = 'position: fixed; top: 0; left: 0;';
+        document.body.appendChild(debug);
+        return debug;
+    }
+}
+
 class BoxMesh extends InstancedMesh {
     constructor(textures, cols, rows = cols) {
         const geometry = new BoxGeometry(1, 1, 1);
@@ -71895,28 +71918,239 @@ class BoxMesh extends InstancedMesh {
     }
 }
 
-class Level extends BaseLevel {
-    static async create(canvas, { sides: sidesUrl = Level.SIDES, floor: floorUrl = Level.FLOOR, ocean: oceanUrl = Level.OCEAN, tree: treeUrl = Level.TREE, bush: bushUrl = Level.BUSH } = {}) {
-        const texturesToLoad = [sidesUrl, floorUrl, oceanUrl, treeUrl, bushUrl];
-        const [sides, floor, ocean] = await loadTextures(texturesToLoad);
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+var dist = {};
+
+var diContainer = {};
+
+var hasRequiredDiContainer;
+
+function requireDiContainer () {
+	if (hasRequiredDiContainer) return diContainer;
+	hasRequiredDiContainer = 1;
+	Object.defineProperty(diContainer, '__esModule', { value: true });
+	diContainer.DIContainer = void 0;
+	class DIContainer {
+	  /**
+	   * get the Class/Override that was used with setClass
+	   * @param Original the class to search for in DIContainer
+	   * @returns {BaseClass}
+	   */
+	  static getClass(Original) {
+	    const Override = this.overrides[Original.name];
+	    return Override || Original;
+	  }
+	  /**
+	   * for future references override Original class with Override
+	   * @param Original the class to search for in DIContainer
+	   * @param Override the extended class to replace that first one
+	   */
+	  static setClass(Original, Override) {
+	    DIContainer.overrides[Original.name] = Override;
+	  }
+	  /**
+	   * get instance of Class/Override that was used with setClass with optional props
+	   * @param Original the class to search for in DIContainer
+	   * @param props the optional props for constructor of instance
+	   * @returns {instanceof Class}
+	   */
+	  static getInstance(Original, ...props) {
+	    const propertyKey = DIContainer.createPropertyKey(props);
+	    if (!DIContainer.instances[Original.name]) {
+	      DIContainer.instances[Original.name] = {};
+	    }
+	    if (!DIContainer.instances[Original.name][propertyKey]) {
+	      const Class = DIContainer.getClass(Original);
+	      const instance = new Class(...props);
+	      DIContainer.instances[Original.name][propertyKey] = instance;
+	    }
+	    return DIContainer.instances[Original.name][propertyKey];
+	  }
+	  /**
+	   * the api to free class instances to prevent eventual oom
+	   * @param Class the class to search for in DIContainer
+	   */
+	  static freeInstance(Class, props) {
+	    const propertyKey = DIContainer.createPropertyKey(props);
+	    delete DIContainer.instances[Class.name][propertyKey];
+	  }
+	  /**
+	   * the api to free class instances to prevent eventual oom
+	   * @param Class the class to search for in DIContainer
+	   */
+	  static freeInstances(Class) {
+	    DIContainer.instances[Class.name] = {};
+	  }
+	  /**
+	   * creates property key string for index in records
+	   * @param props anything really
+	   * @returns {string}
+	   */
+	  static createPropertyKey(props) {
+	    if (typeof props !== 'undefined') {
+	      return DIContainer.tryStringify(props);
+	    }
+	    return 'undefined';
+	  }
+	  /**
+	   * stringify anything or return {} if not possible
+	   * @param props anything really
+	   * @returns {string}
+	   */
+	  static tryStringify(props) {
+	    try {
+	      return JSON.stringify(props);
+	    } catch (_err) {
+	      return '{}';
+	    }
+	  }
+	}
+	diContainer.DIContainer = DIContainer;
+	DIContainer.overrides = {};
+	DIContainer.instances = {};
+	return diContainer;
+}
+
+var injectDecorator = {};
+
+var hasRequiredInjectDecorator;
+
+function requireInjectDecorator () {
+	if (hasRequiredInjectDecorator) return injectDecorator;
+	hasRequiredInjectDecorator = 1;
+	Object.defineProperty(injectDecorator, '__esModule', { value: true });
+	injectDecorator.Inject = Inject;
+	const di_container_1 = requireDiContainer();
+	function Inject(Class, props) {
+	  return function inject(target, propertyKey) {
+	    Object.defineProperty(target, propertyKey, {
+	      get: () => di_container_1.DIContainer.getInstance(Class, props),
+	      set: () => di_container_1.DIContainer.freeInstance(Class, props),
+	      configurable: true,
+	      enumerable: true
+	    });
+	    return target;
+	  };
+	}
+	return injectDecorator;
+}
+
+var types = {};
+
+var hasRequiredTypes;
+
+function requireTypes () {
+	if (hasRequiredTypes) return types;
+	hasRequiredTypes = 1;
+	Object.defineProperty(types, '__esModule', { value: true });
+	return types;
+}
+
+var hasRequiredDist;
+
+function requireDist () {
+	if (hasRequiredDist) return dist;
+	hasRequiredDist = 1;
+	(function (exports$1) {
+		var __createBinding =
+		  (dist && dist.__createBinding) ||
+		  (Object.create
+		    ? function (o, m, k, k2) {
+		        if (k2 === undefined) k2 = k;
+		        var desc = Object.getOwnPropertyDescriptor(m, k);
+		        if (
+		          !desc ||
+		          ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)
+		        ) {
+		          desc = {
+		            enumerable: true,
+		            get: function () {
+		              return m[k];
+		            }
+		          };
+		        }
+		        Object.defineProperty(o, k2, desc);
+		      }
+		    : function (o, m, k, k2) {
+		        if (k2 === undefined) k2 = k;
+		        o[k2] = m[k];
+		      });
+		var __exportStar =
+		  (dist && dist.__exportStar) ||
+		  function (m, exports$1) {
+		    for (var p in m)
+		      if (p !== 'default' && !Object.prototype.hasOwnProperty.call(exports$1, p))
+		        __createBinding(exports$1, m, p);
+		  };
+		Object.defineProperty(exports$1, '__esModule', { value: true });
+		__exportStar(requireDiContainer(), exports$1);
+		__exportStar(requireInjectDecorator(), exports$1);
+		__exportStar(requireTypes(), exports$1); 
+	} (dist));
+	return dist;
+}
+
+var distExports = requireDist();
+
+class Level extends AbstractLevel {
+    static async create(canvas, { sides, floor, ocean, objects = Level.DEFAULT_OBJECTS } = {}) {
+        const [sidesTex, floorTex, oceanTex] = await loadTextures([
+            sides || Level.SIDES,
+            floor || Level.FLOOR,
+            ocean || Level.OCEAN,
+            ...Object.keys(objects)
+        ]);
         return new Level({
             canvas,
-            ocean,
-            textures: mapCubeTextures({
-                up: floor,
-                down: floor,
-                left: sides,
-                right: sides,
-                front: sides,
-                back: sides
-            })
+            objects,
+            ocean: oceanTex,
+            textures: Level.getCubeTextures(sidesTex, floorTex)
         });
     }
-    constructor({ textures, canvas, ocean, skybox }, setLevel = true) {
+    static getCubeTextures(sidesTex, floorTex) {
+        return mapCubeTextures({
+            up: floorTex,
+            down: floorTex,
+            left: sidesTex,
+            right: sidesTex,
+            front: sidesTex,
+            back: sidesTex
+        });
+    }
+    constructor({ textures, canvas, ocean, skybox, objects = {} }, setLevel = true) {
         Renderer.create({ canvas, ocean, skybox });
         Events.addEventListeners();
         super();
-        this.mesh = this.createMesh(textures);
+        this.mesh = this.createBoxMesh(textures);
+        this.objects = objects;
+        this.forEachHeight(this.heights, (col, row, height) => {
+            this.setMeshHeight(col, row, height);
+            this.createCollider(col, row, height);
+        });
+        this.createObjects();
         if (setLevel) {
             state.renderer.setLevel(this);
         }
@@ -71926,74 +72160,55 @@ class Level extends BaseLevel {
         box.position.set(-Level.COLS / 2, 0, -Level.ROWS / 2);
         return box;
     }
-    createMesh(textures) {
-        const mesh = this.createBoxMesh(textures);
-        this.setLevelMesh(mesh);
-        this.createTrees();
-        this.createBushes();
-        return mesh;
-    }
-    createTrees() {
-        if (getTextureName(Level.TREE) in loadedTextures) {
-            const treeHeights = Level.createMatrix({
-                fill: Level.TREE_FILL,
-                iterations: Level.TREE_ITERATIONS
+    createObjects() {
+        Object.entries(this.objects).forEach(([texturePath, { fill, iterations, minHeight, maxHeight, chance, spread = 1 }]) => {
+            const textureName = getTextureName(texturePath);
+            const offset = spread / 2;
+            const heights = Level.createMatrix({
+                fill,
+                iterations
             });
-            this.forEachHeight(this.heights, (col, row, height) => {
-                const allow = treeHeights[col][row];
-                if (allow &&
-                    height >= Level.TREE_HEIGHT_START &&
-                    Math.random() < Level.TREE_CHANCE) {
-                    const { x, y } = this.getXY(col, row);
-                    new Tree(this, x + 0.5, y + 0.5);
-                }
+            this.forEachHeight(heights, (col, row) => {
+                const posX = Math.floor(col * spread);
+                const posY = Math.floor(row * spread);
+                const height = this.heights[posX][posY];
+                if (minHeight && height < minHeight)
+                    return;
+                if (maxHeight && height > maxHeight)
+                    return;
+                if (chance && Math.random() > chance)
+                    return;
+                const { x, y } = this.getXY(col, row);
+                new Billboard({ textureName, level: this, x: x + offset, y: y + offset });
             });
-        }
-    }
-    createBushes() {
-        if (getTextureName(Level.BUSH) in loadedTextures) {
-            const bushesHeights = Level.createMatrix({
-                cols: Level.COLS * 2,
-                rows: Level.ROWS * 2,
-                fill: Level.BUSH_FILL,
-                iterations: Level.BUSH_ITERATIONS
-            });
-            this.forEachHeight(bushesHeights, (col, row, allow) => {
-                const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)];
-                if (allow &&
-                    height >= Level.BUSH_HEIGHT_START &&
-                    Math.random() < Level.BUSH_CHANCE) {
-                    const x = col / 2 - Level.COLS / 2 + 0.25;
-                    const y = row / 2 - Level.ROWS / 2 + 0.25;
-                    new Bush(this, x, y);
-                }
-            });
-        }
-    }
-    setLevelMesh(mesh) {
-        this.forEachHeight(this.heights, (col, row, height) => {
-            this.setLevelAt(col, row, height, mesh);
-            this.setColliderAt(col, row, height);
         });
     }
-    setLevelAt(col, row, height, mesh) {
-        const matrix = getMatrix(new Vector3(col, height / 4 - 0.75, row), new Vector3(1, height / 2, 1));
-        mesh.setMatrixAt(row * Level.ROWS + col, matrix);
+    setMeshHeight(col, row, height) {
+        const matrix = getMatrix(new Vector3(col, height / 2 - 0.75, row), new Vector3(1, height, 1));
+        this.mesh.setMatrixAt(row * Level.ROWS + col, matrix);
     }
 }
-Level.TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`;
-Level.BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`;
 Level.SIDES = 'sides.webp';
 Level.FLOOR = 'floor.webp';
 Level.OCEAN = 'ocean.webp';
-Level.TREE_FILL = 0.5;
-Level.TREE_CHANCE = 0.25;
-Level.TREE_HEIGHT_START = 2;
-Level.TREE_ITERATIONS = 2;
-Level.BUSH_FILL = 0.35;
-Level.BUSH_CHANCE = 0.6;
-Level.BUSH_HEIGHT_START = 1;
-Level.BUSH_ITERATIONS = 1;
+Level.TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`;
+Level.BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`;
+Level.DEFAULT_OBJECTS = {
+    [Level.TREE]: {
+        fill: 0.5,
+        chance: 0.25,
+        minHeight: 2,
+        iterations: 2
+    },
+    [Level.BUSH]: {
+        fill: 0.35,
+        chance: 0.6,
+        minHeight: 1
+    }
+};
+__decorate([
+    distExports.Inject(System)
+], Level.prototype, "system", void 0);
 
-export { AbstractBody, BaseLevel, Billboard, BoxMesh, Bush, Camera, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, Tree, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, floors, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
+export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Bush, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, Tree, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, groups, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
 //# sourceMappingURL=index.js.map

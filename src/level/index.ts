@@ -1,7 +1,9 @@
+import { System } from 'check2d'
+import { Inject } from 'inject.min'
 import { Texture, Vector3 } from 'three'
 import { Renderer } from '../core/renderer'
 import { Events } from '../events'
-import { loadedTextures, state } from '../state'
+import { state } from '../state'
 import {
   getMatrix,
   getTextureName,
@@ -9,74 +11,91 @@ import {
   mapCubeTextures
 } from '../utils/view-utils'
 import { Bush } from '../view/bush'
-import { SkyboxProps } from '../view/skybox'
 import { Tree } from '../view/tree'
-import { BaseLevel } from './base-level'
+import { AbstractLevel } from './abstract-level'
 import { BoxMesh } from './box-mesh'
+import { LevelCreateProps, LevelObjects, LevelProps } from './model'
+import { Billboard } from '../view/billboard'
 
-export type LevelPropsKeys = 'ocean' | 'floor' | 'sides' | 'tree' | 'bush'
+export class Level extends AbstractLevel {
+  @Inject(System) system!: System
 
-export type LevelCreateProps<T = string> = Partial<Record<LevelPropsKeys, T>>
+  static SIDES = 'sides.webp'
+  static FLOOR = 'floor.webp'
+  static OCEAN = 'ocean.webp'
+  static TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`
+  static BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`
 
-export interface LevelProps<T = Texture> extends LevelCreateProps<T> {
-  textures: Texture[]
-  canvas?: HTMLCanvasElement
-  skybox?: SkyboxProps
-}
+  static readonly DEFAULT_OBJECTS: LevelObjects = {
+    [Level.TREE]: {
+      fill: 0.5,
+      chance: 0.25,
+      minHeight: 2,
+      iterations: 2
+    },
+    [Level.BUSH]: {
+      fill: 0.35,
+      chance: 0.6,
+      minHeight: 1
+    }
+  }
 
-export class Level extends BaseLevel {
   static async create(
     canvas?: HTMLCanvasElement,
     {
-      sides: sidesUrl = Level.SIDES,
-      floor: floorUrl = Level.FLOOR,
-      ocean: oceanUrl = Level.OCEAN,
-      tree: treeUrl = Level.TREE,
-      bush: bushUrl = Level.BUSH
+      sides,
+      floor,
+      ocean,
+      objects = Level.DEFAULT_OBJECTS
     }: LevelCreateProps<string> = {}
   ): Promise<Level> {
-    const texturesToLoad = [sidesUrl, floorUrl, oceanUrl, treeUrl, bushUrl]
-    const [sides, floor, ocean] = await loadTextures(texturesToLoad)
+    const [sidesTex, floorTex, oceanTex] = await loadTextures([
+      sides || Level.SIDES,
+      floor || Level.FLOOR,
+      ocean || Level.OCEAN,
+      ...Object.keys(objects)
+    ])
+
     return new Level({
       canvas,
-      ocean,
-      textures: mapCubeTextures({
-        up: floor,
-        down: floor,
-        left: sides,
-        right: sides,
-        front: sides,
-        back: sides
-      })
+      objects,
+      ocean: oceanTex,
+      textures: Level.getCubeTextures(sidesTex, floorTex)
     })
   }
 
-  protected static TREE = `${Tree.DEFAULT_PROPS.textureName}.webp`
-  protected static BUSH = `${Bush.DEFAULT_PROPS.textureName}.webp`
-  protected static SIDES = 'sides.webp'
-  protected static FLOOR = 'floor.webp'
-  protected static OCEAN = 'ocean.webp'
-
-  protected static readonly TREE_FILL = 0.5
-  protected static readonly TREE_CHANCE = 0.25
-  protected static readonly TREE_HEIGHT_START = 2
-  protected static readonly TREE_ITERATIONS = 2
-  protected static readonly BUSH_FILL = 0.35
-  protected static readonly BUSH_CHANCE = 0.6
-  protected static readonly BUSH_HEIGHT_START = 1
-  protected static readonly BUSH_ITERATIONS = 1
+  protected static getCubeTextures(sidesTex: Texture, floorTex: Texture) {
+    return mapCubeTextures({
+      up: floorTex,
+      down: floorTex,
+      left: sidesTex,
+      right: sidesTex,
+      front: sidesTex,
+      back: sidesTex
+    })
+  }
 
   mesh: BoxMesh
+  objects: LevelObjects
 
   constructor(
-    { textures, canvas, ocean, skybox }: LevelProps,
+    { textures, canvas, ocean, skybox, objects = {} }: LevelProps,
     setLevel = true
   ) {
     Renderer.create({ canvas, ocean, skybox })
     Events.addEventListeners()
 
     super()
-    this.mesh = this.createMesh(textures)
+
+    this.mesh = this.createBoxMesh(textures)
+    this.objects = objects
+
+    this.forEachHeight(this.heights, (col, row, height) => {
+      this.setMeshHeight(col, row, height)
+      this.createCollider(col, row, height)
+    })
+
+    this.createObjects()
 
     if (setLevel) {
       state.renderer.setLevel(this)
@@ -89,77 +108,46 @@ export class Level extends BaseLevel {
     return box
   }
 
-  protected createMesh(textures: Texture[]) {
-    const mesh = this.createBoxMesh(textures)
-    this.setLevelMesh(mesh)
-    this.createTrees()
-    this.createBushes()
-    return mesh
-  }
+  protected createObjects() {
+    Object.entries(this.objects).forEach(
+      ([
+        texturePath,
+        { fill, iterations, minHeight, maxHeight, chance, spread = 1 }
+      ]) => {
+        const textureName = getTextureName(texturePath)
+        const offset = spread / 2
+        const heights = Level.createMatrix({
+          fill,
+          iterations
+        })
 
-  protected createTrees() {
-    if (getTextureName(Level.TREE) in loadedTextures) {
-      const treeHeights = Level.createMatrix({
-        fill: Level.TREE_FILL,
-        iterations: Level.TREE_ITERATIONS
-      })
+        this.forEachHeight(heights, (col, row) => {
+          const posX = Math.floor(col * spread)
+          const posY = Math.floor(row * spread)
+          const height = this.heights[posX][posY]
 
-      this.forEachHeight(this.heights, (col, row, height) => {
-        const allow = treeHeights[col][row]
-        if (
-          allow &&
-          height >= Level.TREE_HEIGHT_START &&
-          Math.random() < Level.TREE_CHANCE
-        ) {
+          if (minHeight && height < minHeight) return
+          if (maxHeight && height > maxHeight) return
+          if (chance && Math.random() > chance) return
+
           const { x, y } = this.getXY(col, row)
-          new Tree(this, x + 0.5, y + 0.5)
-        }
-      })
-    }
+          new Billboard({
+            textureName,
+            level: this,
+            x: x + offset,
+            y: y + offset
+          })
+        })
+      }
+    )
   }
 
-  protected createBushes() {
-    if (getTextureName(Level.BUSH) in loadedTextures) {
-      const bushesHeights = Level.createMatrix({
-        cols: Level.COLS * 2,
-        rows: Level.ROWS * 2,
-        fill: Level.BUSH_FILL,
-        iterations: Level.BUSH_ITERATIONS
-      })
-
-      this.forEachHeight(bushesHeights, (col, row, allow) => {
-        const height = this.heights[Math.floor(col / 2)][Math.floor(row / 2)]
-        if (
-          allow &&
-          height >= Level.BUSH_HEIGHT_START &&
-          Math.random() < Level.BUSH_CHANCE
-        ) {
-          const x = col / 2 - Level.COLS / 2 + 0.25
-          const y = row / 2 - Level.ROWS / 2 + 0.25
-          new Bush(this, x, y)
-        }
-      })
-    }
-  }
-
-  protected setLevelMesh(mesh: BoxMesh) {
-    this.forEachHeight(this.heights, (col, row, height) => {
-      this.setLevelAt(col, row, height, mesh)
-      this.setColliderAt(col, row, height)
-    })
-  }
-
-  protected setLevelAt(
-    col: number,
-    row: number,
-    height: number,
-    mesh: BoxMesh
-  ) {
+  protected setMeshHeight(col: number, row: number, height: number) {
     const matrix = getMatrix(
-      new Vector3(col, height / 4 - 0.75, row),
-      new Vector3(1, height / 2, 1)
+      new Vector3(col, height / 2 - 0.75, row),
+      new Vector3(1, height, 1)
     )
 
-    mesh.setMatrixAt(row * Level.ROWS + col, matrix)
+    this.mesh.setMatrixAt(row * Level.ROWS + col, matrix)
   }
 }

@@ -2,9 +2,9 @@ import { AbstractBody } from '../body/abstract-body'
 import { DynamicBody } from '../body/dynamic-body'
 import { Mouse } from '../core/mouse'
 import { Level } from '../level'
-import { BillboardProps, SpriteState } from '../model'
+import { AbstractLevel } from '../level/abstract-level'
+import { BaseBody, BillboardProps, SpriteState } from '../model'
 import { physics } from '../state'
-import { DeviceDetector } from '../utils/detect-mobile'
 import { normalizeAngle } from '../utils/view-utils'
 import { Billboard, BillboardCreateProps } from './billboard'
 
@@ -17,12 +17,14 @@ export class Sprite extends Billboard {
     return Billboard.create<T>(level, props, Class)
   }
 
-  static readonly ROTATE_SPEED = DeviceDetector.HIGH_END ? 3 : 1.5
-  static readonly MOVE_SPEED = 0.05
-  static readonly JUMP_SPEED = 0.075
-  static readonly GRAVITY = 0.005
-  static readonly CLICK_PREVENT = 600
-  static readonly CLICK_DURATION = 200
+  static readonly ANIM_SPEED = 0.002
+  static readonly SPIN_SPEED = 0.06
+  static readonly MOVE_SPEED = 0.1
+  static readonly JUMP_SPEED = 1
+  static readonly FALL_SPEED = 0.125
+
+  static readonly CLICK_DURATION = 100
+  static readonly CLICK_PREVENT = 500
 
   declare readonly body: DynamicBody
 
@@ -40,25 +42,19 @@ export class Sprite extends Billboard {
     this.state = state
   }
 
-  update(ms: number) {
-    const deltaTime = ms * 0.001
-    const speed = this.getSpeed()
+  update(scale: number) {
+    this.updateFall(scale)
 
-    this.updateAngle(deltaTime)
-    this.processMovement(deltaTime, speed * Sprite.MOVE_SPEED)
-    this.handleFrameUpdate(ms, speed)
+    const gear = this.getGear()
+    const { left, right } = this.state.keys
+    if (gear || left || right) {
+      this.updateAngle(scale)
+      this.updateMove(scale * gear)
+      this.updateAnimation(scale)
+    }
 
-    super.update(ms)
-  }
-
-  getSpeed() {
-    if (this.state.keys.up) return 1
-
-    if (this.state.keys.down) return -1
-
-    if (this.state.mouseDown) return -this.state.mouse.y
-
-    return 0
+    // update mesh
+    super.update(scale)
   }
 
   jump() {
@@ -89,51 +85,21 @@ export class Sprite extends Billboard {
   }
 
   protected onCollide() {
-    if (this.getSpeed()) {
-      this.jump()
-    }
+    const gear = this.getGear()
+    if (!gear) return
+
+    this.jump()
   }
 
-  protected processMovement(deltaTime: number, moveSpeed: number) {
-    let timeLeft = deltaTime * 60
-    while (timeLeft > 0) {
-      const timeScale = Math.min(1, timeLeft)
-
-      this.body.move(moveSpeed * timeScale)
-      this.body.separate(timeScale, this.onCollide.bind(this))
-      this.updateZ(timeScale)
-
-      timeLeft -= timeScale
-    }
+  protected getGear() {
+    if (this.state.keys.up) return 1
+    if (this.state.keys.down) return -1
+    if (this.state.mouseDown) return -this.state.mouse.y
+    return 0
   }
 
-  protected handleFrameUpdate(ms: number, mouseGear: number) {
-    if (mouseGear || Object.values(this.state.keys).some(Boolean)) {
-      this.updateFrame(ms)
-    }
-  }
-
-  protected updateZ(timeScale: number) {
-    const floorZ = AbstractBody.getFloor(this.body) / 2
-    const isOnGround = this.body.z === floorZ || this.velocity === 0
-    const isJumping = isOnGround && this.state.keys.space
-
-    if (isJumping) this.velocity = Sprite.JUMP_SPEED
-
-    if (isJumping || this.body.z > floorZ) {
-      this.body.z += this.velocity * timeScale
-      this.velocity -= timeScale * Sprite.GRAVITY
-    }
-
-    if (this.body.z < floorZ) {
-      this.body.z = floorZ
-      this.velocity = 0
-    }
-
-    this.body.group = AbstractBody.getGroup(this.body)
-  }
-
-  protected updateAngle(deltaTime: number) {
+  protected updateAngle(scale: number) {
+    const speed = Sprite.SPIN_SPEED * scale
     const scaleX =
       this.state.keys.left || this.state.keys.right
         ? this.state.keys.left
@@ -144,14 +110,42 @@ export class Sprite extends Billboard {
           : 0
 
     if (scaleX !== 0) {
-      this.body.angle = normalizeAngle(
-        this.body.angle + Sprite.ROTATE_SPEED * deltaTime * scaleX
-      )
+      this.body.angle = normalizeAngle(this.body.angle + speed * scaleX)
     }
   }
 
-  protected updateFrame(ms: number) {
-    this.frame = (this.frame + ms * this.invFrameDuration) % this.totalFrames
+  protected updateFall(scale: number) {
+    const speed = Sprite.FALL_SPEED * scale
+    const floor = AbstractBody.getZ(this.body)
+    const isOnGround = this.body.z === floor || this.velocity === 0
+    const isJumping = isOnGround && this.state.keys.space
+
+    if (isJumping) this.velocity = Sprite.JUMP_SPEED
+
+    if (isJumping || floor < this.body.z) {
+      this.velocity -= speed
+      this.body.z += this.velocity * speed
+    }
+
+    if (this.body.z < floor) {
+      this.velocity = 0
+      this.body.z = floor
+    }
+  }
+
+  protected updateMove(scale: number) {
+    const speed = scale * Sprite.MOVE_SPEED
+    this.body.move(speed)
+
+    const diffs = this.body.separate(scale)
+    if (diffs.find((z) => z - AbstractLevel.STEP < 0.1)) {
+      this.onCollide()
+    }
+  }
+
+  protected updateAnimation(scale: number) {
+    const speed = scale * Sprite.ANIM_SPEED
+    this.frame = (this.frame + speed * this.frameDuration) % this.totalFrames
   }
 
   protected updateTexture() {
@@ -176,14 +170,9 @@ export class Sprite extends Billboard {
     }
   }
 
-  protected createBody(x: number, y: number, level: Level) {
+  protected createBody(x: number, y: number, level: Level): BaseBody {
     const body = new DynamicBody(x, y, level)
     physics.insert(body)
     return body
-  }
-
-  protected spawn(level: Level, x?: number, y?: number) {
-    super.spawn(level, x, y)
-    this.body.separate()
   }
 }

@@ -14,6 +14,7 @@ import { queryParams } from '../utils/query-params'
 import { Ocean } from '../view/ocean'
 import { Skybox, SkyboxProps } from '../view/skybox'
 import { Camera } from './camera'
+import { Level } from '../level'
 
 export interface RendererProps {
   canvas?: HTMLCanvasElement
@@ -23,7 +24,7 @@ export interface RendererProps {
 
 export interface RendererChild {
   readonly mesh: Object3D
-  readonly update: (ms: number) => void
+  readonly update: (scale: number) => void
 }
 
 export class Renderer extends WebGLRenderer {
@@ -32,6 +33,7 @@ export class Renderer extends WebGLRenderer {
   scene = new Scene()
   camera = new Camera()
   stats?: Stats
+  level?: Level
   ocean?: Ocean
   skybox?: Skybox
 
@@ -77,7 +79,9 @@ export class Renderer extends WebGLRenderer {
   }
 
   setLevel(level: SetProps['level']) {
+    this.scene.clear()
     this.scene.add(level.mesh)
+    this.level = level
   }
 
   protected onCreate() {
@@ -111,18 +115,34 @@ export class Renderer extends WebGLRenderer {
   }
 
   protected animation() {
-    const now = Date.now()
-    const ms = Math.min(50, now - this.now) // max 3 frame lag allowed = 20 fps
-    if (!ms) return
+    const scale = this.getTimeScale()
+    if (!scale) return
 
     this.children.forEach((child) => {
-      child.update(ms)
+      child.update(scale)
     })
 
-    this.camera.update(ms)
+    this.updateCamera(scale)
+  }
+
+  protected updateCamera(scale: number) {
+    this.camera.update(scale)
+    this.render(this.scene, this.camera)
+  }
+
+  protected getTimeScale() {
+    const now = Date.now()
+    const passed = now - this.now
+    if (!passed) return 0
+
     this.now = now
 
-    this.render(this.scene, this.camera)
+    const minFPS = 30
+    const minFPSinMS = 1_000 / minFPS
+    const ms = Math.min(passed, minFPSinMS)
+    const scale = ms / minFPSinMS
+
+    return scale
   }
 
   protected createFog() {

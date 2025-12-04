@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>SpriteState | make3d</title>
+    <title>LevelObject | make3d</title>
     <meta name="description" content="Documentation for make3d" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -85,102 +85,61 @@
       <div class="col-content">
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-            <li><a href="" aria-current="page">SpriteState</a></li>
+            <li><a href="" aria-current="page">LevelObject</a></li>
           </ul>
-          <h1>Interface SpriteState</h1>
+          <h1>Interface LevelObject</h1>
         </div>
         <div class="tsd-signature">
           <span class="tsd-signature-keyword">interface</span>
-          <span class="tsd-kind-interface">SpriteState</span>
+          <span class="tsd-kind-interface">LevelObject</span>
           <span class="tsd-signature-symbol">{</span><br />    <a
             class="tsd-kind-property"
-            href="#keys"
-            >keys</a
-          ><span class="tsd-signature-symbol">:</span>
-          <span class="tsd-signature-type">Record</span
-          ><span class="tsd-signature-symbol">&lt;</span
-          ><span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">,</span>
-          <span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">&gt;</span
-          ><span class="tsd-signature-symbol">;</span><br />    <a
-            class="tsd-kind-property"
-            href="#mouse"
-            >mouse</a
-          ><span class="tsd-signature-symbol">:</span>
-          <a
-            href="../classes/Mouse.html"
-            class="tsd-signature-type tsd-kind-class"
-            >Mouse</a
-          ><span class="tsd-signature-symbol">;</span><br />    <a
-            class="tsd-kind-property"
-            href="#mousedown"
-            >mouseDown</a
+            href="#chance"
+            >chance</a
           ><span class="tsd-signature-symbol">?:</span>
-          <span class="tsd-signature-type">boolean</span
-          ><span class="tsd-signature-symbol">;</span><br />    <span
-            class="tsd-signature-symbol"
-            >[</span
-          ><span class="tsd-kind-index-signature">key</span
-          ><span class="tsd-signature-symbol">:</span>
-          <span class="tsd-signature-type">string</span
-          ><span class="tsd-signature-symbol">]:</span>
-          <span class="tsd-signature-type">any</span
+          <span class="tsd-signature-type">number</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#fill"
+            >fill</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">number</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#iterations"
+            >iterations</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">number</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#maxheight"
+            >maxHeight</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">number</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#minheight"
+            >minHeight</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">number</span
+          ><span class="tsd-signature-symbol">;</span><br />    <a
+            class="tsd-kind-property"
+            href="#spread"
+            >spread</a
+          ><span class="tsd-signature-symbol">?:</span>
+          <span class="tsd-signature-type">number</span
           ><span class="tsd-signature-symbol">;</span><br /><span
             class="tsd-signature-symbol"
             >}</span
           >
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="878">
-          <h4>
-            Hierarchy (<a href="../hierarchy.html#SpriteState">View Summary</a>)
-          </h4>
-          <ul class="tsd-hierarchy">
-            <li class="tsd-hierarchy-item">
-              <span class="tsd-signature-type">Record</span
-              ><span class="tsd-signature-symbol">&lt;</span
-              ><span class="tsd-signature-type">string</span
-              ><span class="tsd-signature-symbol">,</span>
-              <span class="tsd-signature-type">any</span
-              ><span class="tsd-signature-symbol">&gt;</span>
-              <ul class="tsd-hierarchy">
-                <li class="tsd-hierarchy-item">
-                  <span class="tsd-hierarchy-target">SpriteState</span>
-                  <ul class="tsd-hierarchy">
-                    <li class="tsd-hierarchy-item">
-                      <a
-                        href="AppState.html"
-                        class="tsd-signature-type tsd-kind-interface"
-                        >AppState</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-        <section class="tsd-panel">
-          <h4 class="tsd-before-signature">Indexable</h4>
-          <ul class="tsd-signatures">
-            <li class="tsd-index-signature">
-              <div class="tsd-signature">
-                <span class="tsd-signature-symbol">[</span
-                ><span class="tsd-kind-parameter">key</span>:
-                <span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">]:</span>
-                <span class="tsd-signature-type">any</span>
-              </div>
-            </li>
-          </ul>
-        </section>
         <aside class="tsd-sources">
           <ul>
             <li>
               Defined in
               <a
-                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/model.ts#L16"
-                >src/model.ts:16</a
+                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L6"
+                >src/level/model.ts:6</a
               >
             </li>
           </ul>
@@ -204,32 +163,59 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
-                    <a href="#keys" class="tsd-index-link"
+                    <a href="#chance" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>keys</span></a
+                      ><span>chance?</span></a
                     >
-                    <a href="#mouse" class="tsd-index-link"
+                    <a href="#fill" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>mouse</span></a
+                      ><span>fill?</span></a
                     >
-                    <a href="#mousedown" class="tsd-index-link"
+                    <a href="#iterations" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>mouse<wbr />Down?</span></a
+                      ><span>iterations?</span></a
+                    >
+                    <a href="#maxheight" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>max<wbr />Height?</span></a
+                    >
+                    <a href="#minheight" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>min<wbr />Height?</span></a
+                    >
+                    <a href="#spread" class="tsd-index-link"
+                      ><svg
+                        class="tsd-kind-icon"
+                        viewBox="0 0 24 24"
+                        aria-label="Property"
+                      >
+                        <use href="../assets/icons.svg#icon-1024"></use></svg
+                      ><span>spread?</span></a
                     >
                   </div>
                 </section>
@@ -252,70 +238,10 @@
           </summary>
           <section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="keys">
-                <span>keys</span
-                ><a href="#keys" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">keys</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">Record</span
-                ><span class="tsd-signature-symbol">&lt;</span
-                ><span class="tsd-signature-type">string</span
-                ><span class="tsd-signature-symbol">,</span>
-                <span class="tsd-signature-type">boolean</span
-                ><span class="tsd-signature-symbol">&gt;</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/model.ts#L17"
-                      >src/model.ts:17</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="mouse">
-                <span>mouse</span
-                ><a href="#mouse" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">mouse</span
-                ><span class="tsd-signature-symbol">:</span>
-                <a
-                  href="../classes/Mouse.html"
-                  class="tsd-signature-type tsd-kind-class"
-                  >Mouse</a
-                >
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/model.ts#L18"
-                      >src/model.ts:18</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="mousedown">
-                <code class="tsd-tag">Optional</code
-                ><span>mouse<wbr />Down</span
+              <h3 class="tsd-anchor-link" id="chance">
+                <code class="tsd-tag">Optional</code><span>chance</span
                 ><a
-                  href="#mousedown"
+                  href="#chance"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -323,17 +249,156 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">mouseDown</span
+                <span class="tsd-kind-property">chance</span
                 ><span class="tsd-signature-symbol">?:</span>
-                <span class="tsd-signature-type">boolean</span>
+                <span class="tsd-signature-type">number</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/model.ts#L19"
-                      >src/model.ts:19</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L8"
+                      >src/level/model.ts:8</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="fill">
+                <code class="tsd-tag">Optional</code><span>fill</span
+                ><a href="#fill" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">fill</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">number</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L7"
+                      >src/level/model.ts:7</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="iterations">
+                <code class="tsd-tag">Optional</code><span>iterations</span
+                ><a
+                  href="#iterations"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">iterations</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">number</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L11"
+                      >src/level/model.ts:11</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="maxheight">
+                <code class="tsd-tag">Optional</code
+                ><span>max<wbr />Height</span
+                ><a
+                  href="#maxheight"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">maxHeight</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">number</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L10"
+                      >src/level/model.ts:10</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="minheight">
+                <code class="tsd-tag">Optional</code
+                ><span>min<wbr />Height</span
+                ><a
+                  href="#minheight"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">minHeight</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">number</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L9"
+                      >src/level/model.ts:9</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="spread">
+                <code class="tsd-tag">Optional</code><span>spread</span
+                ><a
+                  href="#spread"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">spread</span
+                ><span class="tsd-signature-symbol">?:</span>
+                <span class="tsd-signature-type">number</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/model.ts#L12"
+                      >src/level/model.ts:12</a
                     >
                   </li>
                 </ul>
@@ -502,30 +567,54 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#keys"
+                  <a href="#chance"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>keys</span></a
-                  ><a href="#mouse"
+                    ><span>chance</span></a
+                  ><a href="#fill"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>mouse</span></a
-                  ><a href="#mousedown"
+                    ><span>fill</span></a
+                  ><a href="#iterations"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>mouse<wbr />Down</span></a
+                    ><span>iterations</span></a
+                  ><a href="#maxheight"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>max<wbr />Height</span></a
+                  ><a href="#minheight"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>min<wbr />Height</span></a
+                  ><a href="#spread"
+                    ><svg
+                      class="tsd-kind-icon"
+                      viewBox="0 0 24 24"
+                      aria-label="Property"
+                    >
+                      <use href="../assets/icons.svg#icon-1024"></use></svg
+                    ><span>spread</span></a
                   >
                 </div>
               </details>

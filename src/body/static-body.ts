@@ -18,7 +18,7 @@ export class StaticBody implements BaseBody {
   setPosition(x: number, y: number) {
     this.x = x
     this.y = y
-    AbstractBody.onSetPosition(this)
+    this.z = AbstractBody.getZ(this)
 
     return this
   }

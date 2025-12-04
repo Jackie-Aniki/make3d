@@ -2,7 +2,7 @@ import { Mesh, Object3D, PlaneGeometry, Texture, Vector3 } from 'three'
 import { StaticBody } from '../body/static-body'
 import { Camera } from '../core/camera'
 import { type Level } from '../level'
-import { BaseLevel } from '../level/base-level'
+import { AbstractLevel } from '../level/abstract-level'
 import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
 import { directions, state } from '../state'
 import {
@@ -35,6 +35,7 @@ export class Billboard {
 
   mesh: Mesh | Object3D
   body!: BaseBody
+  level?: Level
 
   protected frame = 0
   protected direction: Direction = 'up'
@@ -45,11 +46,9 @@ export class Billboard {
   protected frameDuration: number
   protected invCols: number
   protected invRows: number
-  protected invFrameDuration: number
   protected centerOffset: number
   protected scaleX: number
   protected scaleY: number
-  protected level?: Level
 
   constructor({
     level,
@@ -70,7 +69,6 @@ export class Billboard {
     this.invCols = 1 / this.cols
     this.invRows = 1 / this.rows
     this.frameDuration = frameDuration || 120
-    this.invFrameDuration = 1 / this.frameDuration
     this.totalFrames = totalFrames || 1
     this.directionsToRows = props.directionsToRows || { default: 0 }
 
@@ -83,7 +81,7 @@ export class Billboard {
     state.renderer.add(this)
   }
 
-  update(_ms: number): void {
+  update(_: number): void {
     this.direction = this.getDirection()
     this.mesh.position.set(
       this.body.x,
@@ -143,17 +141,16 @@ export class Billboard {
     }
   }
 
-  protected createBody(x: number, y: number, level: Level) {
+  protected createBody(x: number, y: number, level: Level): BaseBody {
     return new StaticBody(x, y, level)
   }
 
   protected spawn(
     level: Level,
-    x = (Math.random() - 0.5) * (BaseLevel.COLS * 0.5),
-    y = (Math.random() - 0.5) * (BaseLevel.ROWS * 0.5)
+    x = (Math.random() - 0.5) * (AbstractLevel.COLS * 0.5),
+    y = (Math.random() - 0.5) * (AbstractLevel.ROWS * 0.5)
   ) {
     this.body = this.createBody(x, y, level)
-    console.log(x, this.body.z, y)
     this.mesh.position.set(x, this.body.z, y)
   }
 

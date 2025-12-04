@@ -9,7 +9,7 @@ import {
   Vector3
 } from 'three'
 import { Camera } from '../core/camera'
-import { BaseLevel } from '../level/base-level'
+import { AbstractLevel } from '../level/abstract-level'
 import {
   Math_Half_PI,
   alphaMaterialProps,
@@ -18,11 +18,12 @@ import {
 } from '../state'
 
 export class Ocean {
-  protected static readonly COLS = BaseLevel.COLS
-  protected static readonly ROWS = BaseLevel.ROWS
-  protected static readonly DEEP_WATER_Z = -0.2
+  static readonly DEEP_WATER_Z = -0.2
+
+  protected static readonly COLS = AbstractLevel.COLS
+  protected static readonly ROWS = AbstractLevel.ROWS
   protected static readonly SHALLOW_WATER = {
-    opacity: 0.7,
+    opacity: 0.6,
     waveLength: 0.12,
     strength: 0.8
   }

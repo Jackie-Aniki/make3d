@@ -1,19 +1,26 @@
+import { AbstractLevel } from '../level/abstract-level'
 import { BaseBody } from '../model'
-import { floors } from '../state'
+import { groups } from '../state'
 
 export class AbstractBody {
-  protected static readonly Z_OFFSET = 0.2
-
-  static getGroup({ z = 0 }) {
-    return floors[Math.round((z - AbstractBody.Z_OFFSET) * 2)]
+  static getZ(body: BaseBody, x = body.x, y = body.y) {
+    return body.userData.level.getZ(x, y)
   }
 
-  static getFloor(body: BaseBody, x = body.x, y = body.y) {
-    return body.userData.level.getFloor(x, y)
+  static zToGroup(z = 0) {
+    const step = AbstractBody.zToStep(z)
+    return AbstractBody.stepToGroup(step)
   }
 
-  static onSetPosition(body: BaseBody) {
-    body.z = Math.max(body.z, AbstractBody.getFloor(body) / 2)
-    body.group = AbstractBody.getGroup(body)
+  static zToStep(z = 0) {
+    return Math.round(z / AbstractLevel.STEP)
+  }
+
+  static stepToZ(step = 0) {
+    return step * AbstractLevel.STEP
+  }
+
+  static stepToGroup(step = 0) {
+    return groups[Math.max(0, step)]
   }
 }

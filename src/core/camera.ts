@@ -13,7 +13,7 @@ export class Camera extends PerspectiveCamera {
 
   static readonly HEIGHT = 0.75
   static readonly DISTANCE = 2
-  static readonly LERP_RATIO = 0.004
+  static readonly LERP = 0.2
   static readonly FOV = 75
   static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
@@ -38,11 +38,9 @@ export class Camera extends PerspectiveCamera {
     this.updateProjectionMatrix()
   }
 
-  update(ms = 0) {
-    if (!ms) return
-
+  update(scale: number) {
     this.updateGoal()
-    this.lerpToGoal(ms)
+    this.lerpToGoal(scale)
     this.updateLookAt()
     this.lookAt(Camera.cameraLookAt)
   }
@@ -74,14 +72,17 @@ export class Camera extends PerspectiveCamera {
   protected updateGoal() {
     if (this.target) {
       const [x, y] = this.getPositionBehind(this.target.body)
-      const from = AbstractBody.getFloor(this.target.body, x, y) / 2
-      const z = Math.max(from, this.target.body.z) + Camera.HEIGHT
+      const z = AbstractBody.getZ(this.target.body, x, y)
 
-      Camera.cameraGoal.set(x, z, y)
+      Camera.cameraGoal.set(
+        x,
+        Math.max(z, this.target.body.z) + Camera.HEIGHT,
+        y
+      )
     }
   }
 
-  protected lerpToGoal(ms: number) {
-    this.position.lerp(Camera.cameraGoal, ms * Camera.LERP_RATIO)
+  protected lerpToGoal(scale: number) {
+    this.position.lerp(Camera.cameraGoal, scale * Camera.LERP)
   }
 }

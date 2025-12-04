@@ -85,8 +85,8 @@ export const createMaterial = (textureName: string, cols = 1, rows = 1) => {
   }
 }
 
-export const getTextureName = (path: string) => {
-  const fileName = path.split('/').pop()?.split('.')[0]
+export const getTextureName = (texturePath: string) => {
+  const fileName = texturePath.split('/').pop()?.split('.')[0]
   if (!fileName) {
     return ''
   }

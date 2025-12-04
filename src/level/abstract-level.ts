@@ -1,8 +1,10 @@
 import { Map } from 'rot-js'
-import { floors, maxLevelHeight, minLevelHeight, physics } from '../state'
+import { maxLevelHeight, minLevelHeight, physics } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
+import { AbstractBody } from '../body/abstract-body'
 
-export abstract class BaseLevel {
+export abstract class AbstractLevel {
+  static readonly STEP = 0.33
   static readonly COLS = DeviceDetector.HIGH_END ? 48 : 24
   static readonly ROWS = DeviceDetector.HIGH_END ? 48 : 24
 
@@ -17,10 +19,10 @@ export abstract class BaseLevel {
   static createMatrix({
     min = 0,
     max = 1,
-    iterations = BaseLevel.ITERATIONS,
-    fill = BaseLevel.FILL,
-    cols = BaseLevel.COLS,
-    rows = BaseLevel.ROWS
+    iterations = AbstractLevel.ITERATIONS,
+    fill = AbstractLevel.FILL,
+    cols = AbstractLevel.COLS,
+    rows = AbstractLevel.ROWS
   }) {
     return Array.from({ length: max }, () => {
       const map = new Map.Cellular(cols, rows)
@@ -32,8 +34,10 @@ export abstract class BaseLevel {
 
       return map._map
     })
-      .reduce(BaseLevel.reducer, [])
-      .map((arrays) => arrays.map((value) => Math.max(0, value - min)))
+      .reduce(AbstractLevel.reducer, [])
+      .map((arrays) =>
+        arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP)
+      )
   }
 
   protected static readonly FILL = 0.5
@@ -42,15 +46,15 @@ export abstract class BaseLevel {
   protected readonly heights: number[][] = []
 
   constructor() {
-    this.heights = BaseLevel.createMatrix({
+    this.heights = AbstractLevel.createMatrix({
       min: minLevelHeight,
       max: maxLevelHeight
     })
   }
 
-  getFloor(x: number, y: number) {
-    const posX = Math.floor(x + BaseLevel.COLS / 2)
-    const posY = Math.floor(y + BaseLevel.ROWS / 2)
+  getZ(x: number, y: number) {
+    const posX = Math.floor(x + AbstractLevel.COLS / 2)
+    const posY = Math.floor(y + AbstractLevel.ROWS / 2)
 
     return this.heights[posX]?.[posY] || 0
   }
@@ -70,18 +74,16 @@ export abstract class BaseLevel {
 
   protected getXY(col: number, row: number) {
     return {
-      x: col - BaseLevel.COLS / 2,
-      y: row - BaseLevel.ROWS / 2
+      x: col - AbstractLevel.COLS / 2,
+      y: row - AbstractLevel.ROWS / 2
     }
   }
 
-  protected setColliderAt(col: number, row: number, height: number) {
+  protected createCollider(col: number, row: number, z: number) {
     const { x, y } = this.getXY(col, row)
-    for (let floor = 0; floor < height; floor++) {
-      physics.createBox({ x, y }, 1, 1, {
-        isStatic: true,
-        group: floors[floor]
-      })
-    }
+    return physics.createBox({ x, y }, 1, 1, {
+      isStatic: true,
+      userData: { step: AbstractBody.zToStep(z) }
+    })
   }
 }

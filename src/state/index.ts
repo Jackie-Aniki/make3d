@@ -24,7 +24,7 @@ export const physics = new System()
 
 export const loader = new Loader()
 
-export const floors = Array.from(
+export const groups = Array.from(
   { length: maxLevelHeight },
   (_: unknown, power) => groupBits(128 * Math.pow(2, power))
 )

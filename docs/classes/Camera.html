@@ -89,7 +89,7 @@
           </ul>
           <h1>Class Camera</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="341">
+        <section class="tsd-panel tsd-hierarchy" data-refl="347">
           <h4>Hierarchy</h4>
           <ul class="tsd-hierarchy">
             <li class="tsd-hierarchy-item">
@@ -787,14 +787,14 @@
                         <use href="../assets/icons.svg#icon-1024"></use></svg
                       ><span>HEIGHT</span></a
                     >
-                    <a href="#lerp_ratio" class="tsd-index-link"
+                    <a href="#lerp" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>LERP_<wbr />RATIO</span></a
+                      ><span>LERP</span></a
                     >
                     <a href="#near-1" class="tsd-index-link"
                       ><svg
@@ -4600,22 +4600,18 @@
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="lerp_ratio">
+              <h3 class="tsd-anchor-link" id="lerp">
                 <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code
-                ><span>LERP_<wbr />RATIO</span
-                ><a
-                  href="#lerp_ratio"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
+                <code class="tsd-tag">Readonly</code><span>LERP</span
+                ><a href="#lerp" aria-label="Permalink" class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">LERP_RATIO</span
+                <span class="tsd-kind-property">LERP</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.004</span>
+                <span class="tsd-signature-type">0.2</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
@@ -6513,8 +6509,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L54"
-                            >src/core/camera.ts:54</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L52"
+                            >src/core/camera.ts:52</a
                           >
                         </li>
                       </ul>
@@ -7196,7 +7192,7 @@
                   <div class="tsd-signature tsd-anchor-link" id="lerptogoal-1">
                     <span class="tsd-kind-call-signature">lerpToGoal</span
                     ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">ms</span
+                    ><span class="tsd-kind-parameter">scale</span
                     ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">)</span
@@ -7216,7 +7212,7 @@
                       <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">ms</span>:
+                            ><span class="tsd-kind-parameter">scale</span>:
                             <span class="tsd-signature-type">number</span></span
                           >
                         </li>
@@ -7230,8 +7226,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L84"
-                            >src/core/camera.ts:84</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L85"
+                            >src/core/camera.ts:85</a
                           >
                         </li>
                       </ul>
@@ -9731,8 +9727,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L50"
-                            >src/core/camera.ts:50</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L48"
+                            >src/core/camera.ts:48</a
                           >
                         </li>
                       </ul>
@@ -10669,8 +10665,8 @@
                   <div class="tsd-signature tsd-anchor-link" id="update-1">
                     <span class="tsd-kind-call-signature">update</span
                     ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">ms</span
-                    ><span class="tsd-signature-symbol">?:</span>
+                    ><span class="tsd-kind-parameter">scale</span
+                    ><span class="tsd-signature-symbol">:</span>
                     <span class="tsd-signature-type">number</span
                     ><span class="tsd-signature-symbol">)</span
                     ><span class="tsd-signature-symbol">:</span>
@@ -10689,11 +10685,8 @@
                       <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">ms</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">
-                              = 0</span
-                            ></span
+                            ><span class="tsd-kind-parameter">scale</span>:
+                            <span class="tsd-signature-type">number</span></span
                           >
                         </li>
                       </ul>
@@ -10752,8 +10745,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L74"
-                            >src/core/camera.ts:74</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L72"
+                            >src/core/camera.ts:72</a
                           >
                         </li>
                       </ul>
@@ -10801,8 +10794,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L64"
-                            >src/core/camera.ts:64</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/core/camera.ts#L62"
+                            >src/core/camera.ts:62</a
                           >
                         </li>
                       </ul>
@@ -11967,14 +11960,14 @@
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
                     ><span>HEIGHT</span></a
-                  ><a href="#lerp_ratio"
+                  ><a href="#lerp"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>LERP_<wbr />RATIO</span></a
+                    ><span>LERP</span></a
                   ><a href="#near-1"
                     ><svg
                       class="tsd-kind-icon"
