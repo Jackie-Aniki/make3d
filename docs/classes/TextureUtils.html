@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <title>AbstractLevel | make3d</title>
+    <title>TextureUtils | make3d</title>
     <meta name="description" content="Documentation for make3d" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../assets/style.css" />
@@ -85,35 +85,17 @@
       <div class="col-content">
         <div class="tsd-page-title">
           <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-            <li><a href="" aria-current="page">AbstractLevel</a></li>
+            <li><a href="" aria-current="page">TextureUtils</a></li>
           </ul>
-          <h1>Class AbstractLevel<code class="tsd-tag">Abstract</code></h1>
+          <h1>Class TextureUtils</h1>
         </div>
-        <section class="tsd-panel tsd-hierarchy" data-refl="1494">
-          <h4>
-            Hierarchy (<a href="../hierarchy.html#AbstractLevel">View Summary</a
-            >)
-          </h4>
-          <ul class="tsd-hierarchy">
-            <li class="tsd-hierarchy-item">
-              <span class="tsd-hierarchy-target">AbstractLevel</span>
-              <ul class="tsd-hierarchy">
-                <li class="tsd-hierarchy-item">
-                  <a href="Level.html" class="tsd-signature-type tsd-kind-class"
-                    >Level</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
         <aside class="tsd-sources">
           <ul>
             <li>
               Defined in
               <a
-                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L6"
-                >src/level/abstract-level.ts:6</a
+                href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L12"
+                >src/utils/texture-utils.ts:12</a
               >
             </li>
           </ul>
@@ -151,149 +133,109 @@
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Properties</h3>
                   <div class="tsd-index-list">
-                    <a href="#heights" class="tsd-index-link tsd-is-protected"
+                    <a href="#alpha_props" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>heights</span></a
+                      ><span>ALPHA_<wbr />PROPS</span></a
                     >
-                    <a href="#cols" class="tsd-index-link"
+                    <a href="#loader" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>COLS</span></a
+                      ><span>loader</span></a
                     >
-                    <a href="#fill" class="tsd-index-link"
+                    <a href="#materials" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>FILL</span></a
+                      ><span>materials</span></a
                     >
-                    <a href="#height_max" class="tsd-index-link"
+                    <a href="#props" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>HEIGHT_<wbr />MAX</span></a
+                      ><span>PROPS</span></a
                     >
-                    <a href="#iterations" class="tsd-index-link"
+                    <a href="#textures" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Property"
                       >
                         <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>ITERATIONS</span></a
-                    >
-                    <a href="#pond" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>POND</span></a
-                    >
-                    <a href="#rows" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>ROWS</span></a
-                    >
-                    <a href="#step" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Property"
-                      >
-                        <use href="../assets/icons.svg#icon-1024"></use></svg
-                      ><span>STEP</span></a
+                      ><span>textures</span></a
                     >
                   </div>
                 </section>
                 <section class="tsd-index-section">
                   <h3 class="tsd-index-heading">Methods</h3>
                   <div class="tsd-index-list">
-                    <a
-                      href="#createcollider"
-                      class="tsd-index-link tsd-is-protected"
+                    <a href="#getmaterial" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>create<wbr />Collider</span></a
+                      ><span>get<wbr />Material</span></a
                     >
-                    <a
-                      href="#foreachheight"
-                      class="tsd-index-link tsd-is-protected"
+                    <a href="#getname" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>for<wbr />Each<wbr />Height</span></a
+                      ><span>get<wbr />Name</span></a
                     >
-                    <a href="#getxy" class="tsd-index-link tsd-is-protected"
+                    <a href="#hastexture" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />XY</span></a
+                      ><span>has<wbr />Texture</span></a
                     >
-                    <a href="#getz" class="tsd-index-link"
+                    <a href="#load" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>get<wbr />Z</span></a
+                      ><span>load</span></a
                     >
-                    <a href="#creatematrix" class="tsd-index-link"
+                    <a href="#maptocube" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>create<wbr />Matrix</span></a
+                      ><span>map<wbr />To<wbr />Cube</span></a
                     >
-                    <a href="#reducer" class="tsd-index-link"
+                    <a href="#pixelate" class="tsd-index-link"
                       ><svg
                         class="tsd-kind-icon"
                         viewBox="0 0 24 24"
                         aria-label="Method"
                       >
                         <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>reducer</span></a
-                    >
-                    <a href="#ztostep" class="tsd-index-link"
-                      ><svg
-                        class="tsd-kind-icon"
-                        viewBox="0 0 24 24"
-                        aria-label="Method"
-                      >
-                        <use href="../assets/icons.svg#icon-2048"></use></svg
-                      ><span>z<wbr />To<wbr />Step</span></a
+                      ><span>pixelate</span></a
                     >
                   </div>
                 </section>
@@ -333,17 +275,17 @@
                 <li class="">
                   <div
                     class="tsd-signature tsd-anchor-link"
-                    id="constructorabstractlevel"
+                    id="constructortextureutils"
                   >
                     <span class="tsd-signature-keyword">new</span>
                     <span class="tsd-kind-constructor-signature"
-                      >AbstractLevel</span
+                      >TextureUtils</span
                     ><span class="tsd-signature-symbol">()</span
                     ><span class="tsd-signature-symbol">:</span>
                     <a href="" class="tsd-signature-type tsd-kind-class"
-                      >AbstractLevel</a
+                      >TextureUtils</a
                     ><a
-                      href="#constructorabstractlevel"
+                      href="#constructortextureutils"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -354,20 +296,9 @@
                     <h4 class="tsd-returns-title">
                       Returns
                       <a href="" class="tsd-signature-type tsd-kind-class"
-                        >AbstractLevel</a
+                        >TextureUtils</a
                       >
                     </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L58"
-                            >src/level/abstract-level.ts:58</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
                   </div>
                 </li>
               </ul>
@@ -388,100 +319,13 @@
             <h2>Properties</h2>
           </summary>
           <section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <h3 class="tsd-anchor-link" id="heights">
-                <code class="tsd-tag">Protected</code>
-                <code class="tsd-tag">Readonly</code><span>heights</span
-                ><a
-                  href="#heights"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">heights</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">number</span
-                ><span class="tsd-signature-symbol">[]</span
-                ><span class="tsd-signature-symbol">[]</span
-                ><span class="tsd-signature-symbol"> = []</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L56"
-                      >src/level/abstract-level.ts:56</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="cols">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>COLS</span
-                ><a href="#cols" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">COLS</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">24</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">32</span
-                ><span class="tsd-signature-symbol"> = ...</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L8"
-                      >src/level/abstract-level.ts:8</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="fill">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>FILL</span
-                ><a href="#fill" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">FILL</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.5</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L10"
-                      >src/level/abstract-level.ts:10</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="height_max">
+              <h3 class="tsd-anchor-link" id="alpha_props">
                 <code class="tsd-tag">Static</code>
                 <code class="tsd-tag">Readonly</code
-                ><span>HEIGHT_<wbr />MAX</span
+                ><span>ALPHA_<wbr />PROPS</span
                 ><a
-                  href="#height_max"
+                  href="#alpha_props"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -489,9 +333,10 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">HEIGHT_MAX</span
+                <span class="tsd-kind-property">ALPHA_PROPS</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">number</span
+                <span class="tsd-signature-type"
+                  >MeshBasicMaterialParameters</span
                 ><span class="tsd-signature-symbol"> = ...</span>
               </div>
               <aside class="tsd-sources">
@@ -499,19 +344,19 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L13"
-                      >src/level/abstract-level.ts:13</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L21"
+                      >src/utils/texture-utils.ts:21</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="iterations">
+              <h3 class="tsd-anchor-link" id="loader">
                 <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>ITERATIONS</span
+                <code class="tsd-tag">Readonly</code><span>loader</span
                 ><a
-                  href="#iterations"
+                  href="#loader"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -519,63 +364,10 @@
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">ITERATIONS</span
+                <span class="tsd-kind-property">loader</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">4</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L12"
-                      >src/level/abstract-level.ts:12</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="pond">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>POND</span
-                ><a href="#pond" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">POND</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.36</span>
-              </div>
-              <aside class="tsd-sources">
-                <ul>
-                  <li>
-                    Defined in
-                    <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L11"
-                      >src/level/abstract-level.ts:11</a
-                    >
-                  </li>
-                </ul>
-              </aside>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="rows">
-                <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>ROWS</span
-                ><a href="#rows" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <div class="tsd-signature">
-                <span class="tsd-kind-property">ROWS</span
-                ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">24</span>
-                <span class="tsd-signature-symbol">|</span>
-                <span class="tsd-signature-type">32</span
+                <a href="Loader.html" class="tsd-signature-type tsd-kind-class"
+                  >Loader</a
                 ><span class="tsd-signature-symbol"> = ...</span>
               </div>
               <aside class="tsd-sources">
@@ -583,34 +375,106 @@
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L9"
-                      >src/level/abstract-level.ts:9</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L13"
+                      >src/utils/texture-utils.ts:13</a
                     >
                   </li>
                 </ul>
               </aside>
             </section>
             <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="step">
+              <h3 class="tsd-anchor-link" id="materials">
                 <code class="tsd-tag">Static</code>
-                <code class="tsd-tag">Readonly</code><span>STEP</span
-                ><a href="#step" aria-label="Permalink" class="tsd-anchor-icon"
+                <code class="tsd-tag">Readonly</code><span>materials</span
+                ><a
+                  href="#materials"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
               <div class="tsd-signature">
-                <span class="tsd-kind-property">STEP</span
+                <span class="tsd-kind-property">materials</span
                 ><span class="tsd-signature-symbol">:</span>
-                <span class="tsd-signature-type">0.25</span>
+                <span class="tsd-signature-type">Record</span
+                ><span class="tsd-signature-symbol">&lt;</span
+                ><span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">,</span>
+                <span class="tsd-signature-type">MeshBasicMaterial</span
+                ><span class="tsd-signature-symbol">&gt;</span
+                ><span class="tsd-signature-symbol"> = {}</span>
               </div>
               <aside class="tsd-sources">
                 <ul>
                   <li>
                     Defined in
                     <a
-                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L7"
-                      >src/level/abstract-level.ts:7</a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L15"
+                      >src/utils/texture-utils.ts:15</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="props">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code><span>PROPS</span
+                ><a href="#props" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">PROPS</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type"
+                  >MeshBasicMaterialParameters</span
+                ><span class="tsd-signature-symbol"> = ...</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L17"
+                      >src/utils/texture-utils.ts:17</a
+                    >
+                  </li>
+                </ul>
+              </aside>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="textures">
+                <code class="tsd-tag">Static</code>
+                <code class="tsd-tag">Readonly</code><span>textures</span
+                ><a
+                  href="#textures"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <div class="tsd-signature">
+                <span class="tsd-kind-property">textures</span
+                ><span class="tsd-signature-symbol">:</span>
+                <span class="tsd-signature-type">Record</span
+                ><span class="tsd-signature-symbol">&lt;</span
+                ><span class="tsd-signature-type">string</span
+                ><span class="tsd-signature-symbol">,</span>
+                <span class="tsd-signature-type">Texture</span
+                ><span class="tsd-signature-symbol">&gt;</span
+                ><span class="tsd-signature-symbol"> = {}</span>
+              </div>
+              <aside class="tsd-sources">
+                <ul>
+                  <li>
+                    Defined in
+                    <a
+                      href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L14"
+                      >src/utils/texture-utils.ts:14</a
                     >
                   </li>
                 </ul>
@@ -632,45 +496,44 @@
             <h2>Methods</h2>
           </summary>
           <section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <h3 class="tsd-anchor-link" id="createcollider">
-                <code class="tsd-tag">Protected</code
-                ><span>create<wbr />Collider</span
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="getmaterial">
+                <code class="tsd-tag">Static</code
+                ><span>get<wbr />Material</span
                 ><a
-                  href="#createcollider"
+                  href="#getmaterial"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
-              <ul class="tsd-signatures tsd-is-protected">
+              <ul class="tsd-signatures">
                 <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="createcollider-1"
-                  >
-                    <span class="tsd-kind-call-signature">createCollider</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">col</span
+                  <div class="tsd-signature tsd-anchor-link" id="getmaterial-1">
+                    <span class="tsd-kind-call-signature">getMaterial</span
+                    ><span class="tsd-signature-symbol">(</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >textureName</span
                     ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >cols</span
+                    ><span class="tsd-signature-symbol">?:</span>
                     <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">row</span
-                    ><span class="tsd-signature-symbol">:</span>
+                    ><span class="tsd-signature-symbol">,</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >rows</span
+                    ><span class="tsd-signature-symbol">?:</span>
                     <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">z</span
+                    ><span class="tsd-signature-symbol">,</span><br /><span
+                      class="tsd-signature-symbol"
+                      >)</span
                     ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">Box</span
-                    ><span class="tsd-signature-symbol">&lt;</span
-                    ><span class="tsd-signature-type">any</span
-                    ><span class="tsd-signature-symbol">&gt;</span
+                    <span class="tsd-signature-type">MeshBasicMaterial</span
                     ><a
-                      href="#createcollider-1"
+                      href="#getmaterial-1"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -683,37 +546,42 @@
                       <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">col</span>:
-                            <span class="tsd-signature-type">number</span></span
+                            ><span class="tsd-kind-parameter">textureName</span
+                            >:
+                            <span class="tsd-signature-type">string</span></span
                           >
                         </li>
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">row</span>:
-                            <span class="tsd-signature-type">number</span></span
+                            ><span class="tsd-kind-parameter">cols</span>:
+                            <span class="tsd-signature-type">number</span
+                            ><span class="tsd-signature-symbol">
+                              = 1</span
+                            ></span
                           >
                         </li>
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">z</span>:
-                            <span class="tsd-signature-type">number</span></span
+                            ><span class="tsd-kind-parameter">rows</span>:
+                            <span class="tsd-signature-type">number</span
+                            ><span class="tsd-signature-symbol">
+                              = 1</span
+                            ></span
                           >
                         </li>
                       </ul>
                     </div>
                     <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">Box</span
-                      ><span class="tsd-signature-symbol">&lt;</span
-                      ><span class="tsd-signature-type">any</span
-                      ><span class="tsd-signature-symbol">&gt;</span>
+                      Returns
+                      <span class="tsd-signature-type">MeshBasicMaterial</span>
                     </h4>
                     <aside class="tsd-sources">
                       <ul>
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L95"
-                            >src/level/abstract-level.ts:95</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L46"
+                            >src/utils/texture-utils.ts:46</a
                           >
                         </li>
                       </ul>
@@ -722,58 +590,30 @@
                 </li>
               </ul>
             </section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <h3 class="tsd-anchor-link" id="foreachheight">
-                <code class="tsd-tag">Protected</code
-                ><span>for<wbr />Each<wbr />Height</span
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="getname">
+                <code class="tsd-tag">Static</code><span>get<wbr />Name</span
                 ><a
-                  href="#foreachheight"
+                  href="#getname"
                   aria-label="Permalink"
                   class="tsd-anchor-icon"
                   ><svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="../assets/icons.svg#icon-anchor"></use></svg
                 ></a>
               </h3>
-              <ul class="tsd-signatures tsd-is-protected">
+              <ul class="tsd-signatures">
                 <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="foreachheight-1"
-                  >
-                    <span class="tsd-kind-call-signature">forEachHeight</span
-                    ><span class="tsd-signature-symbol">(</span><br />    <span
-                      class="tsd-kind-parameter"
-                      >heights</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">,</span><br />    <span
-                      class="tsd-kind-parameter"
-                      >iterator</span
+                  <div class="tsd-signature tsd-anchor-link" id="getname-1">
+                    <span class="tsd-kind-call-signature">getName</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">texturePath</span
                     ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">col</span
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">)</span
                     ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">row</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">height</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span>
-                    <span class="tsd-signature-symbol">=&gt;</span>
-                    <span class="tsd-signature-type">void</span
-                    ><span class="tsd-signature-symbol">,</span><br /><span
-                      class="tsd-signature-symbol"
-                      >)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">void</span
+                    <span class="tsd-signature-type">string</span
                     ><a
-                      href="#foreachheight-1"
+                      href="#getname-1"
                       aria-label="Permalink"
                       class="tsd-anchor-icon"
                       ><svg viewBox="0 0 24 24" aria-hidden="true">
@@ -786,33 +626,325 @@
                       <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">heights</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">[]</span
-                            ><span class="tsd-signature-symbol">[]</span
-                            ><span class="tsd-signature-symbol">
-                              = ...</span
+                            ><span class="tsd-kind-parameter">texturePath</span
+                            >:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">string</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L61"
+                            >src/utils/texture-utils.ts:61</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="hastexture">
+                <code class="tsd-tag">Static</code><span>has<wbr />Texture</span
+                ><a
+                  href="#hastexture"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="hastexture-1">
+                    <span class="tsd-kind-call-signature">hasTexture</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">textureName</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">boolean</span
+                    ><a
+                      href="#hastexture-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">textureName</span
+                            >:
+                            <span class="tsd-signature-type">string</span></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">boolean</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L27"
+                            >src/utils/texture-utils.ts:27</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="load">
+                <code class="tsd-tag">Static</code><span>load</span
+                ><a href="#load" aria-label="Permalink" class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="load-1">
+                    <span class="tsd-kind-call-signature">load</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">texturePaths</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">string</span
+                    ><span class="tsd-signature-symbol">[]</span
+                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Promise</span
+                    ><span class="tsd-signature-symbol">&lt;</span
+                    ><span class="tsd-signature-type">any</span
+                    ><span class="tsd-signature-symbol">[]</span
+                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><a
+                      href="#load-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">texturePaths</span
+                            >: <span class="tsd-signature-type">string</span
+                            ><span class="tsd-signature-symbol">[]</span></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns <span class="tsd-signature-type">Promise</span
+                      ><span class="tsd-signature-symbol">&lt;</span
+                      ><span class="tsd-signature-type">any</span
+                      ><span class="tsd-signature-symbol">[]</span
+                      ><span class="tsd-signature-symbol">&gt;</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L31"
+                            >src/utils/texture-utils.ts:31</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="maptocube">
+                <code class="tsd-tag">Static</code
+                ><span>map<wbr />To<wbr />Cube</span
+                ><a
+                  href="#maptocube"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="maptocube-1">
+                    <span class="tsd-kind-call-signature">mapToCube</span
+                    ><span class="tsd-signature-symbol">&lt;</span
+                    ><a
+                      class="tsd-signature-type tsd-kind-type-parameter"
+                      href="#maptocubet"
+                      >T</a
+                    >
+                    <span class="tsd-signature-symbol">=</span>
+                    <span class="tsd-signature-type">Texture</span
+                    ><span class="tsd-signature-symbol">&lt;</span
+                    ><span class="tsd-signature-type">unknown</span
+                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">(</span><br />    <span
+                      class="tsd-kind-parameter"
+                      >__namedParameters</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Record</span
+                    ><span class="tsd-signature-symbol">&lt;</span
+                    ><a
+                      href="../types/CubeDirections.html"
+                      class="tsd-signature-type tsd-kind-type-alias"
+                      >CubeDirections</a
+                    ><span class="tsd-signature-symbol">,</span>
+                    <a
+                      class="tsd-signature-type tsd-kind-type-parameter"
+                      href="#maptocubet"
+                      >T</a
+                    ><span class="tsd-signature-symbol">&gt;</span
+                    ><span class="tsd-signature-symbol">,</span><br /><span
+                      class="tsd-signature-symbol"
+                      >)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <a
+                      class="tsd-signature-type tsd-kind-type-parameter"
+                      href="#maptocubet"
+                      >T</a
+                    ><span class="tsd-signature-symbol">[]</span
+                    ><a
+                      href="#maptocube-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <section class="tsd-panel">
+                      <h4>Type Parameters</h4>
+                      <ul class="tsd-type-parameter-list">
+                        <li>
+                          <span id="maptocubet"
+                            ><span class="tsd-kind-type-parameter">T</span> =
+                            <span class="tsd-signature-type">Texture</span
+                            ><span class="tsd-signature-symbol">&lt;</span
+                            ><span class="tsd-signature-type">unknown</span
+                            ><span class="tsd-signature-symbol"
+                              >&gt;</span
                             ></span
                           >
                         </li>
+                      </ul>
+                    </section>
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
                         <li>
                           <span
-                            ><span class="tsd-kind-parameter">iterator</span>:
-                            <span class="tsd-signature-symbol">(</span
-                            ><span class="tsd-kind-parameter">col</span
-                            ><span class="tsd-signature-symbol">:</span>
-                            <span class="tsd-signature-type">number</span
+                            ><span class="tsd-kind-parameter"
+                              >__namedParameters</span
+                            >: <span class="tsd-signature-type">Record</span
+                            ><span class="tsd-signature-symbol">&lt;</span
+                            ><a
+                              href="../types/CubeDirections.html"
+                              class="tsd-signature-type tsd-kind-type-alias"
+                              >CubeDirections</a
                             ><span class="tsd-signature-symbol">,</span>
-                            <span class="tsd-kind-parameter">row</span
-                            ><span class="tsd-signature-symbol">:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">,</span>
-                            <span class="tsd-kind-parameter">height</span
-                            ><span class="tsd-signature-symbol">:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">)</span>
-                            <span class="tsd-signature-symbol">=&gt;</span>
-                            <span class="tsd-signature-type">void</span></span
+                            <a
+                              class="tsd-signature-type tsd-kind-type-parameter"
+                              href="#maptocubet"
+                              >T</a
+                            ><span class="tsd-signature-symbol"
+                              >&gt;</span
+                            ></span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="tsd-returns-title">
+                      Returns
+                      <a
+                        class="tsd-signature-type tsd-kind-type-parameter"
+                        href="#maptocubet"
+                        >T</a
+                      ><span class="tsd-signature-symbol">[]</span>
+                    </h4>
+                    <aside class="tsd-sources">
+                      <ul>
+                        <li>
+                          Defined in
+                          <a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L83"
+                            >src/utils/texture-utils.ts:83</a
+                          >
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </section>
+            <section class="tsd-panel tsd-member">
+              <h3 class="tsd-anchor-link" id="pixelate">
+                <code class="tsd-tag">Static</code><span>pixelate</span
+                ><a
+                  href="#pixelate"
+                  aria-label="Permalink"
+                  class="tsd-anchor-icon"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <use href="../assets/icons.svg#icon-anchor"></use></svg
+                ></a>
+              </h3>
+              <ul class="tsd-signatures">
+                <li class="">
+                  <div class="tsd-signature tsd-anchor-link" id="pixelate-1">
+                    <span class="tsd-kind-call-signature">pixelate</span
+                    ><span class="tsd-signature-symbol">(</span
+                    ><span class="tsd-kind-parameter">texture</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">Texture</span
+                    ><span class="tsd-signature-symbol">)</span
+                    ><span class="tsd-signature-symbol">:</span>
+                    <span class="tsd-signature-type">void</span
+                    ><a
+                      href="#pixelate-1"
+                      aria-label="Permalink"
+                      class="tsd-anchor-icon"
+                      ><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <use href="../assets/icons.svg#icon-anchor"></use></svg
+                    ></a>
+                  </div>
+                  <div class="tsd-description">
+                    <div class="tsd-parameters">
+                      <h4 class="tsd-parameters-title">Parameters</h4>
+                      <ul class="tsd-parameter-list">
+                        <li>
+                          <span
+                            ><span class="tsd-kind-parameter">texture</span>:
+                            <span class="tsd-signature-type"
+                              >Texture</span
+                            ></span
                           >
                         </li>
                       </ul>
@@ -825,434 +957,8 @@
                         <li>
                           Defined in
                           <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L75"
-                            >src/level/abstract-level.ts:75</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member tsd-is-protected">
-              <h3 class="tsd-anchor-link" id="getxy">
-                <code class="tsd-tag">Protected</code><span>get<wbr />XY</span
-                ><a href="#getxy" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures tsd-is-protected">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="getxy-1">
-                    <span class="tsd-kind-call-signature">getXY</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">col</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">row</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-symbol">{</span>
-                    <span class="tsd-kind-property">x</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span>
-                    <span class="tsd-kind-property">y</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span>
-                    <span class="tsd-signature-symbol">}</span
-                    ><a
-                      href="#getxy-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">col</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">row</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-symbol">{</span>
-                      <span class="tsd-kind-property">x</span
-                      ><span class="tsd-signature-symbol">:</span>
-                      <span class="tsd-signature-type">number</span
-                      ><span class="tsd-signature-symbol">;</span>
-                      <span class="tsd-kind-property">y</span
-                      ><span class="tsd-signature-symbol">:</span>
-                      <span class="tsd-signature-type">number</span>
-                      <span class="tsd-signature-symbol">}</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L88"
-                            >src/level/abstract-level.ts:88</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="getz">
-                <span>get<wbr />Z</span
-                ><a href="#getz" aria-label="Permalink" class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="getz-1">
-                    <span class="tsd-kind-call-signature">getZ</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">x</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">y</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#getz-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">x</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">y</span>:
-                            <span class="tsd-signature-type">number</span></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L68"
-                            >src/level/abstract-level.ts:68</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="creatematrix">
-                <code class="tsd-tag">Static</code
-                ><span>create<wbr />Matrix</span
-                ><a
-                  href="#creatematrix"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div
-                    class="tsd-signature tsd-anchor-link"
-                    id="creatematrix-1"
-                  >
-                    <span class="tsd-kind-call-signature">createMatrix</span
-                    ><span class="tsd-signature-symbol">(</span><br />    <span
-                      class="tsd-kind-parameter"
-                      >__namedParameters</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-symbol">{</span
-                    ><br />        <span class="tsd-kind-property">cols</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span
-                    ><br />        <span class="tsd-kind-property">fill</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span
-                    ><br />        <span class="tsd-kind-property"
-                      >iterations</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span
-                    ><br />        <span class="tsd-kind-property">max</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span
-                    ><br />        <span class="tsd-kind-property">min</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span
-                    ><br />        <span class="tsd-kind-property">rows</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">;</span><br />    <span
-                      class="tsd-signature-symbol"
-                      >}</span
-                    ><span class="tsd-signature-symbol">,</span><br /><span
-                      class="tsd-signature-symbol"
-                      >)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><a
-                      href="#creatematrix-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter"
-                              >__namedParameters</span
-                            >: <span class="tsd-signature-symbol">{</span
-                            ><br />    <span class="tsd-kind-property"
-                              >cols</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br />    <span class="tsd-kind-property"
-                              >fill</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br />    <span class="tsd-kind-property"
-                              >iterations</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br />    <span class="tsd-kind-property">max</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br />    <span class="tsd-kind-property">min</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br />    <span class="tsd-kind-property"
-                              >rows</span
-                            ><span class="tsd-signature-symbol">?:</span>
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">;</span
-                            ><br /><span class="tsd-signature-symbol"
-                              >}</span
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span
-                      ><span class="tsd-signature-symbol">[]</span
-                      ><span class="tsd-signature-symbol">[]</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L32"
-                            >src/level/abstract-level.ts:32</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="reducer">
-                <code class="tsd-tag">Static</code><span>reducer</span
-                ><a
-                  href="#reducer"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="reducer-1">
-                    <span class="tsd-kind-call-signature">reducer</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">input</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">,</span>
-                    <span class="tsd-kind-parameter">heights</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><span class="tsd-signature-symbol">[]</span
-                    ><a
-                      href="#reducer-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">input</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">[]</span
-                            ><span class="tsd-signature-symbol">[]</span></span
-                          >
-                        </li>
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">heights</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">[]</span
-                            ><span class="tsd-signature-symbol">[]</span></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span
-                      ><span class="tsd-signature-symbol">[]</span
-                      ><span class="tsd-signature-symbol">[]</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L24"
-                            >src/level/abstract-level.ts:24</a
-                          >
-                        </li>
-                      </ul>
-                    </aside>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <section class="tsd-panel tsd-member">
-              <h3 class="tsd-anchor-link" id="ztostep">
-                <code class="tsd-tag">Static</code
-                ><span>z<wbr />To<wbr />Step</span
-                ><a
-                  href="#ztostep"
-                  aria-label="Permalink"
-                  class="tsd-anchor-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="../assets/icons.svg#icon-anchor"></use></svg
-                ></a>
-              </h3>
-              <ul class="tsd-signatures">
-                <li class="">
-                  <div class="tsd-signature tsd-anchor-link" id="ztostep-1">
-                    <span class="tsd-kind-call-signature">zToStep</span
-                    ><span class="tsd-signature-symbol">(</span
-                    ><span class="tsd-kind-parameter">z</span
-                    ><span class="tsd-signature-symbol">?:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><span class="tsd-signature-symbol">)</span
-                    ><span class="tsd-signature-symbol">:</span>
-                    <span class="tsd-signature-type">number</span
-                    ><a
-                      href="#ztostep-1"
-                      aria-label="Permalink"
-                      class="tsd-anchor-icon"
-                      ><svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="../assets/icons.svg#icon-anchor"></use></svg
-                    ></a>
-                  </div>
-                  <div class="tsd-description">
-                    <div class="tsd-parameters">
-                      <h4 class="tsd-parameters-title">Parameters</h4>
-                      <ul class="tsd-parameter-list">
-                        <li>
-                          <span
-                            ><span class="tsd-kind-parameter">z</span>:
-                            <span class="tsd-signature-type">number</span
-                            ><span class="tsd-signature-symbol">
-                              = 0</span
-                            ></span
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <h4 class="tsd-returns-title">
-                      Returns <span class="tsd-signature-type">number</span>
-                    </h4>
-                    <aside class="tsd-sources">
-                      <ul>
-                        <li>
-                          Defined in
-                          <a
-                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/level/abstract-level.ts#L20"
-                            >src/level/abstract-level.ts:20</a
+                            href="https://github.com/Jackie-Aniki/make3d/blob/main/src/utils/texture-utils.ts#L75"
+                            >src/utils/texture-utils.ts:75</a
                           >
                         </li>
                       </ul>
@@ -1451,70 +1157,46 @@
                   >Properties
                 </summary>
                 <div>
-                  <a href="#heights" class="tsd-is-protected"
+                  <a href="#alpha_props"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>heights</span></a
-                  ><a href="#cols"
+                    ><span>ALPHA_<wbr />PROPS</span></a
+                  ><a href="#loader"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>COLS</span></a
-                  ><a href="#fill"
+                    ><span>loader</span></a
+                  ><a href="#materials"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>FILL</span></a
-                  ><a href="#height_max"
+                    ><span>materials</span></a
+                  ><a href="#props"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>HEIGHT_<wbr />MAX</span></a
-                  ><a href="#iterations"
+                    ><span>PROPS</span></a
+                  ><a href="#textures"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Property"
                     >
                       <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>ITERATIONS</span></a
-                  ><a href="#pond"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>POND</span></a
-                  ><a href="#rows"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>ROWS</span></a
-                  ><a href="#step"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Property"
-                    >
-                      <use href="../assets/icons.svg#icon-1024"></use></svg
-                    ><span>STEP</span></a
+                    ><span>textures</span></a
                   >
                 </div>
               </details>
@@ -1534,62 +1216,54 @@
                   >Methods
                 </summary>
                 <div>
-                  <a href="#createcollider" class="tsd-is-protected"
+                  <a href="#getmaterial"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>create<wbr />Collider</span></a
-                  ><a href="#foreachheight" class="tsd-is-protected"
+                    ><span>get<wbr />Material</span></a
+                  ><a href="#getname"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>for<wbr />Each<wbr />Height</span></a
-                  ><a href="#getxy" class="tsd-is-protected"
+                    ><span>get<wbr />Name</span></a
+                  ><a href="#hastexture"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />XY</span></a
-                  ><a href="#getz"
+                    ><span>has<wbr />Texture</span></a
+                  ><a href="#load"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>get<wbr />Z</span></a
-                  ><a href="#creatematrix"
+                    ><span>load</span></a
+                  ><a href="#maptocube"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>create<wbr />Matrix</span></a
-                  ><a href="#reducer"
+                    ><span>map<wbr />To<wbr />Cube</span></a
+                  ><a href="#pixelate"
                     ><svg
                       class="tsd-kind-icon"
                       viewBox="0 0 24 24"
                       aria-label="Method"
                     >
                       <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>reducer</span></a
-                  ><a href="#ztostep"
-                    ><svg
-                      class="tsd-kind-icon"
-                      viewBox="0 0 24 24"
-                      aria-label="Method"
-                    >
-                      <use href="../assets/icons.svg#icon-2048"></use></svg
-                    ><span>z<wbr />To<wbr />Step</span></a
+                    ><span>pixelate</span></a
                   >
                 </div>
               </details>

@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 import { CubeDirections } from '../model'
-import { loader as loadingManager, state } from '../state'
-import { mapCubeTextures, pixelate } from '../utils/view-utils'
+import { state } from '../state'
+import { TextureUtils } from '../utils/texture-utils'
 
 export type SkyboxProps<T = string> = Record<CubeDirections, T>
 
 export class Skybox {
   static readonly DEFAULT_CALLBACK = (skyBox: THREE.Texture) => {
-    pixelate(skyBox)
+    TextureUtils.pixelate(skyBox)
     state.renderer.scene.background = skyBox
   }
 
@@ -24,8 +24,8 @@ export class Skybox {
     textures = Skybox.DEFAULT_TEXTURES,
     callback = Skybox.DEFAULT_CALLBACK
   ) {
-    const loader = new THREE.CubeTextureLoader(loadingManager)
-    const skyboxTextures = mapCubeTextures(textures)
+    const loader = new THREE.CubeTextureLoader(TextureUtils.loader)
+    const skyboxTextures = TextureUtils.mapToCube(textures)
 
     loader.load(skyboxTextures, callback)
   }

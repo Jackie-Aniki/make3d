@@ -1,11 +1,10 @@
 import { PerspectiveCamera, Vector3 } from 'three'
-import { Math_Half_PI, maxLevelHeight, state } from '../state'
-import { DeviceDetector } from '../utils/detect-mobile'
-import { Sprite } from '../view/sprite'
 import { AbstractBody } from '../body/abstract-body'
 import { AbstractLevel } from '../level/abstract-level'
-
-const MIN_HEIGHT = maxLevelHeight * AbstractLevel.STEP
+import { state } from '../state'
+import { DeviceDetector } from '../utils/detect-mobile'
+import { Math_Half_PI } from '../utils/view-utils'
+import { Sprite } from '../view/sprite'
 
 export class Camera extends PerspectiveCamera {
   static getFar() {
@@ -18,8 +17,13 @@ export class Camera extends PerspectiveCamera {
   static readonly FOV = 75
   static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
-  static readonly cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0)
-  static readonly cameraLookAt = new Vector3(0, MIN_HEIGHT, 0)
+  static readonly MIN_HEIGHT = AbstractLevel.HEIGHT_MAX * AbstractLevel.STEP
+  static readonly cameraGoal = new Vector3(
+    0,
+    Camera.MIN_HEIGHT + Camera.HEIGHT,
+    0
+  )
+  static readonly cameraLookAt = new Vector3(0, Camera.MIN_HEIGHT, 0)
   static readonly projection = new Vector3()
 
   target?: Sprite

@@ -1,28 +1,12 @@
-import {
-  Mesh,
-  MeshBasicMaterial,
-  Object3D,
-  PlaneGeometry,
-  Texture,
-  Vector3
-} from 'three'
+import { Mesh, Object3D, PlaneGeometry, Texture, Vector3 } from 'three'
 import { StaticBody } from '../body/static-body'
 import { Camera } from '../core/camera'
 import { type Level } from '../level'
 import { AbstractLevel } from '../level/abstract-level'
 import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
-import {
-  alphaMaterialProps,
-  directions,
-  loadedTextures,
-  materials,
-  state
-} from '../state'
-import {
-  getTextureName,
-  loadTextures,
-  normalizeAngle
-} from '../utils/view-utils'
+import { state } from '../state'
+import { TextureUtils } from '../utils/texture-utils'
+import { normalizeAngle } from '../utils/view-utils'
 
 export interface BillboardCreateProps extends Omit<
   BillboardProps,
@@ -32,29 +16,16 @@ export interface BillboardCreateProps extends Omit<
 }
 
 export class Billboard {
+  static DIRECTIONS: Direction[] = ['up', 'right', 'down', 'left']
+
   static async create<T = Billboard>(
     level: Level,
     { texture, ...props }: BillboardCreateProps,
     Class: any = Billboard
   ) {
-    await loadTextures([texture])
-    const textureName = getTextureName(texture)
+    await TextureUtils.load([texture])
+    const textureName = TextureUtils.getName(texture)
     return new Class({ level, textureName, ...props }) as T
-  }
-
-  protected static getMaterial(textureName: string, cols = 1, rows = 1) {
-    if (!materials[textureName]) {
-      if (cols > 1 || rows > 1) {
-        loadedTextures[textureName].repeat.set(1 / cols, 1 / rows)
-      }
-
-      materials[textureName] = new MeshBasicMaterial({
-        ...alphaMaterialProps,
-        map: loadedTextures[textureName]
-      })
-    }
-
-    return materials[textureName]
   }
 
   protected static compensateGroupZ = 0.2
@@ -152,7 +123,11 @@ export class Billboard {
 
   protected createMesh(textureName: string) {
     try {
-      const material = Billboard.getMaterial(textureName, this.cols, this.rows)
+      const material = TextureUtils.getMaterial(
+        textureName,
+        this.cols,
+        this.rows
+      )
       const image = material.map!.image as { width: number; height: number }
       const w = image.width / this.cols
       const h = image.height / this.rows
@@ -206,7 +181,7 @@ export class Billboard {
     const angle = normalizeAngle(this.body.angle - cameraAngle)
     const directionIndex = Math.floor((2 * angle) / Math.PI)
 
-    return directions[directionIndex]
+    return Billboard.DIRECTIONS[directionIndex]
   }
 
   protected getRow(direction: Direction) {

@@ -1,12 +1,12 @@
 import { Circle } from 'check2d'
 import { Level } from '../level'
 import { BaseBody, BodyUserData } from '../model'
-import { Math_Double_PI } from '../state'
+import { Math_Double_PI } from '../utils/view-utils'
 import { AbstractBody } from './abstract-body'
 
 export class DynamicBody extends Circle<BodyUserData> implements BaseBody {
   static readonly RADIUS = 0.2
-  static readonly PADDING = 0
+  static readonly PADDING = 0.15
 
   z = 0
   angle = Math.random() * Math_Double_PI

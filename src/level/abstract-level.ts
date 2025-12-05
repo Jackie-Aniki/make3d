@@ -1,11 +1,21 @@
 import { Map } from 'rot-js'
-import { maxLevelHeight, minLevelHeight, physics } from '../state'
+import { physics } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
+import { queryParams } from '../utils/query-params'
 
 export abstract class AbstractLevel {
   static readonly STEP = 0.25
   static readonly COLS = DeviceDetector.HIGH_END ? 32 : 24
   static readonly ROWS = DeviceDetector.HIGH_END ? 32 : 24
+  static readonly FILL = 0.5
+  static readonly POND = 0.36
+  static readonly ITERATIONS = 4
+  static readonly HEIGHT_MAX =
+    'height' in queryParams
+      ? Number(queryParams.height)
+      : DeviceDetector.HIGH_END
+        ? 16
+        : 12
 
   static zToStep(z = 0) {
     return Math.round(z / AbstractLevel.STEP)
@@ -43,15 +53,15 @@ export abstract class AbstractLevel {
       )
   }
 
-  protected static readonly FILL = 0.5
-  protected static readonly ITERATIONS = 4
-
   protected readonly heights: number[][] = []
 
   constructor() {
+    const min = Math.round(AbstractLevel.HEIGHT_MAX * 2 * AbstractLevel.POND)
+    const max = AbstractLevel.HEIGHT_MAX + min
+
     this.heights = AbstractLevel.createMatrix({
-      min: minLevelHeight,
-      max: maxLevelHeight
+      min,
+      max
     })
   }
 

@@ -58144,6 +58144,1485 @@ SATExports.Circle;
 SATExports.Polygon;
 SATExports.Vector;
 
+const physics = new System();
+const state = {
+    keys: {},
+    renderer: null,
+    mouse: null,
+    player: null,
+    npcs: []
+};
+
+class Mouse extends Vector2 {
+    constructor() {
+        super(...arguments);
+        this.pageX = innerWidth / 2;
+        this.pageY = innerWidth / 2;
+    }
+    onPointerDown(event) {
+        this.preventEvent(event);
+        this.onPointerMove(event);
+        state.mouseDown = true;
+        if (state.player) {
+            const now = Date.now();
+            if (now - state.player.clickTime > Mouse.DBL_CLICK) {
+                state.player.clickTime = now;
+            }
+            else {
+                state.player.jumpStart().then(() => {
+                    state.player.jumpEnd();
+                });
+            }
+        }
+    }
+    onPointerUp(event) {
+        this.preventEvent(event);
+        state.mouseDown = false;
+        state.keys.up = false;
+        state.keys.down = false;
+        state.keys.left = false;
+        state.keys.right = false;
+        state.player?.jumpEnd();
+    }
+    onPointerMove(event) {
+        const pointer = event instanceof TouchEvent ? event.touches[0] : event;
+        if (pointer) {
+            event.preventDefault();
+            this.pageX = pointer.pageX;
+            this.pageY = pointer.pageY;
+            const HALF_WIDTH = innerWidth / 2;
+            const HALF_HEIGHT = innerHeight / 2;
+            const playerY = state.player?.getWorldY() || 0;
+            const y = (playerY + 1) * HALF_HEIGHT;
+            this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH);
+            this.y = this.clampNumber((this.pageY - y) / HALF_HEIGHT);
+        }
+    }
+    preventEvent(event) {
+        event.preventDefault();
+    }
+    clampNumber(n, multiply = 2) {
+        return Math.max(-1, Math.min(1, n * multiply));
+    }
+}
+Mouse.DBL_CLICK = 300;
+const mouse = new Mouse();
+
+const setKey = (value, keys = state.keys) => {
+    return (event) => {
+        switch (event.key) {
+            case 'ArrowLeft':
+                keys.left = value;
+                break;
+            case 'ArrowRight':
+                keys.right = value;
+                break;
+            case 'ArrowUp':
+                keys.up = value;
+                break;
+            case 'ArrowDown':
+                keys.down = value;
+                break;
+            case ' ':
+                keys.space = value;
+                break;
+        }
+    };
+};
+class Events {
+    static addEventListeners() {
+        if (Events.eventListenersAdded)
+            return;
+        Events.eventListenersAdded = true;
+        const options = { passive: false };
+        Object.entries(Events.events).forEach(([event, action]) => {
+            window.addEventListener(event, action, options);
+        });
+        window.addEventListener('keydown', Events.keyDown, { passive: true });
+        window.addEventListener('keyup', Events.keyUp, { passive: true });
+    }
+    static removeEventListeners() {
+        if (!Events.eventListenersAdded)
+            return;
+        Events.eventListenersAdded = false;
+        Object.entries(Events.events).forEach(([event, action]) => {
+            window.removeEventListener(event, action);
+        });
+        window.removeEventListener('keydown', Events.keyDown);
+        window.removeEventListener('keyup', Events.keyUp);
+    }
+}
+Events.keyDown = setKey(true);
+Events.keyUp = setKey(false);
+Events.click = mouse.onPointerDown.bind(mouse);
+Events.release = mouse.onPointerUp.bind(mouse);
+Events.move = mouse.onPointerMove.bind(mouse);
+Events.cancel = mouse.preventEvent.bind(mouse);
+Events.events = {
+    pointerdown: Events.click,
+    pointermove: Events.move,
+    pointerup: Events.release,
+    touchstart: Events.cancel,
+    touchend: Events.cancel,
+    touchmove: Events.cancel,
+    dragstart: Events.cancel,
+    contextmenu: Events.cancel
+};
+Events.eventListenersAdded = false;
+
+var dist = {};
+
+var statsConstants = {};
+
+var hasRequiredStatsConstants;
+
+function requireStatsConstants () {
+	if (hasRequiredStatsConstants) return statsConstants;
+	hasRequiredStatsConstants = 1;
+	(function (exports$1) {
+		Object.defineProperty(exports$1, "__esModule", { value: true });
+		exports$1.DOM_ELEMENT_ID = exports$1.GRAPH_HEIGHT = exports$1.GRAPH_WIDTH = exports$1.GRAPH_Y = exports$1.FONT_SIZE = exports$1.GRAPH_X = exports$1.TEXT_Y = exports$1.TEXT_X = exports$1.HEIGHT = exports$1.WIDTH = exports$1.PR = void 0;
+		exports$1.PR = 4;
+		exports$1.WIDTH = 50 * exports$1.PR;
+		exports$1.HEIGHT = 30 * exports$1.PR;
+		exports$1.TEXT_X = 7;
+		exports$1.TEXT_Y = 7;
+		exports$1.GRAPH_X = exports$1.TEXT_X;
+		exports$1.FONT_SIZE = 20; // tested @ 120.0 FPS (120~120)
+		exports$1.GRAPH_Y = exports$1.FONT_SIZE + exports$1.TEXT_Y;
+		exports$1.GRAPH_WIDTH = exports$1.WIDTH - exports$1.GRAPH_X * 2;
+		exports$1.GRAPH_HEIGHT = exports$1.HEIGHT - exports$1.GRAPH_X - exports$1.GRAPH_Y;
+		exports$1.DOM_ELEMENT_ID = 'stats';
+		
+	} (statsConstants));
+	return statsConstants;
+}
+
+var statsPanel = {};
+
+var hasRequiredStatsPanel;
+
+function requireStatsPanel () {
+	if (hasRequiredStatsPanel) return statsPanel;
+	hasRequiredStatsPanel = 1;
+	Object.defineProperty(statsPanel, "__esModule", { value: true });
+	statsPanel.RenderPanel = void 0;
+	const stats_constants_1 = requireStatsConstants();
+	class RenderPanel {
+	    constructor(name, fg, bg, statStorage) {
+	        this.update = (value, maxValue) => {
+	            if (!this.context || !this.statStorage || !this.dom) {
+	                return;
+	            }
+	            const context = this.context;
+	            context.fillStyle = this.bg;
+	            context.globalAlpha = 1;
+	            context.fillRect(0, 0, stats_constants_1.WIDTH, stats_constants_1.GRAPH_Y);
+	            context.fillStyle = this.fg;
+	            context.font = `bold ${stats_constants_1.FONT_SIZE}px ${getComputedStyle(document.body).fontFamily}`;
+	            context.fillText(`${this.statStorage.averageValue} ${this.name} (${this.statStorage.min}-${this.statStorage.max})`, stats_constants_1.TEXT_X, stats_constants_1.TEXT_Y);
+	            context.drawImage(this.dom, stats_constants_1.GRAPH_X + stats_constants_1.PR, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT, stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT);
+	            context.fillRect(stats_constants_1.GRAPH_X + stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_Y, stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT);
+	            context.fillStyle = this.bg;
+	            context.globalAlpha = 0.8;
+	            context.fillRect(stats_constants_1.GRAPH_X + stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_Y, 2 * stats_constants_1.PR, Math.round((1 - value / maxValue) * stats_constants_1.GRAPH_HEIGHT));
+	        };
+	        this.fg = fg;
+	        this.bg = bg;
+	        this.name = name;
+	        this.statStorage = statStorage;
+	        this.statStorage.addCallback(this.update);
+	        const canvas = document.createElement('canvas');
+	        canvas.width = stats_constants_1.WIDTH;
+	        canvas.height = stats_constants_1.HEIGHT;
+	        const context = canvas.getContext('2d');
+	        if (!context) {
+	            throw new Error('Cant get context on canvas');
+	        }
+	        context.font = `bold ${stats_constants_1.FONT_SIZE}px ${getComputedStyle(document.body).fontFamily}`;
+	        context.textBaseline = 'top';
+	        context.fillStyle = this.bg;
+	        context.fillRect(0, 0, stats_constants_1.WIDTH, stats_constants_1.HEIGHT);
+	        context.fillStyle = this.fg;
+	        context.fillText(this.name, stats_constants_1.TEXT_X, stats_constants_1.TEXT_Y);
+	        context.fillRect(stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH, stats_constants_1.GRAPH_HEIGHT);
+	        context.fillStyle = this.bg;
+	        context.globalAlpha = 0.8;
+	        context.fillRect(stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH, stats_constants_1.GRAPH_HEIGHT);
+	        this.dom = canvas;
+	        this.context = context;
+	    }
+	    destroy() {
+	        if (!this.statStorage) {
+	            return;
+	        }
+	        this.statStorage.removeCallback(this.update);
+	        this.statStorage = null;
+	        this.context = null;
+	        if (this.dom) {
+	            this.dom.remove();
+	            this.dom = null;
+	        }
+	    }
+	}
+	statsPanel.RenderPanel = RenderPanel;
+	
+	return statsPanel;
+}
+
+var statsAdapter = {};
+
+var hasRequiredStatsAdapter;
+
+function requireStatsAdapter () {
+	if (hasRequiredStatsAdapter) return statsAdapter;
+	hasRequiredStatsAdapter = 1;
+	Object.defineProperty(statsAdapter, "__esModule", { value: true });
+	statsAdapter.StatsJSAdapter = void 0;
+	class StatsJSAdapter {
+	    constructor(hook, stats) {
+	        this.hook = hook;
+	        this.stats = stats;
+	        if (this.hook.hooked) {
+	            this.dcStat = this.stats.createStat('DC', '#f60', '#300');
+	            this.tcStat = this.stats.createStat('TC', '#0c6', '#033');
+	        }
+	    }
+	    update() {
+	        var _a, _b;
+	        if (!this.stats) {
+	            return;
+	        }
+	        if (this.hook) {
+	            (_a = this.dcStat) === null || _a === void 0 ? void 0 : _a.update(this.hook.deltaDrawCalls, Math.max(50, this.hook.maxDeltaDrawCalls));
+	            (_b = this.tcStat) === null || _b === void 0 ? void 0 : _b.update(this.hook.texturesCount, Math.max(20, this.hook.maxTextureCount));
+	        }
+	        this.stats.update();
+	    }
+	    reset() {
+	        if (this.hook) {
+	            this.hook.reset();
+	        }
+	    }
+	}
+	statsAdapter.StatsJSAdapter = StatsJSAdapter;
+	
+	return statsAdapter;
+}
+
+var statStorage = {};
+
+var hasRequiredStatStorage;
+
+function requireStatStorage () {
+	if (hasRequiredStatStorage) return statStorage;
+	hasRequiredStatStorage = 1;
+	Object.defineProperty(statStorage, "__esModule", { value: true });
+	statStorage.StatStorage = void 0;
+	class StatStorage {
+	    constructor() {
+	        this.values = [];
+	        this.snapshotSize = 30; // min~max of X frames total
+	        this.updateCallbacksSet = new Set();
+	    }
+	    get min() {
+	        return this.values
+	            .reduce((min, value) => Math.min(min, value), Infinity)
+	            .toFixed();
+	    }
+	    get max() {
+	        return this.values
+	            .reduce((max, value) => Math.max(max, value), 0)
+	            .toFixed();
+	    }
+	    get averageValue() {
+	        return (this.values.reduce((sum, value) => sum + value, 0) /
+	            this.values.length).toFixed(1);
+	    }
+	    pushValue(value) {
+	        this.values.push(value);
+	        if (this.values.length > this.snapshotSize) {
+	            this.values = this.values.slice(-this.snapshotSize);
+	        }
+	    }
+	    update(value, maxValue) {
+	        this.pushValue(value);
+	        if (this.updateCallbacksSet.size) {
+	            this.updateCallbacksSet.forEach((cb) => cb(value, maxValue));
+	        }
+	    }
+	    addCallback(cb) {
+	        if (typeof cb === 'function') {
+	            this.updateCallbacksSet.add(cb);
+	        }
+	    }
+	    removeCallback(cb) {
+	        this.updateCallbacksSet.delete(cb);
+	    }
+	    clearCallbacks() {
+	        this.updateCallbacksSet.clear();
+	    }
+	}
+	statStorage.StatStorage = StatStorage;
+	
+	return statStorage;
+}
+
+var stats = {};
+
+var pixiHooks = {};
+
+var BaseHooks = {};
+
+var GLHook = {};
+
+var hasRequiredGLHook;
+
+function requireGLHook () {
+	if (hasRequiredGLHook) return GLHook;
+	hasRequiredGLHook = 1;
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	Object.defineProperty(GLHook, "__esModule", { value: true });
+	let GLHook$1 = class GLHook {
+	    constructor(_gl) {
+	        this.drawPasses = 0;
+	        this.isInit = false;
+	        this.realGLDrawElements = function () { };
+	        if (!_gl) {
+	            console.warn("[GLHook] GL can't be NULL");
+	        }
+	        else if (_gl.__proto__.drawElements) {
+	            this.gl = _gl;
+	            this.realGLDrawElements = this.gl.__proto__.drawElements;
+	            // replace with new function
+	            this.gl.__proto__.drawElements = this.fakeGLdrawElements.bind(this);
+	            this.isInit = true;
+	            console.info('[GLHook] GL was Hooked!');
+	        }
+	    }
+	    fakeGLdrawElements(mode, count, type, offset) {
+	        this.drawPasses++;
+	        this.realGLDrawElements.call(this.gl, mode, count, type, offset);
+	    }
+	    reset() {
+	        this.drawPasses = 0;
+	    }
+	    release() {
+	        if (this.isInit) {
+	            this.gl.__proto__.drawElements = this.realGLDrawElements;
+	            console.info('[GLHook] Hook was removed!');
+	        }
+	        this.isInit = false;
+	    }
+	};
+	GLHook.default = GLHook$1;
+	
+	return GLHook;
+}
+
+var TextureHook = {};
+
+var hasRequiredTextureHook;
+
+function requireTextureHook () {
+	if (hasRequiredTextureHook) return TextureHook;
+	hasRequiredTextureHook = 1;
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	Object.defineProperty(TextureHook, "__esModule", { value: true });
+	let TextureHook$1 = class TextureHook {
+	    constructor(_gl) {
+	        this.createdTextures = new Array();
+	        this.maxTexturesCount = 0;
+	        this.isInit = false;
+	        this.realGLCreateTexture = function () { };
+	        this.realGLDeleteTexture = function () { };
+	        if (!_gl) {
+	            console.warn("[TextureHook] GL can't be NULL");
+	        }
+	        else if (_gl.__proto__.createTexture) {
+	            this.gl = _gl;
+	            this.realGLCreateTexture = this.gl.__proto__.createTexture;
+	            this.realGLDeleteTexture = this.gl.__proto__.deleteTexture;
+	            // replace with new function
+	            this.gl.__proto__.createTexture = this.fakeGLCreateTexture.bind(this);
+	            this.gl.__proto__.deleteTexture = this.fakeGLDeleteTexture.bind(this);
+	            this.isInit = true;
+	            console.info('[TextureHook] GL was Hooked!');
+	        }
+	    }
+	    get currentTextureCount() {
+	        return this.createdTextures.length;
+	    }
+	    registerTexture(texture) {
+	        this.createdTextures.push(texture); // ++;
+	        this.maxTexturesCount = Math.max(this.createdTextures.length, this.maxTexturesCount);
+	    }
+	    fakeGLCreateTexture() {
+	        const texture = this.realGLCreateTexture.call(this.gl);
+	        this.registerTexture(texture);
+	        return texture;
+	    }
+	    fakeGLDeleteTexture(texture) {
+	        const index = this.createdTextures.indexOf(texture);
+	        if (index > -1) {
+	            this.createdTextures.splice(index, 1);
+	        }
+	        this.realGLDeleteTexture.call(this.gl, texture);
+	    }
+	    reset() {
+	        this.createdTextures = new Array();
+	        this.maxTexturesCount = 0;
+	    }
+	    release() {
+	        if (this.isInit) {
+	            this.gl.__proto__.createTexture = this.realGLCreateTexture;
+	            this.gl.__proto__.deleteTexture = this.realGLDeleteTexture;
+	            console.info('[TextureHook] Hook was removed!');
+	        }
+	        this.isInit = false;
+	    }
+	};
+	TextureHook.default = TextureHook$1;
+	
+	return TextureHook;
+}
+
+var hasRequiredBaseHooks;
+
+function requireBaseHooks () {
+	if (hasRequiredBaseHooks) return BaseHooks;
+	hasRequiredBaseHooks = 1;
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	var __importDefault = (BaseHooks && BaseHooks.__importDefault) || function (mod) {
+	    return (mod && mod.__esModule) ? mod : { "default": mod };
+	};
+	Object.defineProperty(BaseHooks, "__esModule", { value: true });
+	const GLHook_1 = __importDefault(requireGLHook());
+	const TextureHook_1 = __importDefault(requireTextureHook());
+	let BaseHooks$1 = class BaseHooks {
+	    constructor() {
+	        this._drawCalls = -1;
+	        this._maxDeltaDrawCalls = -1;
+	    }
+	    attach(gl) {
+	        this.glhook = new GLHook_1.default(gl);
+	        this.texturehook = new TextureHook_1.default(gl);
+	    }
+	    get drawCalls() {
+	        if (this.glhook && this.glhook.isInit) {
+	            return this.glhook.drawPasses;
+	        }
+	        return -1;
+	    }
+	    get maxDeltaDrawCalls() {
+	        return this._maxDeltaDrawCalls;
+	    }
+	    get deltaDrawCalls() {
+	        if (this._drawCalls == -1) {
+	            this._drawCalls = this.drawCalls;
+	            return 0;
+	        }
+	        const dc = this.drawCalls;
+	        const delta = dc - this._drawCalls;
+	        this._drawCalls = dc;
+	        this._maxDeltaDrawCalls = Math.max(this._maxDeltaDrawCalls, delta);
+	        return delta;
+	    }
+	    get maxTextureCount() {
+	        if (this.texturehook && this.texturehook.isInit)
+	            return this.texturehook.maxTexturesCount;
+	        return 0;
+	    }
+	    get texturesCount() {
+	        if (this.texturehook && this.texturehook.isInit)
+	            return this.texturehook.currentTextureCount;
+	        return 0;
+	    }
+	    reset() {
+	        this._maxDeltaDrawCalls = -1;
+	        this._drawCalls = -1;
+	        if (this.glhook)
+	            this.glhook.reset();
+	        if (this.texturehook)
+	            this.texturehook.reset();
+	    }
+	    release() {
+	        if (this.glhook)
+	            this.glhook.release();
+	        if (this.texturehook)
+	            this.texturehook.release();
+	    }
+	};
+	BaseHooks.default = BaseHooks$1;
+	
+	return BaseHooks;
+}
+
+var hasRequiredPixiHooks;
+
+function requirePixiHooks () {
+	if (hasRequiredPixiHooks) return pixiHooks;
+	hasRequiredPixiHooks = 1;
+	var __importDefault = (pixiHooks && pixiHooks.__importDefault) || function (mod) {
+	    return (mod && mod.__esModule) ? mod : { "default": mod };
+	};
+	Object.defineProperty(pixiHooks, "__esModule", { value: true });
+	pixiHooks.PIXIHooks = void 0;
+	const BaseHooks_1 = __importDefault(requireBaseHooks());
+	class PIXIHooks extends BaseHooks_1.default {
+	    get hooked() {
+	        return !!this.glhook;
+	    }
+	    constructor(renderer) {
+	        super();
+	        if (!renderer) {
+	            console.warn('[PIXI Hooks] renderer in constructor undefined');
+	            return;
+	        }
+	        if (!renderer.gl) {
+	            console.warn('[PIXI Hooks] gl in renderer not found');
+	            return;
+	        }
+	        this.attach(renderer.gl);
+	        if (!this.texturehook) {
+	            console.warn('[PIXI Hooks] attach hook to gl in renderer failed');
+	            return;
+	        }
+	        const texture = renderer.texture;
+	        // pixi v6 compatibility
+	        const glTextures = texture._glTextures || texture.managedTextures;
+	        // pixi v6 compatibility
+	        const glTexturesArray = Array.isArray(glTextures)
+	            ? glTextures
+	            : Object.values(glTextures);
+	        if (!glTexturesArray) {
+	            console.warn('[PIXI Hooks] no gl textures found');
+	            return;
+	        }
+	        console.info('[PIXI Hooks] Collect used textures:', glTexturesArray.length);
+	        glTexturesArray.forEach((glTexture) => {
+	            if (glTexture.gl === renderer.gl && glTexture.texture) {
+	                this.texturehook.registerTexture(glTexture.texture);
+	            }
+	        });
+	    }
+	}
+	pixiHooks.PIXIHooks = PIXIHooks;
+	
+	return pixiHooks;
+}
+
+var hasRequiredStats;
+
+function requireStats () {
+	if (hasRequiredStats) return stats;
+	hasRequiredStats = 1;
+	Object.defineProperty(stats, "__esModule", { value: true });
+	stats.Stats = void 0;
+	const pixi_hooks_1 = requirePixiHooks();
+	const stats_panel_1 = requireStatsPanel();
+	const stat_storage_1 = requireStatStorage();
+	const stats_adapter_1 = requireStatsAdapter();
+	const stats_constants_1 = requireStatsConstants();
+	class Stats {
+	    /**
+	     * in document/html/dom context returns document's body
+	     */
+	    static getContainerElement() {
+	        if (typeof document === 'undefined') {
+	            return undefined;
+	        }
+	        return document === null || document === void 0 ? void 0 : document.body;
+	    }
+	    constructor(renderer, ticker, containerElement = Stats.getContainerElement()) {
+	        this.mode = -1;
+	        this.frames = 0;
+	        this.panels = [];
+	        this.domElement = null;
+	        this.containerElement = null;
+	        this.renderPanel = null;
+	        this.handleClickPanel = (event) => {
+	            event.preventDefault();
+	            this.showPanel(++this.mode % this.panels.length);
+	        };
+	        this.beginTime = (performance || Date).now();
+	        this.prevTime = this.beginTime;
+	        this.fpsStat = this.createStat('FPS', '#3ff', '#002');
+	        this.msStat = this.createStat('MS', '#0f0', '#020');
+	        if ('memory' in performance) {
+	            this.memStat = this.createStat('MB', '#f08', '#200');
+	        }
+	        this.pixiHooks = new pixi_hooks_1.PIXIHooks(renderer);
+	        this.adapter = new stats_adapter_1.StatsJSAdapter(this.pixiHooks, this);
+	        if (typeof (renderer === null || renderer === void 0 ? void 0 : renderer.animations) !== 'undefined') {
+	            renderer.animations.push(() => {
+	                this.adapter.update();
+	            });
+	        }
+	        else if (typeof ticker !== 'undefined') {
+	            ticker.add(() => {
+	                this.adapter.update();
+	            });
+	        }
+	        else if (typeof requestAnimationFrame !== 'undefined') {
+	            const frame = () => {
+	                this.adapter.update();
+	                requestAnimationFrame(frame);
+	            };
+	            frame();
+	        }
+	        if (containerElement) {
+	            this.containerElement = containerElement;
+	            this.initDomElement();
+	            this.showPanel();
+	        }
+	    }
+	    initDomElement() {
+	        if (this.containerElement && !this.domElement) {
+	            this.domElement = document.createElement('div');
+	            this.domElement.id = stats_constants_1.DOM_ELEMENT_ID;
+	            this.domElement.addEventListener('click', this.handleClickPanel, false);
+	            this.containerElement.appendChild(this.domElement);
+	        }
+	    }
+	    createStat(name, fg, bg) {
+	        const statStorage = new stat_storage_1.StatStorage();
+	        this.panels.push({ name, fg, bg, statStorage });
+	        return statStorage;
+	    }
+	    showPanel(id = 0) {
+	        const panel = this.panels[id];
+	        if (panel) {
+	            this.removeDomRenderPanel();
+	            this.createRenderPanel(panel);
+	            this.mode = id;
+	        }
+	        else {
+	            this.hidePanel();
+	        }
+	    }
+	    hidePanel() {
+	        this.removeDomRenderPanel();
+	        this.removeDomElement();
+	        this.mode = -1;
+	    }
+	    createRenderPanel({ name, fg, bg, statStorage }) {
+	        if (!this.domElement) {
+	            return;
+	        }
+	        this.renderPanel = new stats_panel_1.RenderPanel(name, fg, bg, statStorage);
+	        if (this.renderPanel.dom) {
+	            this.domElement.appendChild(this.renderPanel.dom);
+	        }
+	    }
+	    removeDomRenderPanel() {
+	        var _a;
+	        if (!this.domElement) {
+	            return;
+	        }
+	        if ((_a = this.renderPanel) === null || _a === void 0 ? void 0 : _a.dom) {
+	            this.domElement.removeChild(this.renderPanel.dom);
+	            this.renderPanel.destroy();
+	            this.renderPanel = null;
+	        }
+	    }
+	    removeDomElement() {
+	        if (!this.domElement || !this.containerElement) {
+	            return;
+	        }
+	        this.containerElement.removeChild(this.domElement);
+	        this.domElement.removeEventListener('click', this.handleClickPanel, false);
+	        this.domElement = null;
+	    }
+	    begin() {
+	        this.beginTime = (performance || Date).now();
+	    }
+	    end() {
+	        this.frames++;
+	        const time = (performance || Date).now();
+	        this.msStat.update(time - this.beginTime, 200);
+	        if (time > this.prevTime + 1000) {
+	            this.fpsStat.update((this.frames * 1000) / (time - this.prevTime), 100);
+	            this.prevTime = time;
+	            this.frames = 0;
+	            if (this.memStat && 'memory' in performance) {
+	                const memory = performance.memory;
+	                this.memStat.update(memory.usedJSHeapSize / 1048576, memory.jsHeapSizeLimit / 1048576);
+	            }
+	        }
+	        return time;
+	    }
+	    update() {
+	        this.beginTime = this.end();
+	    }
+	}
+	stats.Stats = Stats;
+	
+	return stats;
+}
+
+var hasRequiredDist;
+
+function requireDist () {
+	if (hasRequiredDist) return dist;
+	hasRequiredDist = 1;
+	(function (exports$1) {
+		var __createBinding = (dist && dist.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    var desc = Object.getOwnPropertyDescriptor(m, k);
+		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+		      desc = { enumerable: true, get: function() { return m[k]; } };
+		    }
+		    Object.defineProperty(o, k2, desc);
+		}) : (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    o[k2] = m[k];
+		}));
+		var __exportStar = (dist && dist.__exportStar) || function(m, exports$1) {
+		    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$1, p)) __createBinding(exports$1, m, p);
+		};
+		Object.defineProperty(exports$1, "__esModule", { value: true });
+		__exportStar(requireStatsConstants(), exports$1);
+		__exportStar(requireStatsPanel(), exports$1);
+		__exportStar(requireStatsAdapter(), exports$1);
+		__exportStar(requireStatStorage(), exports$1);
+		__exportStar(requireStats(), exports$1);
+		
+	} (dist));
+	return dist;
+}
+
+var distExports = requireDist();
+
+const getQueryParams = () => {
+    if (typeof location === 'undefined') {
+        return {};
+    }
+    const matches = location.search.matchAll(/[?&]([^=?&]+)=?([^?&]*)/g);
+    return [...matches].reduce((queryParams, [_wholeMatch, paramName, paramValue]) => ({
+        ...queryParams,
+        [decodeURIComponent(paramName)]: decodeURIComponent(paramValue)
+    }), {});
+};
+const queryParams = getQueryParams();
+
+/**
+ * This code is an implementation of Alea algorithm; (C) 2010 Johannes Baagøe.
+ * Alea is licensed according to the http://en.wikipedia.org/wiki/MIT_License.
+ */
+const FRAC = 2.3283064365386963e-10; /* 2^-32 */
+class RNG {
+    constructor() {
+        this._seed = 0;
+        this._s0 = 0;
+        this._s1 = 0;
+        this._s2 = 0;
+        this._c = 0;
+    }
+    getSeed() { return this._seed; }
+    /**
+     * Seed the number generator
+     */
+    setSeed(seed) {
+        seed = (seed < 1 ? 1 / seed : seed);
+        this._seed = seed;
+        this._s0 = (seed >>> 0) * FRAC;
+        seed = (seed * 69069 + 1) >>> 0;
+        this._s1 = seed * FRAC;
+        seed = (seed * 69069 + 1) >>> 0;
+        this._s2 = seed * FRAC;
+        this._c = 1;
+        return this;
+    }
+    /**
+     * @returns Pseudorandom value [0,1), uniformly distributed
+     */
+    getUniform() {
+        let t = 2091639 * this._s0 + this._c * FRAC;
+        this._s0 = this._s1;
+        this._s1 = this._s2;
+        this._c = t | 0;
+        this._s2 = t - this._c;
+        return this._s2;
+    }
+    /**
+     * @param lowerBound The lower end of the range to return a value from, inclusive
+     * @param upperBound The upper end of the range to return a value from, inclusive
+     * @returns Pseudorandom value [lowerBound, upperBound], using ROT.RNG.getUniform() to distribute the value
+     */
+    getUniformInt(lowerBound, upperBound) {
+        let max = Math.max(lowerBound, upperBound);
+        let min = Math.min(lowerBound, upperBound);
+        return Math.floor(this.getUniform() * (max - min + 1)) + min;
+    }
+    /**
+     * @param mean Mean value
+     * @param stddev Standard deviation. ~95% of the absolute values will be lower than 2*stddev.
+     * @returns A normally distributed pseudorandom value
+     */
+    getNormal(mean = 0, stddev = 1) {
+        let u, v, r;
+        do {
+            u = 2 * this.getUniform() - 1;
+            v = 2 * this.getUniform() - 1;
+            r = u * u + v * v;
+        } while (r > 1 || r == 0);
+        let gauss = u * Math.sqrt(-2 * Math.log(r) / r);
+        return mean + gauss * stddev;
+    }
+    /**
+     * @returns Pseudorandom value [1,100] inclusive, uniformly distributed
+     */
+    getPercentage() {
+        return 1 + Math.floor(this.getUniform() * 100);
+    }
+    /**
+     * @returns Randomly picked item, null when length=0
+     */
+    getItem(array) {
+        if (!array.length) {
+            return null;
+        }
+        return array[Math.floor(this.getUniform() * array.length)];
+    }
+    /**
+     * @returns New array with randomized items
+     */
+    shuffle(array) {
+        let result = [];
+        let clone = array.slice();
+        while (clone.length) {
+            let index = clone.indexOf(this.getItem(clone));
+            result.push(clone.splice(index, 1)[0]);
+        }
+        return result;
+    }
+    /**
+     * @param data key=whatever, value=weight (relative probability)
+     * @returns whatever
+     */
+    getWeightedValue(data) {
+        let total = 0;
+        for (let id in data) {
+            total += data[id];
+        }
+        let random = this.getUniform() * total;
+        let id, part = 0;
+        for (id in data) {
+            part += data[id];
+            if (random < part) {
+                return id;
+            }
+        }
+        // If by some floating-point annoyance we have
+        // random >= total, just return the last id.
+        return id;
+    }
+    /**
+     * Get RNG state. Useful for storing the state and re-setting it via setState.
+     * @returns Internal state
+     */
+    getState() { return [this._s0, this._s1, this._s2, this._c]; }
+    /**
+     * Set a previously retrieved state.
+     */
+    setState(state) {
+        this._s0 = state[0];
+        this._s1 = state[1];
+        this._s2 = state[2];
+        this._c = state[3];
+        return this;
+    }
+    /**
+     * Returns a cloned RNG
+     */
+    clone() {
+        let clone = new RNG();
+        return clone.setState(this.getState());
+    }
+}
+var RNG$1 = new RNG().setSeed(Date.now());
+
+/**
+ * @class Abstract display backend module
+ * @private
+ */
+class Backend {
+    getContainer() { return null; }
+    setOptions(options) { this._options = options; }
+}
+
+class Canvas extends Backend {
+    constructor() {
+        super();
+        this._ctx = document.createElement("canvas").getContext("2d");
+    }
+    schedule(cb) { requestAnimationFrame(cb); }
+    getContainer() { return this._ctx.canvas; }
+    setOptions(opts) {
+        super.setOptions(opts);
+        const style = (opts.fontStyle ? `${opts.fontStyle} ` : ``);
+        const font = `${style} ${opts.fontSize}px ${opts.fontFamily}`;
+        this._ctx.font = font;
+        this._updateSize();
+        this._ctx.font = font;
+        this._ctx.textAlign = "center";
+        this._ctx.textBaseline = "middle";
+    }
+    clear() {
+        const oldComposite = this._ctx.globalCompositeOperation;
+        this._ctx.globalCompositeOperation = "copy";
+        this._ctx.fillStyle = this._options.bg;
+        this._ctx.fillRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
+        this._ctx.globalCompositeOperation = oldComposite;
+    }
+    eventToPosition(x, y) {
+        let canvas = this._ctx.canvas;
+        let rect = canvas.getBoundingClientRect();
+        x -= rect.left;
+        y -= rect.top;
+        x *= canvas.width / rect.width;
+        y *= canvas.height / rect.height;
+        if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
+            return [-1, -1];
+        }
+        return this._normalizedEventToPosition(x, y);
+    }
+}
+
+/**
+ * @class Rectangular backend
+ * @private
+ */
+class Rect extends Canvas {
+    constructor() {
+        super();
+        this._spacingX = 0;
+        this._spacingY = 0;
+        this._canvasCache = {};
+    }
+    setOptions(options) {
+        super.setOptions(options);
+        this._canvasCache = {};
+    }
+    draw(data, clearBefore) {
+        if (Rect.cache) {
+            this._drawWithCache(data);
+        }
+        else {
+            this._drawNoCache(data, clearBefore);
+        }
+    }
+    _drawWithCache(data) {
+        let [x, y, ch, fg, bg] = data;
+        let hash = "" + ch + fg + bg;
+        let canvas;
+        if (hash in this._canvasCache) {
+            canvas = this._canvasCache[hash];
+        }
+        else {
+            let b = this._options.border;
+            canvas = document.createElement("canvas");
+            let ctx = canvas.getContext("2d");
+            canvas.width = this._spacingX;
+            canvas.height = this._spacingY;
+            ctx.fillStyle = bg;
+            ctx.fillRect(b, b, canvas.width - b, canvas.height - b);
+            if (ch) {
+                ctx.fillStyle = fg;
+                ctx.font = this._ctx.font;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                let chars = [].concat(ch);
+                for (let i = 0; i < chars.length; i++) {
+                    ctx.fillText(chars[i], this._spacingX / 2, Math.ceil(this._spacingY / 2));
+                }
+            }
+            this._canvasCache[hash] = canvas;
+        }
+        this._ctx.drawImage(canvas, x * this._spacingX, y * this._spacingY);
+    }
+    _drawNoCache(data, clearBefore) {
+        let [x, y, ch, fg, bg] = data;
+        if (clearBefore) {
+            let b = this._options.border;
+            this._ctx.fillStyle = bg;
+            this._ctx.fillRect(x * this._spacingX + b, y * this._spacingY + b, this._spacingX - b, this._spacingY - b);
+        }
+        if (!ch) {
+            return;
+        }
+        this._ctx.fillStyle = fg;
+        let chars = [].concat(ch);
+        for (let i = 0; i < chars.length; i++) {
+            this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
+        }
+    }
+    computeSize(availWidth, availHeight) {
+        let width = Math.floor(availWidth / this._spacingX);
+        let height = Math.floor(availHeight / this._spacingY);
+        return [width, height];
+    }
+    computeFontSize(availWidth, availHeight) {
+        let boxWidth = Math.floor(availWidth / this._options.width);
+        let boxHeight = Math.floor(availHeight / this._options.height);
+        /* compute char ratio */
+        let oldFont = this._ctx.font;
+        this._ctx.font = "100px " + this._options.fontFamily;
+        let width = Math.ceil(this._ctx.measureText("W").width);
+        this._ctx.font = oldFont;
+        let ratio = width / 100;
+        let widthFraction = ratio * boxHeight / boxWidth;
+        if (widthFraction > 1) { /* too wide with current aspect ratio */
+            boxHeight = Math.floor(boxHeight / widthFraction);
+        }
+        return Math.floor(boxHeight / this._options.spacing);
+    }
+    _normalizedEventToPosition(x, y) {
+        return [Math.floor(x / this._spacingX), Math.floor(y / this._spacingY)];
+    }
+    _updateSize() {
+        const opts = this._options;
+        const charWidth = Math.ceil(this._ctx.measureText("W").width);
+        this._spacingX = Math.ceil(opts.spacing * charWidth);
+        this._spacingY = Math.ceil(opts.spacing * opts.fontSize);
+        if (opts.forceSquareRatio) {
+            this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
+        }
+        this._ctx.canvas.width = opts.width * this._spacingX;
+        this._ctx.canvas.height = opts.height * this._spacingY;
+    }
+}
+Rect.cache = false;
+
+/** Default with for display and map generators */
+let DEFAULT_WIDTH = 80;
+/** Default height for display and map generators */
+let DEFAULT_HEIGHT = 25;
+const DIRS = {
+    4: [[0, -1], [1, 0], [0, 1], [-1, 0]],
+    8: [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]],
+    6: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1], [-2, 0]]
+};
+
+let Map$2 = class Map {
+    /**
+     * @class Base map generator
+     * @param {int} [width=ROT.DEFAULT_WIDTH]
+     * @param {int} [height=ROT.DEFAULT_HEIGHT]
+     */
+    constructor(width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT) {
+        this._width = width;
+        this._height = height;
+    }
+    ;
+    _fillMap(value) {
+        let map = [];
+        for (let i = 0; i < this._width; i++) {
+            map.push([]);
+            for (let j = 0; j < this._height; j++) {
+                map[i].push(value);
+            }
+        }
+        return map;
+    }
+};
+
+/**
+ * @class Cellular automaton map generator
+ * @augments ROT.Map
+ * @param {int} [width=ROT.DEFAULT_WIDTH]
+ * @param {int} [height=ROT.DEFAULT_HEIGHT]
+ * @param {object} [options] Options
+ * @param {int[]} [options.born] List of neighbor counts for a new cell to be born in empty space
+ * @param {int[]} [options.survive] List of neighbor counts for an existing  cell to survive
+ * @param {int} [options.topology] Topology 4 or 6 or 8
+ */
+class Cellular extends Map$2 {
+    constructor(width, height, options = {}) {
+        super(width, height);
+        this._options = {
+            born: [5, 6, 7, 8],
+            survive: [4, 5, 6, 7, 8],
+            topology: 8
+        };
+        this.setOptions(options);
+        this._dirs = DIRS[this._options.topology];
+        this._map = this._fillMap(0);
+    }
+    /**
+     * Fill the map with random values
+     * @param {float} probability Probability for a cell to become alive; 0 = all empty, 1 = all full
+     */
+    randomize(probability) {
+        for (let i = 0; i < this._width; i++) {
+            for (let j = 0; j < this._height; j++) {
+                this._map[i][j] = (RNG$1.getUniform() < probability ? 1 : 0);
+            }
+        }
+        return this;
+    }
+    /**
+     * Change options.
+     * @see ROT.Map.Cellular
+     */
+    setOptions(options) { Object.assign(this._options, options); }
+    set(x, y, value) { this._map[x][y] = value; }
+    create(callback) {
+        let newMap = this._fillMap(0);
+        let born = this._options.born;
+        let survive = this._options.survive;
+        for (let j = 0; j < this._height; j++) {
+            let widthStep = 1;
+            let widthStart = 0;
+            if (this._options.topology == 6) {
+                widthStep = 2;
+                widthStart = j % 2;
+            }
+            for (let i = widthStart; i < this._width; i += widthStep) {
+                let cur = this._map[i][j];
+                let ncount = this._getNeighbors(i, j);
+                if (cur && survive.indexOf(ncount) != -1) { /* survive */
+                    newMap[i][j] = 1;
+                }
+                else if (!cur && born.indexOf(ncount) != -1) { /* born */
+                    newMap[i][j] = 1;
+                }
+            }
+        }
+        this._map = newMap;
+        callback && this._serviceCallback(callback);
+    }
+    _serviceCallback(callback) {
+        for (let j = 0; j < this._height; j++) {
+            let widthStep = 1;
+            let widthStart = 0;
+            if (this._options.topology == 6) {
+                widthStep = 2;
+                widthStart = j % 2;
+            }
+            for (let i = widthStart; i < this._width; i += widthStep) {
+                callback(i, j, this._map[i][j]);
+            }
+        }
+    }
+    /**
+     * Get neighbor count at [i,j] in this._map
+     */
+    _getNeighbors(cx, cy) {
+        let result = 0;
+        for (let i = 0; i < this._dirs.length; i++) {
+            let dir = this._dirs[i];
+            let x = cx + dir[0];
+            let y = cy + dir[1];
+            if (x < 0 || x >= this._width || y < 0 || y >= this._height) {
+                continue;
+            }
+            result += (this._map[x][y] == 1 ? 1 : 0);
+        }
+        return result;
+    }
+    /**
+     * Make sure every non-wall space is accessible.
+     * @param {function} callback to call to display map when do
+     * @param {int} value to consider empty space - defaults to 0
+     * @param {function} callback to call when a new connection is made
+     */
+    connect(callback, value, connectionCallback) {
+        if (!value)
+            value = 0;
+        let allFreeSpace = [];
+        let notConnected = {};
+        // find all free space
+        let widthStep = 1;
+        let widthStarts = [0, 0];
+        if (this._options.topology == 6) {
+            widthStep = 2;
+            widthStarts = [0, 1];
+        }
+        for (let y = 0; y < this._height; y++) {
+            for (let x = widthStarts[y % 2]; x < this._width; x += widthStep) {
+                if (this._freeSpace(x, y, value)) {
+                    let p = [x, y];
+                    notConnected[this._pointKey(p)] = p;
+                    allFreeSpace.push([x, y]);
+                }
+            }
+        }
+        let start = allFreeSpace[RNG$1.getUniformInt(0, allFreeSpace.length - 1)];
+        let key = this._pointKey(start);
+        let connected = {};
+        connected[key] = start;
+        delete notConnected[key];
+        // find what's connected to the starting point
+        this._findConnected(connected, notConnected, [start], false, value);
+        while (Object.keys(notConnected).length > 0) {
+            // find two points from notConnected to connected
+            let p = this._getFromTo(connected, notConnected);
+            let from = p[0]; // notConnected
+            let to = p[1]; // connected
+            // find everything connected to the starting point
+            let local = {};
+            local[this._pointKey(from)] = from;
+            this._findConnected(local, notConnected, [from], true, value);
+            // connect to a connected cell
+            let tunnelFn = (this._options.topology == 6 ? this._tunnelToConnected6 : this._tunnelToConnected);
+            tunnelFn.call(this, to, from, connected, notConnected, value, connectionCallback);
+            // now all of local is connected
+            for (let k in local) {
+                let pp = local[k];
+                this._map[pp[0]][pp[1]] = value;
+                connected[k] = pp;
+                delete notConnected[k];
+            }
+        }
+        callback && this._serviceCallback(callback);
+    }
+    /**
+     * Find random points to connect. Search for the closest point in the larger space.
+     * This is to minimize the length of the passage while maintaining good performance.
+     */
+    _getFromTo(connected, notConnected) {
+        let from = [0, 0], to = [0, 0], d;
+        let connectedKeys = Object.keys(connected);
+        let notConnectedKeys = Object.keys(notConnected);
+        for (let i = 0; i < 5; i++) {
+            if (connectedKeys.length < notConnectedKeys.length) {
+                let keys = connectedKeys;
+                to = connected[keys[RNG$1.getUniformInt(0, keys.length - 1)]];
+                from = this._getClosest(to, notConnected);
+            }
+            else {
+                let keys = notConnectedKeys;
+                from = notConnected[keys[RNG$1.getUniformInt(0, keys.length - 1)]];
+                to = this._getClosest(from, connected);
+            }
+            d = (from[0] - to[0]) * (from[0] - to[0]) + (from[1] - to[1]) * (from[1] - to[1]);
+            if (d < 64) {
+                break;
+            }
+        }
+        // console.log(">>> connected=" + to + " notConnected=" + from + " dist=" + d);
+        return [from, to];
+    }
+    _getClosest(point, space) {
+        let minPoint = null;
+        let minDist = null;
+        for (let k in space) {
+            let p = space[k];
+            let d = (p[0] - point[0]) * (p[0] - point[0]) + (p[1] - point[1]) * (p[1] - point[1]);
+            if (minDist == null || d < minDist) {
+                minDist = d;
+                minPoint = p;
+            }
+        }
+        return minPoint;
+    }
+    _findConnected(connected, notConnected, stack, keepNotConnected, value) {
+        while (stack.length > 0) {
+            let p = stack.splice(0, 1)[0];
+            let tests;
+            if (this._options.topology == 6) {
+                tests = [
+                    [p[0] + 2, p[1]],
+                    [p[0] + 1, p[1] - 1],
+                    [p[0] - 1, p[1] - 1],
+                    [p[0] - 2, p[1]],
+                    [p[0] - 1, p[1] + 1],
+                    [p[0] + 1, p[1] + 1],
+                ];
+            }
+            else {
+                tests = [
+                    [p[0] + 1, p[1]],
+                    [p[0] - 1, p[1]],
+                    [p[0], p[1] + 1],
+                    [p[0], p[1] - 1]
+                ];
+            }
+            for (let i = 0; i < tests.length; i++) {
+                let key = this._pointKey(tests[i]);
+                if (connected[key] == null && this._freeSpace(tests[i][0], tests[i][1], value)) {
+                    connected[key] = tests[i];
+                    if (!keepNotConnected) {
+                        delete notConnected[key];
+                    }
+                    stack.push(tests[i]);
+                }
+            }
+        }
+    }
+    _tunnelToConnected(to, from, connected, notConnected, value, connectionCallback) {
+        let a, b;
+        if (from[0] < to[0]) {
+            a = from;
+            b = to;
+        }
+        else {
+            a = to;
+            b = from;
+        }
+        for (let xx = a[0]; xx <= b[0]; xx++) {
+            this._map[xx][a[1]] = value;
+            let p = [xx, a[1]];
+            let pkey = this._pointKey(p);
+            connected[pkey] = p;
+            delete notConnected[pkey];
+        }
+        if (connectionCallback && a[0] < b[0]) {
+            connectionCallback(a, [b[0], a[1]]);
+        }
+        // x is now fixed
+        let x = b[0];
+        if (from[1] < to[1]) {
+            a = from;
+            b = to;
+        }
+        else {
+            a = to;
+            b = from;
+        }
+        for (let yy = a[1]; yy < b[1]; yy++) {
+            this._map[x][yy] = value;
+            let p = [x, yy];
+            let pkey = this._pointKey(p);
+            connected[pkey] = p;
+            delete notConnected[pkey];
+        }
+        if (connectionCallback && a[1] < b[1]) {
+            connectionCallback([b[0], a[1]], [b[0], b[1]]);
+        }
+    }
+    _tunnelToConnected6(to, from, connected, notConnected, value, connectionCallback) {
+        let a, b;
+        if (from[0] < to[0]) {
+            a = from;
+            b = to;
+        }
+        else {
+            a = to;
+            b = from;
+        }
+        // tunnel diagonally until horizontally level
+        let xx = a[0];
+        let yy = a[1];
+        while (!(xx == b[0] && yy == b[1])) {
+            let stepWidth = 2;
+            if (yy < b[1]) {
+                yy++;
+                stepWidth = 1;
+            }
+            else if (yy > b[1]) {
+                yy--;
+                stepWidth = 1;
+            }
+            if (xx < b[0]) {
+                xx += stepWidth;
+            }
+            else if (xx > b[0]) {
+                xx -= stepWidth;
+            }
+            else if (b[1] % 2) {
+                // Won't step outside map if destination on is map's right edge
+                xx -= stepWidth;
+            }
+            else {
+                // ditto for left edge
+                xx += stepWidth;
+            }
+            this._map[xx][yy] = value;
+            let p = [xx, yy];
+            let pkey = this._pointKey(p);
+            connected[pkey] = p;
+            delete notConnected[pkey];
+        }
+        if (connectionCallback) {
+            connectionCallback(from, to);
+        }
+    }
+    _freeSpace(x, y, value) {
+        return x >= 0 && x < this._width && y >= 0 && y < this._height && this._map[x][y] == value;
+    }
+    _pointKey(p) { return p[0] + "." + p[1]; }
+}
+
+var Map$1 = { Cellular};
+
+class DeviceDetector {
+}
+DeviceDetector.IS_MOBILE = /Mobi|Android/i.test(navigator.userAgent);
+DeviceDetector.IS_TV = /Android TV|SmartTV|AppleTV|Tizen|webOS|NetCast|Roku|PhilipsTV|SonyTV|HbbTV|LGTV|Viera|Aquos/i.test(navigator.userAgent);
+DeviceDetector.LOW_END = DeviceDetector.IS_MOBILE || DeviceDetector.IS_TV || 'lowend' in queryParams;
+DeviceDetector.HIGH_END = !DeviceDetector.LOW_END;
+
+class AbstractLevel {
+    static zToStep(z = 0) {
+        return Math.round(z / AbstractLevel.STEP);
+    }
+    static reducer(input, heights) {
+        return heights.map((column, x) => column.map((value, y) => (input[x]?.[y] || 0) + value), []);
+    }
+    static createMatrix({ min = 0, max = 1, iterations = AbstractLevel.ITERATIONS, fill = AbstractLevel.FILL, cols = AbstractLevel.COLS, rows = AbstractLevel.ROWS }) {
+        return Array.from({ length: max }, () => {
+            const map = new Map$1.Cellular(cols, rows);
+            map.randomize(fill);
+            for (let i = 0; i < iterations; i++) {
+                map.create();
+            }
+            return map._map;
+        })
+            .reduce(AbstractLevel.reducer, [])
+            .map((arrays) => arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP));
+    }
+    constructor() {
+        this.heights = [];
+        const min = Math.round(AbstractLevel.HEIGHT_MAX * 2 * AbstractLevel.POND);
+        const max = AbstractLevel.HEIGHT_MAX + min;
+        this.heights = AbstractLevel.createMatrix({
+            min,
+            max
+        });
+    }
+    getZ(x, y) {
+        const posX = Math.floor(x + AbstractLevel.COLS / 2);
+        const posY = Math.floor(y + AbstractLevel.ROWS / 2);
+        return this.heights[posX]?.[posY] || 0;
+    }
+    forEachHeight(heights = this.heights, iterator) {
+        heights.forEach((rows, col) => {
+            rows.forEach((height, row) => {
+                if (height) {
+                    iterator(col, row, height);
+                }
+            });
+        });
+    }
+    getXY(col, row) {
+        return {
+            x: col - AbstractLevel.COLS / 2,
+            y: row - AbstractLevel.ROWS / 2
+        };
+    }
+    createCollider(col, row, z) {
+        const { x, y } = this.getXY(col, row);
+        return physics.createBox({ x, y }, 1, 1, {
+            isStatic: true,
+            userData: { step: AbstractLevel.zToStep(z) }
+        });
+    }
+}
+AbstractLevel.STEP = 0.25;
+AbstractLevel.COLS = DeviceDetector.HIGH_END ? 32 : 24;
+AbstractLevel.ROWS = DeviceDetector.HIGH_END ? 32 : 24;
+AbstractLevel.FILL = 0.5;
+AbstractLevel.POND = 0.36;
+AbstractLevel.ITERATIONS = 4;
+AbstractLevel.HEIGHT_MAX = 'height' in queryParams
+    ? Number(queryParams.height)
+    : DeviceDetector.HIGH_END
+        ? 16
+        : 12;
+
 const _taskCache = new WeakMap();
 
 /**
@@ -69607,1503 +71086,83 @@ class Loader extends LoadingManager {
 }
 Loader.DRACO_LOADER_PATH = 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/';
 
-const getQueryParams = () => {
-    if (typeof location === 'undefined') {
-        return {};
+class TextureUtils {
+    static hasTexture(textureName) {
+        return !!TextureUtils.textures[textureName];
     }
-    const matches = location.search.matchAll(/[?&]([^=?&]+)=?([^?&]*)/g);
-    return [...matches].reduce((queryParams, [_wholeMatch, paramName, paramValue]) => ({
-        ...queryParams,
-        [decodeURIComponent(paramName)]: decodeURIComponent(paramValue)
-    }), {});
-};
-const queryParams = getQueryParams();
-
-class DeviceDetector {
+    static async load(texturePaths) {
+        const promises = texturePaths.map((tex) => TextureUtils.loader.load(tex));
+        const resolved = await Promise.all(promises);
+        texturePaths.forEach((texturePath, index) => {
+            const textureName = TextureUtils.getName(texturePath);
+            const texture = resolved[index];
+            TextureUtils.pixelate(texture);
+            TextureUtils.textures[textureName] = texture;
+        });
+        return resolved;
+    }
+    static getMaterial(textureName, cols = 1, rows = 1) {
+        if (!TextureUtils.materials[textureName]) {
+            if (cols > 1 || rows > 1) {
+                TextureUtils.textures[textureName].repeat.set(1 / cols, 1 / rows);
+            }
+            TextureUtils.materials[textureName] = new MeshBasicMaterial({
+                ...TextureUtils.ALPHA_PROPS,
+                map: TextureUtils.textures[textureName]
+            });
+        }
+        return TextureUtils.materials[textureName];
+    }
+    static getName(texturePath) {
+        const fileName = texturePath.split('/').pop()?.split('.')[0];
+        if (!fileName) {
+            return '';
+        }
+        return fileName
+            .split(/[-_]+/)
+            .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+            .join('');
+    }
+    static pixelate(texture) {
+        texture.anisotropy = 1;
+        texture.unpackAlignment = 1;
+        texture.matrixAutoUpdate = false;
+        texture.magFilter = NearestFilter;
+        texture.minFilter = NearestMipMapLinearFilter;
+    }
+    static mapToCube({ left, right, up, down, front, back }) {
+        return [left, right, up, down, front, back];
+    }
 }
-DeviceDetector.IS_MOBILE = /Mobi|Android/i.test(navigator.userAgent);
-DeviceDetector.IS_TV = /Android TV|SmartTV|AppleTV|Tizen|webOS|NetCast|Roku|PhilipsTV|SonyTV|HbbTV|LGTV|Viera|Aquos/i.test(navigator.userAgent);
-DeviceDetector.LOW_END = DeviceDetector.IS_MOBILE || DeviceDetector.IS_TV || 'lowend' in queryParams;
-DeviceDetector.HIGH_END = !DeviceDetector.LOW_END;
-
-const minLevelHeight = DeviceDetector.HIGH_END ? 8 : 6;
-const maxLevelHeight = 'height' in queryParams
-    ? Number(queryParams.height)
-    : DeviceDetector.HIGH_END
-        ? 16
-        : 12;
-const waterZ = 0.5;
-const keys = {};
-const loadedTextures = {};
-const physics = new System();
-const loader = new Loader();
-const state = {
-    keys,
-    mouse: null,
-    renderer: null,
-    player: null,
-    npcs: []
-};
-const materialProps = {
+TextureUtils.loader = new Loader();
+TextureUtils.textures = {};
+TextureUtils.materials = {};
+TextureUtils.PROPS = {
     side: FrontSide
 };
-const alphaMaterialProps = {
-    ...materialProps,
+TextureUtils.ALPHA_PROPS = {
+    ...TextureUtils.PROPS,
     transparent: true,
     alphaTest: 1
 };
-const directions = ['up', 'right', 'down', 'left'];
+
 const Math_Half_PI = Math.PI * 0.5;
 const Math_Double_PI = Math.PI * 2;
-const materials = {};
-const defaultNPCsCount = 'limit' in queryParams
-    ? Number(queryParams.limit)
-    : DeviceDetector.HIGH_END
-        ? 64
-        : 48;
-
-class Mouse extends Vector2 {
-    constructor() {
-        super(...arguments);
-        this.pageX = innerWidth / 2;
-        this.pageY = innerWidth / 2;
-    }
-    onPointerDown(event) {
-        this.preventEvent(event);
-        this.onPointerMove(event);
-        state.mouseDown = true;
-        if (state.player) {
-            const now = Date.now();
-            if (now - state.player.clickTime > Mouse.DBL_CLICK) {
-                state.player.clickTime = now;
-            }
-            else {
-                state.player.jumpStart().then(() => {
-                    state.player.jumpEnd();
-                });
-            }
-        }
-    }
-    onPointerUp(event) {
-        this.preventEvent(event);
-        state.mouseDown = false;
-        state.keys.up = false;
-        state.keys.down = false;
-        state.keys.left = false;
-        state.keys.right = false;
-        state.player?.jumpEnd();
-    }
-    onPointerMove(event) {
-        const pointer = event instanceof TouchEvent ? event.touches[0] : event;
-        if (pointer) {
-            event.preventDefault();
-            this.pageX = pointer.pageX;
-            this.pageY = pointer.pageY;
-            const HALF_WIDTH = innerWidth / 2;
-            const HALF_HEIGHT = innerHeight / 2;
-            const playerY = state.player?.getWorldY() || 0;
-            const y = (playerY + 1) * HALF_HEIGHT;
-            this.x = this.clampNumber((this.pageX - HALF_WIDTH) / HALF_WIDTH);
-            this.y = this.clampNumber((this.pageY - y) / HALF_HEIGHT);
-        }
-    }
-    preventEvent(event) {
-        event.preventDefault();
-    }
-    clampNumber(n, multiply = 2) {
-        return Math.max(-1, Math.min(1, n * multiply));
-    }
-}
-Mouse.DBL_CLICK = 300;
-const mouse = new Mouse();
-
-const setKey = (value) => {
-    return (event) => {
-        switch (event.key) {
-            case 'ArrowLeft':
-                keys.left = value;
-                break;
-            case 'ArrowRight':
-                keys.right = value;
-                break;
-            case 'ArrowUp':
-                keys.up = value;
-                break;
-            case 'ArrowDown':
-                keys.down = value;
-                break;
-            case ' ':
-                keys.space = value;
-                break;
-        }
-    };
+const normalizeAngle = (angle) => (Math_Double_PI + angle) % Math_Double_PI;
+const normalize = (n) => Math.min(1, Math.max(-1, n));
+const randomOf = (array) => array[Math.floor(Math.random() * array.length)];
+const distanceSq = (a, b) => {
+    const x = a.x - b.x;
+    const y = a.z - b.z;
+    return x * x + y * y;
 };
-class Events {
-    static addEventListeners() {
-        if (Events.eventListenersAdded)
-            return;
-        Events.eventListenersAdded = true;
-        const options = { passive: false };
-        Object.entries(Events.events).forEach(([event, action]) => {
-            window.addEventListener(event, action, options);
-        });
-        window.addEventListener('keydown', Events.keyDown, { passive: true });
-        window.addEventListener('keyup', Events.keyUp, { passive: true });
-    }
-    static removeEventListeners() {
-        if (!Events.eventListenersAdded)
-            return;
-        Events.eventListenersAdded = false;
-        Object.entries(Events.events).forEach(([event, action]) => {
-            window.removeEventListener(event, action);
-        });
-        window.removeEventListener('keydown', Events.keyDown);
-        window.removeEventListener('keyup', Events.keyUp);
-    }
-}
-Events.keyDown = setKey(true);
-Events.keyUp = setKey(false);
-Events.click = mouse.onPointerDown.bind(mouse);
-Events.release = mouse.onPointerUp.bind(mouse);
-Events.move = mouse.onPointerMove.bind(mouse);
-Events.cancel = mouse.preventEvent.bind(mouse);
-Events.events = {
-    pointerdown: Events.click,
-    pointermove: Events.move,
-    pointerup: Events.release,
-    touchstart: Events.cancel,
-    touchend: Events.cancel,
-    touchmove: Events.cancel,
-    dragstart: Events.cancel,
-    contextmenu: Events.cancel
+const getMatrix = (position, scale) => {
+    const matrix = new Matrix4();
+    const quaternion = new Quaternion();
+    const offset = new Vector3(0.5, 0.5, 0.5);
+    matrix.compose(position.add(offset), quaternion, scale);
+    return matrix;
 };
-Events.eventListenersAdded = false;
-
-var dist$1 = {};
-
-var statsConstants = {};
-
-var hasRequiredStatsConstants;
-
-function requireStatsConstants () {
-	if (hasRequiredStatsConstants) return statsConstants;
-	hasRequiredStatsConstants = 1;
-	(function (exports$1) {
-		Object.defineProperty(exports$1, "__esModule", { value: true });
-		exports$1.DOM_ELEMENT_ID = exports$1.GRAPH_HEIGHT = exports$1.GRAPH_WIDTH = exports$1.GRAPH_Y = exports$1.FONT_SIZE = exports$1.GRAPH_X = exports$1.TEXT_Y = exports$1.TEXT_X = exports$1.HEIGHT = exports$1.WIDTH = exports$1.PR = void 0;
-		exports$1.PR = 4;
-		exports$1.WIDTH = 50 * exports$1.PR;
-		exports$1.HEIGHT = 30 * exports$1.PR;
-		exports$1.TEXT_X = 7;
-		exports$1.TEXT_Y = 7;
-		exports$1.GRAPH_X = exports$1.TEXT_X;
-		exports$1.FONT_SIZE = 20; // tested @ 120.0 FPS (120~120)
-		exports$1.GRAPH_Y = exports$1.FONT_SIZE + exports$1.TEXT_Y;
-		exports$1.GRAPH_WIDTH = exports$1.WIDTH - exports$1.GRAPH_X * 2;
-		exports$1.GRAPH_HEIGHT = exports$1.HEIGHT - exports$1.GRAPH_X - exports$1.GRAPH_Y;
-		exports$1.DOM_ELEMENT_ID = 'stats';
-		
-	} (statsConstants));
-	return statsConstants;
-}
-
-var statsPanel = {};
-
-var hasRequiredStatsPanel;
-
-function requireStatsPanel () {
-	if (hasRequiredStatsPanel) return statsPanel;
-	hasRequiredStatsPanel = 1;
-	Object.defineProperty(statsPanel, "__esModule", { value: true });
-	statsPanel.RenderPanel = void 0;
-	const stats_constants_1 = requireStatsConstants();
-	class RenderPanel {
-	    constructor(name, fg, bg, statStorage) {
-	        this.update = (value, maxValue) => {
-	            if (!this.context || !this.statStorage || !this.dom) {
-	                return;
-	            }
-	            const context = this.context;
-	            context.fillStyle = this.bg;
-	            context.globalAlpha = 1;
-	            context.fillRect(0, 0, stats_constants_1.WIDTH, stats_constants_1.GRAPH_Y);
-	            context.fillStyle = this.fg;
-	            context.font = `bold ${stats_constants_1.FONT_SIZE}px ${getComputedStyle(document.body).fontFamily}`;
-	            context.fillText(`${this.statStorage.averageValue} ${this.name} (${this.statStorage.min}-${this.statStorage.max})`, stats_constants_1.TEXT_X, stats_constants_1.TEXT_Y);
-	            context.drawImage(this.dom, stats_constants_1.GRAPH_X + stats_constants_1.PR, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT, stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT);
-	            context.fillRect(stats_constants_1.GRAPH_X + stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_Y, stats_constants_1.PR, stats_constants_1.GRAPH_HEIGHT);
-	            context.fillStyle = this.bg;
-	            context.globalAlpha = 0.8;
-	            context.fillRect(stats_constants_1.GRAPH_X + stats_constants_1.GRAPH_WIDTH - stats_constants_1.PR, stats_constants_1.GRAPH_Y, 2 * stats_constants_1.PR, Math.round((1 - value / maxValue) * stats_constants_1.GRAPH_HEIGHT));
-	        };
-	        this.fg = fg;
-	        this.bg = bg;
-	        this.name = name;
-	        this.statStorage = statStorage;
-	        this.statStorage.addCallback(this.update);
-	        const canvas = document.createElement('canvas');
-	        canvas.width = stats_constants_1.WIDTH;
-	        canvas.height = stats_constants_1.HEIGHT;
-	        const context = canvas.getContext('2d');
-	        if (!context) {
-	            throw new Error('Cant get context on canvas');
-	        }
-	        context.font = `bold ${stats_constants_1.FONT_SIZE}px ${getComputedStyle(document.body).fontFamily}`;
-	        context.textBaseline = 'top';
-	        context.fillStyle = this.bg;
-	        context.fillRect(0, 0, stats_constants_1.WIDTH, stats_constants_1.HEIGHT);
-	        context.fillStyle = this.fg;
-	        context.fillText(this.name, stats_constants_1.TEXT_X, stats_constants_1.TEXT_Y);
-	        context.fillRect(stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH, stats_constants_1.GRAPH_HEIGHT);
-	        context.fillStyle = this.bg;
-	        context.globalAlpha = 0.8;
-	        context.fillRect(stats_constants_1.GRAPH_X, stats_constants_1.GRAPH_Y, stats_constants_1.GRAPH_WIDTH, stats_constants_1.GRAPH_HEIGHT);
-	        this.dom = canvas;
-	        this.context = context;
-	    }
-	    destroy() {
-	        if (!this.statStorage) {
-	            return;
-	        }
-	        this.statStorage.removeCallback(this.update);
-	        this.statStorage = null;
-	        this.context = null;
-	        if (this.dom) {
-	            this.dom.remove();
-	            this.dom = null;
-	        }
-	    }
-	}
-	statsPanel.RenderPanel = RenderPanel;
-	
-	return statsPanel;
-}
-
-var statsAdapter = {};
-
-var hasRequiredStatsAdapter;
-
-function requireStatsAdapter () {
-	if (hasRequiredStatsAdapter) return statsAdapter;
-	hasRequiredStatsAdapter = 1;
-	Object.defineProperty(statsAdapter, "__esModule", { value: true });
-	statsAdapter.StatsJSAdapter = void 0;
-	class StatsJSAdapter {
-	    constructor(hook, stats) {
-	        this.hook = hook;
-	        this.stats = stats;
-	        if (this.hook.hooked) {
-	            this.dcStat = this.stats.createStat('DC', '#f60', '#300');
-	            this.tcStat = this.stats.createStat('TC', '#0c6', '#033');
-	        }
-	    }
-	    update() {
-	        var _a, _b;
-	        if (!this.stats) {
-	            return;
-	        }
-	        if (this.hook) {
-	            (_a = this.dcStat) === null || _a === void 0 ? void 0 : _a.update(this.hook.deltaDrawCalls, Math.max(50, this.hook.maxDeltaDrawCalls));
-	            (_b = this.tcStat) === null || _b === void 0 ? void 0 : _b.update(this.hook.texturesCount, Math.max(20, this.hook.maxTextureCount));
-	        }
-	        this.stats.update();
-	    }
-	    reset() {
-	        if (this.hook) {
-	            this.hook.reset();
-	        }
-	    }
-	}
-	statsAdapter.StatsJSAdapter = StatsJSAdapter;
-	
-	return statsAdapter;
-}
-
-var statStorage = {};
-
-var hasRequiredStatStorage;
-
-function requireStatStorage () {
-	if (hasRequiredStatStorage) return statStorage;
-	hasRequiredStatStorage = 1;
-	Object.defineProperty(statStorage, "__esModule", { value: true });
-	statStorage.StatStorage = void 0;
-	class StatStorage {
-	    constructor() {
-	        this.values = [];
-	        this.snapshotSize = 30; // min~max of X frames total
-	        this.updateCallbacksSet = new Set();
-	    }
-	    get min() {
-	        return this.values
-	            .reduce((min, value) => Math.min(min, value), Infinity)
-	            .toFixed();
-	    }
-	    get max() {
-	        return this.values
-	            .reduce((max, value) => Math.max(max, value), 0)
-	            .toFixed();
-	    }
-	    get averageValue() {
-	        return (this.values.reduce((sum, value) => sum + value, 0) /
-	            this.values.length).toFixed(1);
-	    }
-	    pushValue(value) {
-	        this.values.push(value);
-	        if (this.values.length > this.snapshotSize) {
-	            this.values = this.values.slice(-this.snapshotSize);
-	        }
-	    }
-	    update(value, maxValue) {
-	        this.pushValue(value);
-	        if (this.updateCallbacksSet.size) {
-	            this.updateCallbacksSet.forEach((cb) => cb(value, maxValue));
-	        }
-	    }
-	    addCallback(cb) {
-	        if (typeof cb === 'function') {
-	            this.updateCallbacksSet.add(cb);
-	        }
-	    }
-	    removeCallback(cb) {
-	        this.updateCallbacksSet.delete(cb);
-	    }
-	    clearCallbacks() {
-	        this.updateCallbacksSet.clear();
-	    }
-	}
-	statStorage.StatStorage = StatStorage;
-	
-	return statStorage;
-}
-
-var stats = {};
-
-var pixiHooks = {};
-
-var BaseHooks = {};
-
-var GLHook = {};
-
-var hasRequiredGLHook;
-
-function requireGLHook () {
-	if (hasRequiredGLHook) return GLHook;
-	hasRequiredGLHook = 1;
-	/* eslint-disable @typescript-eslint/no-explicit-any */
-	Object.defineProperty(GLHook, "__esModule", { value: true });
-	let GLHook$1 = class GLHook {
-	    constructor(_gl) {
-	        this.drawPasses = 0;
-	        this.isInit = false;
-	        this.realGLDrawElements = function () { };
-	        if (!_gl) {
-	            console.warn("[GLHook] GL can't be NULL");
-	        }
-	        else if (_gl.__proto__.drawElements) {
-	            this.gl = _gl;
-	            this.realGLDrawElements = this.gl.__proto__.drawElements;
-	            // replace with new function
-	            this.gl.__proto__.drawElements = this.fakeGLdrawElements.bind(this);
-	            this.isInit = true;
-	            console.info('[GLHook] GL was Hooked!');
-	        }
-	    }
-	    fakeGLdrawElements(mode, count, type, offset) {
-	        this.drawPasses++;
-	        this.realGLDrawElements.call(this.gl, mode, count, type, offset);
-	    }
-	    reset() {
-	        this.drawPasses = 0;
-	    }
-	    release() {
-	        if (this.isInit) {
-	            this.gl.__proto__.drawElements = this.realGLDrawElements;
-	            console.info('[GLHook] Hook was removed!');
-	        }
-	        this.isInit = false;
-	    }
-	};
-	GLHook.default = GLHook$1;
-	
-	return GLHook;
-}
-
-var TextureHook = {};
-
-var hasRequiredTextureHook;
-
-function requireTextureHook () {
-	if (hasRequiredTextureHook) return TextureHook;
-	hasRequiredTextureHook = 1;
-	/* eslint-disable @typescript-eslint/no-explicit-any */
-	Object.defineProperty(TextureHook, "__esModule", { value: true });
-	let TextureHook$1 = class TextureHook {
-	    constructor(_gl) {
-	        this.createdTextures = new Array();
-	        this.maxTexturesCount = 0;
-	        this.isInit = false;
-	        this.realGLCreateTexture = function () { };
-	        this.realGLDeleteTexture = function () { };
-	        if (!_gl) {
-	            console.warn("[TextureHook] GL can't be NULL");
-	        }
-	        else if (_gl.__proto__.createTexture) {
-	            this.gl = _gl;
-	            this.realGLCreateTexture = this.gl.__proto__.createTexture;
-	            this.realGLDeleteTexture = this.gl.__proto__.deleteTexture;
-	            // replace with new function
-	            this.gl.__proto__.createTexture = this.fakeGLCreateTexture.bind(this);
-	            this.gl.__proto__.deleteTexture = this.fakeGLDeleteTexture.bind(this);
-	            this.isInit = true;
-	            console.info('[TextureHook] GL was Hooked!');
-	        }
-	    }
-	    get currentTextureCount() {
-	        return this.createdTextures.length;
-	    }
-	    registerTexture(texture) {
-	        this.createdTextures.push(texture); // ++;
-	        this.maxTexturesCount = Math.max(this.createdTextures.length, this.maxTexturesCount);
-	    }
-	    fakeGLCreateTexture() {
-	        const texture = this.realGLCreateTexture.call(this.gl);
-	        this.registerTexture(texture);
-	        return texture;
-	    }
-	    fakeGLDeleteTexture(texture) {
-	        const index = this.createdTextures.indexOf(texture);
-	        if (index > -1) {
-	            this.createdTextures.splice(index, 1);
-	        }
-	        this.realGLDeleteTexture.call(this.gl, texture);
-	    }
-	    reset() {
-	        this.createdTextures = new Array();
-	        this.maxTexturesCount = 0;
-	    }
-	    release() {
-	        if (this.isInit) {
-	            this.gl.__proto__.createTexture = this.realGLCreateTexture;
-	            this.gl.__proto__.deleteTexture = this.realGLDeleteTexture;
-	            console.info('[TextureHook] Hook was removed!');
-	        }
-	        this.isInit = false;
-	    }
-	};
-	TextureHook.default = TextureHook$1;
-	
-	return TextureHook;
-}
-
-var hasRequiredBaseHooks;
-
-function requireBaseHooks () {
-	if (hasRequiredBaseHooks) return BaseHooks;
-	hasRequiredBaseHooks = 1;
-	/* eslint-disable @typescript-eslint/no-explicit-any */
-	var __importDefault = (BaseHooks && BaseHooks.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
-	Object.defineProperty(BaseHooks, "__esModule", { value: true });
-	const GLHook_1 = __importDefault(requireGLHook());
-	const TextureHook_1 = __importDefault(requireTextureHook());
-	let BaseHooks$1 = class BaseHooks {
-	    constructor() {
-	        this._drawCalls = -1;
-	        this._maxDeltaDrawCalls = -1;
-	    }
-	    attach(gl) {
-	        this.glhook = new GLHook_1.default(gl);
-	        this.texturehook = new TextureHook_1.default(gl);
-	    }
-	    get drawCalls() {
-	        if (this.glhook && this.glhook.isInit) {
-	            return this.glhook.drawPasses;
-	        }
-	        return -1;
-	    }
-	    get maxDeltaDrawCalls() {
-	        return this._maxDeltaDrawCalls;
-	    }
-	    get deltaDrawCalls() {
-	        if (this._drawCalls == -1) {
-	            this._drawCalls = this.drawCalls;
-	            return 0;
-	        }
-	        const dc = this.drawCalls;
-	        const delta = dc - this._drawCalls;
-	        this._drawCalls = dc;
-	        this._maxDeltaDrawCalls = Math.max(this._maxDeltaDrawCalls, delta);
-	        return delta;
-	    }
-	    get maxTextureCount() {
-	        if (this.texturehook && this.texturehook.isInit)
-	            return this.texturehook.maxTexturesCount;
-	        return 0;
-	    }
-	    get texturesCount() {
-	        if (this.texturehook && this.texturehook.isInit)
-	            return this.texturehook.currentTextureCount;
-	        return 0;
-	    }
-	    reset() {
-	        this._maxDeltaDrawCalls = -1;
-	        this._drawCalls = -1;
-	        if (this.glhook)
-	            this.glhook.reset();
-	        if (this.texturehook)
-	            this.texturehook.reset();
-	    }
-	    release() {
-	        if (this.glhook)
-	            this.glhook.release();
-	        if (this.texturehook)
-	            this.texturehook.release();
-	    }
-	};
-	BaseHooks.default = BaseHooks$1;
-	
-	return BaseHooks;
-}
-
-var hasRequiredPixiHooks;
-
-function requirePixiHooks () {
-	if (hasRequiredPixiHooks) return pixiHooks;
-	hasRequiredPixiHooks = 1;
-	var __importDefault = (pixiHooks && pixiHooks.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
-	Object.defineProperty(pixiHooks, "__esModule", { value: true });
-	pixiHooks.PIXIHooks = void 0;
-	const BaseHooks_1 = __importDefault(requireBaseHooks());
-	class PIXIHooks extends BaseHooks_1.default {
-	    get hooked() {
-	        return !!this.glhook;
-	    }
-	    constructor(renderer) {
-	        super();
-	        if (!renderer) {
-	            console.warn('[PIXI Hooks] renderer in constructor undefined');
-	            return;
-	        }
-	        if (!renderer.gl) {
-	            console.warn('[PIXI Hooks] gl in renderer not found');
-	            return;
-	        }
-	        this.attach(renderer.gl);
-	        if (!this.texturehook) {
-	            console.warn('[PIXI Hooks] attach hook to gl in renderer failed');
-	            return;
-	        }
-	        const texture = renderer.texture;
-	        // pixi v6 compatibility
-	        const glTextures = texture._glTextures || texture.managedTextures;
-	        // pixi v6 compatibility
-	        const glTexturesArray = Array.isArray(glTextures)
-	            ? glTextures
-	            : Object.values(glTextures);
-	        if (!glTexturesArray) {
-	            console.warn('[PIXI Hooks] no gl textures found');
-	            return;
-	        }
-	        console.info('[PIXI Hooks] Collect used textures:', glTexturesArray.length);
-	        glTexturesArray.forEach((glTexture) => {
-	            if (glTexture.gl === renderer.gl && glTexture.texture) {
-	                this.texturehook.registerTexture(glTexture.texture);
-	            }
-	        });
-	    }
-	}
-	pixiHooks.PIXIHooks = PIXIHooks;
-	
-	return pixiHooks;
-}
-
-var hasRequiredStats;
-
-function requireStats () {
-	if (hasRequiredStats) return stats;
-	hasRequiredStats = 1;
-	Object.defineProperty(stats, "__esModule", { value: true });
-	stats.Stats = void 0;
-	const pixi_hooks_1 = requirePixiHooks();
-	const stats_panel_1 = requireStatsPanel();
-	const stat_storage_1 = requireStatStorage();
-	const stats_adapter_1 = requireStatsAdapter();
-	const stats_constants_1 = requireStatsConstants();
-	class Stats {
-	    /**
-	     * in document/html/dom context returns document's body
-	     */
-	    static getContainerElement() {
-	        if (typeof document === 'undefined') {
-	            return undefined;
-	        }
-	        return document === null || document === void 0 ? void 0 : document.body;
-	    }
-	    constructor(renderer, ticker, containerElement = Stats.getContainerElement()) {
-	        this.mode = -1;
-	        this.frames = 0;
-	        this.panels = [];
-	        this.domElement = null;
-	        this.containerElement = null;
-	        this.renderPanel = null;
-	        this.handleClickPanel = (event) => {
-	            event.preventDefault();
-	            this.showPanel(++this.mode % this.panels.length);
-	        };
-	        this.beginTime = (performance || Date).now();
-	        this.prevTime = this.beginTime;
-	        this.fpsStat = this.createStat('FPS', '#3ff', '#002');
-	        this.msStat = this.createStat('MS', '#0f0', '#020');
-	        if ('memory' in performance) {
-	            this.memStat = this.createStat('MB', '#f08', '#200');
-	        }
-	        this.pixiHooks = new pixi_hooks_1.PIXIHooks(renderer);
-	        this.adapter = new stats_adapter_1.StatsJSAdapter(this.pixiHooks, this);
-	        if (typeof (renderer === null || renderer === void 0 ? void 0 : renderer.animations) !== 'undefined') {
-	            renderer.animations.push(() => {
-	                this.adapter.update();
-	            });
-	        }
-	        else if (typeof ticker !== 'undefined') {
-	            ticker.add(() => {
-	                this.adapter.update();
-	            });
-	        }
-	        else if (typeof requestAnimationFrame !== 'undefined') {
-	            const frame = () => {
-	                this.adapter.update();
-	                requestAnimationFrame(frame);
-	            };
-	            frame();
-	        }
-	        if (containerElement) {
-	            this.containerElement = containerElement;
-	            this.initDomElement();
-	            this.showPanel();
-	        }
-	    }
-	    initDomElement() {
-	        if (this.containerElement && !this.domElement) {
-	            this.domElement = document.createElement('div');
-	            this.domElement.id = stats_constants_1.DOM_ELEMENT_ID;
-	            this.domElement.addEventListener('click', this.handleClickPanel, false);
-	            this.containerElement.appendChild(this.domElement);
-	        }
-	    }
-	    createStat(name, fg, bg) {
-	        const statStorage = new stat_storage_1.StatStorage();
-	        this.panels.push({ name, fg, bg, statStorage });
-	        return statStorage;
-	    }
-	    showPanel(id = 0) {
-	        const panel = this.panels[id];
-	        if (panel) {
-	            this.removeDomRenderPanel();
-	            this.createRenderPanel(panel);
-	            this.mode = id;
-	        }
-	        else {
-	            this.hidePanel();
-	        }
-	    }
-	    hidePanel() {
-	        this.removeDomRenderPanel();
-	        this.removeDomElement();
-	        this.mode = -1;
-	    }
-	    createRenderPanel({ name, fg, bg, statStorage }) {
-	        if (!this.domElement) {
-	            return;
-	        }
-	        this.renderPanel = new stats_panel_1.RenderPanel(name, fg, bg, statStorage);
-	        if (this.renderPanel.dom) {
-	            this.domElement.appendChild(this.renderPanel.dom);
-	        }
-	    }
-	    removeDomRenderPanel() {
-	        var _a;
-	        if (!this.domElement) {
-	            return;
-	        }
-	        if ((_a = this.renderPanel) === null || _a === void 0 ? void 0 : _a.dom) {
-	            this.domElement.removeChild(this.renderPanel.dom);
-	            this.renderPanel.destroy();
-	            this.renderPanel = null;
-	        }
-	    }
-	    removeDomElement() {
-	        if (!this.domElement || !this.containerElement) {
-	            return;
-	        }
-	        this.containerElement.removeChild(this.domElement);
-	        this.domElement.removeEventListener('click', this.handleClickPanel, false);
-	        this.domElement = null;
-	    }
-	    begin() {
-	        this.beginTime = (performance || Date).now();
-	    }
-	    end() {
-	        this.frames++;
-	        const time = (performance || Date).now();
-	        this.msStat.update(time - this.beginTime, 200);
-	        if (time > this.prevTime + 1000) {
-	            this.fpsStat.update((this.frames * 1000) / (time - this.prevTime), 100);
-	            this.prevTime = time;
-	            this.frames = 0;
-	            if (this.memStat && 'memory' in performance) {
-	                const memory = performance.memory;
-	                this.memStat.update(memory.usedJSHeapSize / 1048576, memory.jsHeapSizeLimit / 1048576);
-	            }
-	        }
-	        return time;
-	    }
-	    update() {
-	        this.beginTime = this.end();
-	    }
-	}
-	stats.Stats = Stats;
-	
-	return stats;
-}
-
-var hasRequiredDist$1;
-
-function requireDist$1 () {
-	if (hasRequiredDist$1) return dist$1;
-	hasRequiredDist$1 = 1;
-	(function (exports$1) {
-		var __createBinding = (dist$1 && dist$1.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-		    if (k2 === undefined) k2 = k;
-		    var desc = Object.getOwnPropertyDescriptor(m, k);
-		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-		      desc = { enumerable: true, get: function() { return m[k]; } };
-		    }
-		    Object.defineProperty(o, k2, desc);
-		}) : (function(o, m, k, k2) {
-		    if (k2 === undefined) k2 = k;
-		    o[k2] = m[k];
-		}));
-		var __exportStar = (dist$1 && dist$1.__exportStar) || function(m, exports$1) {
-		    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$1, p)) __createBinding(exports$1, m, p);
-		};
-		Object.defineProperty(exports$1, "__esModule", { value: true });
-		__exportStar(requireStatsConstants(), exports$1);
-		__exportStar(requireStatsPanel(), exports$1);
-		__exportStar(requireStatsAdapter(), exports$1);
-		__exportStar(requireStatStorage(), exports$1);
-		__exportStar(requireStats(), exports$1);
-		
-	} (dist$1));
-	return dist$1;
-}
-
-var distExports$1 = requireDist$1();
-
-/**
- * This code is an implementation of Alea algorithm; (C) 2010 Johannes Baagøe.
- * Alea is licensed according to the http://en.wikipedia.org/wiki/MIT_License.
- */
-const FRAC = 2.3283064365386963e-10; /* 2^-32 */
-class RNG {
-    constructor() {
-        this._seed = 0;
-        this._s0 = 0;
-        this._s1 = 0;
-        this._s2 = 0;
-        this._c = 0;
-    }
-    getSeed() { return this._seed; }
-    /**
-     * Seed the number generator
-     */
-    setSeed(seed) {
-        seed = (seed < 1 ? 1 / seed : seed);
-        this._seed = seed;
-        this._s0 = (seed >>> 0) * FRAC;
-        seed = (seed * 69069 + 1) >>> 0;
-        this._s1 = seed * FRAC;
-        seed = (seed * 69069 + 1) >>> 0;
-        this._s2 = seed * FRAC;
-        this._c = 1;
-        return this;
-    }
-    /**
-     * @returns Pseudorandom value [0,1), uniformly distributed
-     */
-    getUniform() {
-        let t = 2091639 * this._s0 + this._c * FRAC;
-        this._s0 = this._s1;
-        this._s1 = this._s2;
-        this._c = t | 0;
-        this._s2 = t - this._c;
-        return this._s2;
-    }
-    /**
-     * @param lowerBound The lower end of the range to return a value from, inclusive
-     * @param upperBound The upper end of the range to return a value from, inclusive
-     * @returns Pseudorandom value [lowerBound, upperBound], using ROT.RNG.getUniform() to distribute the value
-     */
-    getUniformInt(lowerBound, upperBound) {
-        let max = Math.max(lowerBound, upperBound);
-        let min = Math.min(lowerBound, upperBound);
-        return Math.floor(this.getUniform() * (max - min + 1)) + min;
-    }
-    /**
-     * @param mean Mean value
-     * @param stddev Standard deviation. ~95% of the absolute values will be lower than 2*stddev.
-     * @returns A normally distributed pseudorandom value
-     */
-    getNormal(mean = 0, stddev = 1) {
-        let u, v, r;
-        do {
-            u = 2 * this.getUniform() - 1;
-            v = 2 * this.getUniform() - 1;
-            r = u * u + v * v;
-        } while (r > 1 || r == 0);
-        let gauss = u * Math.sqrt(-2 * Math.log(r) / r);
-        return mean + gauss * stddev;
-    }
-    /**
-     * @returns Pseudorandom value [1,100] inclusive, uniformly distributed
-     */
-    getPercentage() {
-        return 1 + Math.floor(this.getUniform() * 100);
-    }
-    /**
-     * @returns Randomly picked item, null when length=0
-     */
-    getItem(array) {
-        if (!array.length) {
-            return null;
-        }
-        return array[Math.floor(this.getUniform() * array.length)];
-    }
-    /**
-     * @returns New array with randomized items
-     */
-    shuffle(array) {
-        let result = [];
-        let clone = array.slice();
-        while (clone.length) {
-            let index = clone.indexOf(this.getItem(clone));
-            result.push(clone.splice(index, 1)[0]);
-        }
-        return result;
-    }
-    /**
-     * @param data key=whatever, value=weight (relative probability)
-     * @returns whatever
-     */
-    getWeightedValue(data) {
-        let total = 0;
-        for (let id in data) {
-            total += data[id];
-        }
-        let random = this.getUniform() * total;
-        let id, part = 0;
-        for (id in data) {
-            part += data[id];
-            if (random < part) {
-                return id;
-            }
-        }
-        // If by some floating-point annoyance we have
-        // random >= total, just return the last id.
-        return id;
-    }
-    /**
-     * Get RNG state. Useful for storing the state and re-setting it via setState.
-     * @returns Internal state
-     */
-    getState() { return [this._s0, this._s1, this._s2, this._c]; }
-    /**
-     * Set a previously retrieved state.
-     */
-    setState(state) {
-        this._s0 = state[0];
-        this._s1 = state[1];
-        this._s2 = state[2];
-        this._c = state[3];
-        return this;
-    }
-    /**
-     * Returns a cloned RNG
-     */
-    clone() {
-        let clone = new RNG();
-        return clone.setState(this.getState());
-    }
-}
-var RNG$1 = new RNG().setSeed(Date.now());
-
-/**
- * @class Abstract display backend module
- * @private
- */
-class Backend {
-    getContainer() { return null; }
-    setOptions(options) { this._options = options; }
-}
-
-class Canvas extends Backend {
-    constructor() {
-        super();
-        this._ctx = document.createElement("canvas").getContext("2d");
-    }
-    schedule(cb) { requestAnimationFrame(cb); }
-    getContainer() { return this._ctx.canvas; }
-    setOptions(opts) {
-        super.setOptions(opts);
-        const style = (opts.fontStyle ? `${opts.fontStyle} ` : ``);
-        const font = `${style} ${opts.fontSize}px ${opts.fontFamily}`;
-        this._ctx.font = font;
-        this._updateSize();
-        this._ctx.font = font;
-        this._ctx.textAlign = "center";
-        this._ctx.textBaseline = "middle";
-    }
-    clear() {
-        const oldComposite = this._ctx.globalCompositeOperation;
-        this._ctx.globalCompositeOperation = "copy";
-        this._ctx.fillStyle = this._options.bg;
-        this._ctx.fillRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
-        this._ctx.globalCompositeOperation = oldComposite;
-    }
-    eventToPosition(x, y) {
-        let canvas = this._ctx.canvas;
-        let rect = canvas.getBoundingClientRect();
-        x -= rect.left;
-        y -= rect.top;
-        x *= canvas.width / rect.width;
-        y *= canvas.height / rect.height;
-        if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
-            return [-1, -1];
-        }
-        return this._normalizedEventToPosition(x, y);
-    }
-}
-
-/**
- * @class Rectangular backend
- * @private
- */
-class Rect extends Canvas {
-    constructor() {
-        super();
-        this._spacingX = 0;
-        this._spacingY = 0;
-        this._canvasCache = {};
-    }
-    setOptions(options) {
-        super.setOptions(options);
-        this._canvasCache = {};
-    }
-    draw(data, clearBefore) {
-        if (Rect.cache) {
-            this._drawWithCache(data);
-        }
-        else {
-            this._drawNoCache(data, clearBefore);
-        }
-    }
-    _drawWithCache(data) {
-        let [x, y, ch, fg, bg] = data;
-        let hash = "" + ch + fg + bg;
-        let canvas;
-        if (hash in this._canvasCache) {
-            canvas = this._canvasCache[hash];
-        }
-        else {
-            let b = this._options.border;
-            canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
-            canvas.width = this._spacingX;
-            canvas.height = this._spacingY;
-            ctx.fillStyle = bg;
-            ctx.fillRect(b, b, canvas.width - b, canvas.height - b);
-            if (ch) {
-                ctx.fillStyle = fg;
-                ctx.font = this._ctx.font;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                let chars = [].concat(ch);
-                for (let i = 0; i < chars.length; i++) {
-                    ctx.fillText(chars[i], this._spacingX / 2, Math.ceil(this._spacingY / 2));
-                }
-            }
-            this._canvasCache[hash] = canvas;
-        }
-        this._ctx.drawImage(canvas, x * this._spacingX, y * this._spacingY);
-    }
-    _drawNoCache(data, clearBefore) {
-        let [x, y, ch, fg, bg] = data;
-        if (clearBefore) {
-            let b = this._options.border;
-            this._ctx.fillStyle = bg;
-            this._ctx.fillRect(x * this._spacingX + b, y * this._spacingY + b, this._spacingX - b, this._spacingY - b);
-        }
-        if (!ch) {
-            return;
-        }
-        this._ctx.fillStyle = fg;
-        let chars = [].concat(ch);
-        for (let i = 0; i < chars.length; i++) {
-            this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
-        }
-    }
-    computeSize(availWidth, availHeight) {
-        let width = Math.floor(availWidth / this._spacingX);
-        let height = Math.floor(availHeight / this._spacingY);
-        return [width, height];
-    }
-    computeFontSize(availWidth, availHeight) {
-        let boxWidth = Math.floor(availWidth / this._options.width);
-        let boxHeight = Math.floor(availHeight / this._options.height);
-        /* compute char ratio */
-        let oldFont = this._ctx.font;
-        this._ctx.font = "100px " + this._options.fontFamily;
-        let width = Math.ceil(this._ctx.measureText("W").width);
-        this._ctx.font = oldFont;
-        let ratio = width / 100;
-        let widthFraction = ratio * boxHeight / boxWidth;
-        if (widthFraction > 1) { /* too wide with current aspect ratio */
-            boxHeight = Math.floor(boxHeight / widthFraction);
-        }
-        return Math.floor(boxHeight / this._options.spacing);
-    }
-    _normalizedEventToPosition(x, y) {
-        return [Math.floor(x / this._spacingX), Math.floor(y / this._spacingY)];
-    }
-    _updateSize() {
-        const opts = this._options;
-        const charWidth = Math.ceil(this._ctx.measureText("W").width);
-        this._spacingX = Math.ceil(opts.spacing * charWidth);
-        this._spacingY = Math.ceil(opts.spacing * opts.fontSize);
-        if (opts.forceSquareRatio) {
-            this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
-        }
-        this._ctx.canvas.width = opts.width * this._spacingX;
-        this._ctx.canvas.height = opts.height * this._spacingY;
-    }
-}
-Rect.cache = false;
-
-/** Default with for display and map generators */
-let DEFAULT_WIDTH = 80;
-/** Default height for display and map generators */
-let DEFAULT_HEIGHT = 25;
-const DIRS = {
-    4: [[0, -1], [1, 0], [0, 1], [-1, 0]],
-    8: [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]],
-    6: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1], [-2, 0]]
-};
-
-let Map$2 = class Map {
-    /**
-     * @class Base map generator
-     * @param {int} [width=ROT.DEFAULT_WIDTH]
-     * @param {int} [height=ROT.DEFAULT_HEIGHT]
-     */
-    constructor(width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT) {
-        this._width = width;
-        this._height = height;
-    }
-    ;
-    _fillMap(value) {
-        let map = [];
-        for (let i = 0; i < this._width; i++) {
-            map.push([]);
-            for (let j = 0; j < this._height; j++) {
-                map[i].push(value);
-            }
-        }
-        return map;
-    }
-};
-
-/**
- * @class Cellular automaton map generator
- * @augments ROT.Map
- * @param {int} [width=ROT.DEFAULT_WIDTH]
- * @param {int} [height=ROT.DEFAULT_HEIGHT]
- * @param {object} [options] Options
- * @param {int[]} [options.born] List of neighbor counts for a new cell to be born in empty space
- * @param {int[]} [options.survive] List of neighbor counts for an existing  cell to survive
- * @param {int} [options.topology] Topology 4 or 6 or 8
- */
-class Cellular extends Map$2 {
-    constructor(width, height, options = {}) {
-        super(width, height);
-        this._options = {
-            born: [5, 6, 7, 8],
-            survive: [4, 5, 6, 7, 8],
-            topology: 8
-        };
-        this.setOptions(options);
-        this._dirs = DIRS[this._options.topology];
-        this._map = this._fillMap(0);
-    }
-    /**
-     * Fill the map with random values
-     * @param {float} probability Probability for a cell to become alive; 0 = all empty, 1 = all full
-     */
-    randomize(probability) {
-        for (let i = 0; i < this._width; i++) {
-            for (let j = 0; j < this._height; j++) {
-                this._map[i][j] = (RNG$1.getUniform() < probability ? 1 : 0);
-            }
-        }
-        return this;
-    }
-    /**
-     * Change options.
-     * @see ROT.Map.Cellular
-     */
-    setOptions(options) { Object.assign(this._options, options); }
-    set(x, y, value) { this._map[x][y] = value; }
-    create(callback) {
-        let newMap = this._fillMap(0);
-        let born = this._options.born;
-        let survive = this._options.survive;
-        for (let j = 0; j < this._height; j++) {
-            let widthStep = 1;
-            let widthStart = 0;
-            if (this._options.topology == 6) {
-                widthStep = 2;
-                widthStart = j % 2;
-            }
-            for (let i = widthStart; i < this._width; i += widthStep) {
-                let cur = this._map[i][j];
-                let ncount = this._getNeighbors(i, j);
-                if (cur && survive.indexOf(ncount) != -1) { /* survive */
-                    newMap[i][j] = 1;
-                }
-                else if (!cur && born.indexOf(ncount) != -1) { /* born */
-                    newMap[i][j] = 1;
-                }
-            }
-        }
-        this._map = newMap;
-        callback && this._serviceCallback(callback);
-    }
-    _serviceCallback(callback) {
-        for (let j = 0; j < this._height; j++) {
-            let widthStep = 1;
-            let widthStart = 0;
-            if (this._options.topology == 6) {
-                widthStep = 2;
-                widthStart = j % 2;
-            }
-            for (let i = widthStart; i < this._width; i += widthStep) {
-                callback(i, j, this._map[i][j]);
-            }
-        }
-    }
-    /**
-     * Get neighbor count at [i,j] in this._map
-     */
-    _getNeighbors(cx, cy) {
-        let result = 0;
-        for (let i = 0; i < this._dirs.length; i++) {
-            let dir = this._dirs[i];
-            let x = cx + dir[0];
-            let y = cy + dir[1];
-            if (x < 0 || x >= this._width || y < 0 || y >= this._height) {
-                continue;
-            }
-            result += (this._map[x][y] == 1 ? 1 : 0);
-        }
-        return result;
-    }
-    /**
-     * Make sure every non-wall space is accessible.
-     * @param {function} callback to call to display map when do
-     * @param {int} value to consider empty space - defaults to 0
-     * @param {function} callback to call when a new connection is made
-     */
-    connect(callback, value, connectionCallback) {
-        if (!value)
-            value = 0;
-        let allFreeSpace = [];
-        let notConnected = {};
-        // find all free space
-        let widthStep = 1;
-        let widthStarts = [0, 0];
-        if (this._options.topology == 6) {
-            widthStep = 2;
-            widthStarts = [0, 1];
-        }
-        for (let y = 0; y < this._height; y++) {
-            for (let x = widthStarts[y % 2]; x < this._width; x += widthStep) {
-                if (this._freeSpace(x, y, value)) {
-                    let p = [x, y];
-                    notConnected[this._pointKey(p)] = p;
-                    allFreeSpace.push([x, y]);
-                }
-            }
-        }
-        let start = allFreeSpace[RNG$1.getUniformInt(0, allFreeSpace.length - 1)];
-        let key = this._pointKey(start);
-        let connected = {};
-        connected[key] = start;
-        delete notConnected[key];
-        // find what's connected to the starting point
-        this._findConnected(connected, notConnected, [start], false, value);
-        while (Object.keys(notConnected).length > 0) {
-            // find two points from notConnected to connected
-            let p = this._getFromTo(connected, notConnected);
-            let from = p[0]; // notConnected
-            let to = p[1]; // connected
-            // find everything connected to the starting point
-            let local = {};
-            local[this._pointKey(from)] = from;
-            this._findConnected(local, notConnected, [from], true, value);
-            // connect to a connected cell
-            let tunnelFn = (this._options.topology == 6 ? this._tunnelToConnected6 : this._tunnelToConnected);
-            tunnelFn.call(this, to, from, connected, notConnected, value, connectionCallback);
-            // now all of local is connected
-            for (let k in local) {
-                let pp = local[k];
-                this._map[pp[0]][pp[1]] = value;
-                connected[k] = pp;
-                delete notConnected[k];
-            }
-        }
-        callback && this._serviceCallback(callback);
-    }
-    /**
-     * Find random points to connect. Search for the closest point in the larger space.
-     * This is to minimize the length of the passage while maintaining good performance.
-     */
-    _getFromTo(connected, notConnected) {
-        let from = [0, 0], to = [0, 0], d;
-        let connectedKeys = Object.keys(connected);
-        let notConnectedKeys = Object.keys(notConnected);
-        for (let i = 0; i < 5; i++) {
-            if (connectedKeys.length < notConnectedKeys.length) {
-                let keys = connectedKeys;
-                to = connected[keys[RNG$1.getUniformInt(0, keys.length - 1)]];
-                from = this._getClosest(to, notConnected);
-            }
-            else {
-                let keys = notConnectedKeys;
-                from = notConnected[keys[RNG$1.getUniformInt(0, keys.length - 1)]];
-                to = this._getClosest(from, connected);
-            }
-            d = (from[0] - to[0]) * (from[0] - to[0]) + (from[1] - to[1]) * (from[1] - to[1]);
-            if (d < 64) {
-                break;
-            }
-        }
-        // console.log(">>> connected=" + to + " notConnected=" + from + " dist=" + d);
-        return [from, to];
-    }
-    _getClosest(point, space) {
-        let minPoint = null;
-        let minDist = null;
-        for (let k in space) {
-            let p = space[k];
-            let d = (p[0] - point[0]) * (p[0] - point[0]) + (p[1] - point[1]) * (p[1] - point[1]);
-            if (minDist == null || d < minDist) {
-                minDist = d;
-                minPoint = p;
-            }
-        }
-        return minPoint;
-    }
-    _findConnected(connected, notConnected, stack, keepNotConnected, value) {
-        while (stack.length > 0) {
-            let p = stack.splice(0, 1)[0];
-            let tests;
-            if (this._options.topology == 6) {
-                tests = [
-                    [p[0] + 2, p[1]],
-                    [p[0] + 1, p[1] - 1],
-                    [p[0] - 1, p[1] - 1],
-                    [p[0] - 2, p[1]],
-                    [p[0] - 1, p[1] + 1],
-                    [p[0] + 1, p[1] + 1],
-                ];
-            }
-            else {
-                tests = [
-                    [p[0] + 1, p[1]],
-                    [p[0] - 1, p[1]],
-                    [p[0], p[1] + 1],
-                    [p[0], p[1] - 1]
-                ];
-            }
-            for (let i = 0; i < tests.length; i++) {
-                let key = this._pointKey(tests[i]);
-                if (connected[key] == null && this._freeSpace(tests[i][0], tests[i][1], value)) {
-                    connected[key] = tests[i];
-                    if (!keepNotConnected) {
-                        delete notConnected[key];
-                    }
-                    stack.push(tests[i]);
-                }
-            }
-        }
-    }
-    _tunnelToConnected(to, from, connected, notConnected, value, connectionCallback) {
-        let a, b;
-        if (from[0] < to[0]) {
-            a = from;
-            b = to;
-        }
-        else {
-            a = to;
-            b = from;
-        }
-        for (let xx = a[0]; xx <= b[0]; xx++) {
-            this._map[xx][a[1]] = value;
-            let p = [xx, a[1]];
-            let pkey = this._pointKey(p);
-            connected[pkey] = p;
-            delete notConnected[pkey];
-        }
-        if (connectionCallback && a[0] < b[0]) {
-            connectionCallback(a, [b[0], a[1]]);
-        }
-        // x is now fixed
-        let x = b[0];
-        if (from[1] < to[1]) {
-            a = from;
-            b = to;
-        }
-        else {
-            a = to;
-            b = from;
-        }
-        for (let yy = a[1]; yy < b[1]; yy++) {
-            this._map[x][yy] = value;
-            let p = [x, yy];
-            let pkey = this._pointKey(p);
-            connected[pkey] = p;
-            delete notConnected[pkey];
-        }
-        if (connectionCallback && a[1] < b[1]) {
-            connectionCallback([b[0], a[1]], [b[0], b[1]]);
-        }
-    }
-    _tunnelToConnected6(to, from, connected, notConnected, value, connectionCallback) {
-        let a, b;
-        if (from[0] < to[0]) {
-            a = from;
-            b = to;
-        }
-        else {
-            a = to;
-            b = from;
-        }
-        // tunnel diagonally until horizontally level
-        let xx = a[0];
-        let yy = a[1];
-        while (!(xx == b[0] && yy == b[1])) {
-            let stepWidth = 2;
-            if (yy < b[1]) {
-                yy++;
-                stepWidth = 1;
-            }
-            else if (yy > b[1]) {
-                yy--;
-                stepWidth = 1;
-            }
-            if (xx < b[0]) {
-                xx += stepWidth;
-            }
-            else if (xx > b[0]) {
-                xx -= stepWidth;
-            }
-            else if (b[1] % 2) {
-                // Won't step outside map if destination on is map's right edge
-                xx -= stepWidth;
-            }
-            else {
-                // ditto for left edge
-                xx += stepWidth;
-            }
-            this._map[xx][yy] = value;
-            let p = [xx, yy];
-            let pkey = this._pointKey(p);
-            connected[pkey] = p;
-            delete notConnected[pkey];
-        }
-        if (connectionCallback) {
-            connectionCallback(from, to);
-        }
-    }
-    _freeSpace(x, y, value) {
-        return x >= 0 && x < this._width && y >= 0 && y < this._height && this._map[x][y] == value;
-    }
-    _pointKey(p) { return p[0] + "." + p[1]; }
-}
-
-var Map$1 = { Cellular};
-
-class AbstractLevel {
-    static zToStep(z = 0) {
-        return Math.round(z / AbstractLevel.STEP);
-    }
-    static reducer(input, heights) {
-        return heights.map((column, x) => column.map((value, y) => (input[x]?.[y] || 0) + value), []);
-    }
-    static createMatrix({ min = 0, max = 1, iterations = AbstractLevel.ITERATIONS, fill = AbstractLevel.FILL, cols = AbstractLevel.COLS, rows = AbstractLevel.ROWS }) {
-        return Array.from({ length: max }, () => {
-            const map = new Map$1.Cellular(cols, rows);
-            map.randomize(fill);
-            for (let i = 0; i < iterations; i++) {
-                map.create();
-            }
-            return map._map;
-        })
-            .reduce(AbstractLevel.reducer, [])
-            .map((arrays) => arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP));
-    }
-    constructor() {
-        this.heights = [];
-        this.heights = AbstractLevel.createMatrix({
-            min: minLevelHeight,
-            max: maxLevelHeight
-        });
-    }
-    getZ(x, y) {
-        const posX = Math.floor(x + AbstractLevel.COLS / 2);
-        const posY = Math.floor(y + AbstractLevel.ROWS / 2);
-        return this.heights[posX]?.[posY] || 0;
-    }
-    forEachHeight(heights = this.heights, iterator) {
-        heights.forEach((rows, col) => {
-            rows.forEach((height, row) => {
-                if (height) {
-                    iterator(col, row, height);
-                }
-            });
-        });
-    }
-    getXY(col, row) {
-        return {
-            x: col - AbstractLevel.COLS / 2,
-            y: row - AbstractLevel.ROWS / 2
-        };
-    }
-    createCollider(col, row, z) {
-        const { x, y } = this.getXY(col, row);
-        return physics.createBox({ x, y }, 1, 1, {
-            isStatic: true,
-            userData: { step: AbstractLevel.zToStep(z) }
-        });
-    }
-}
-AbstractLevel.STEP = 0.25;
-AbstractLevel.COLS = DeviceDetector.HIGH_END ? 32 : 24;
-AbstractLevel.ROWS = DeviceDetector.HIGH_END ? 32 : 24;
-AbstractLevel.FILL = 0.5;
-AbstractLevel.ITERATIONS = 4;
 
 class Ocean {
     constructor(texture, scale = AbstractLevel.STEP * 2) {
@@ -71130,7 +71189,7 @@ class Ocean {
         const radius = Math.hypot(this.cols, this.rows) / 2;
         const geometry = new CircleGeometry(radius);
         const material = new MeshBasicMaterial({
-            ...alphaMaterialProps,
+            ...TextureUtils.ALPHA_PROPS,
             alphaTest: opacity,
             opacity,
             map
@@ -71152,60 +71211,15 @@ class Ocean {
 }
 Ocean.DEEP_WATER_Z = -0.2;
 
-const loadTextures = async (texturePaths) => {
-    const promises = texturePaths.map((texturePath) => loader.load(texturePath));
-    const resolved = await Promise.all(promises);
-    texturePaths.forEach((texturePath, index) => {
-        const textureName = getTextureName(texturePath);
-        const texture = resolved[index];
-        pixelate(texture);
-        loadedTextures[textureName] = texture;
-    });
-    return resolved;
-};
-const pixelate = (texture) => {
-    texture.anisotropy = 1;
-    texture.unpackAlignment = 1;
-    texture.matrixAutoUpdate = false;
-    texture.magFilter = NearestFilter;
-    texture.minFilter = NearestMipMapLinearFilter;
-};
-const normalizeAngle = (angle) => (Math_Double_PI + angle) % Math_Double_PI;
-const normalize = (n) => Math.min(1, Math.max(-1, n));
-const randomOf = (array) => array[Math.floor(Math.random() * array.length)];
-const distanceSq = (a, b) => {
-    const x = a.x - b.x;
-    const y = a.z - b.z;
-    return x * x + y * y;
-};
-const mapCubeTextures = ({ left, right, up, down, front, back }) => [left, right, up, down, front, back];
-const getTextureName = (texturePath) => {
-    const fileName = texturePath.split('/').pop()?.split('.')[0];
-    if (!fileName) {
-        return '';
-    }
-    return fileName
-        .split(/[-_]+/)
-        .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
-        .join('');
-};
-const getMatrix = (position, scale) => {
-    const matrix = new Matrix4();
-    const quaternion = new Quaternion();
-    const offset = new Vector3(0.5, 0.5, 0.5);
-    matrix.compose(position.add(offset), quaternion, scale);
-    return matrix;
-};
-
 class Skybox {
     constructor(textures = Skybox.DEFAULT_TEXTURES, callback = Skybox.DEFAULT_CALLBACK) {
-        const loader$1 = new CubeTextureLoader(loader);
-        const skyboxTextures = mapCubeTextures(textures);
-        loader$1.load(skyboxTextures, callback);
+        const loader = new CubeTextureLoader(TextureUtils.loader);
+        const skyboxTextures = TextureUtils.mapToCube(textures);
+        loader.load(skyboxTextures, callback);
     }
 }
 Skybox.DEFAULT_CALLBACK = (skyBox) => {
-    pixelate(skyBox);
+    TextureUtils.pixelate(skyBox);
     state.renderer.scene.background = skyBox;
 };
 Skybox.DEFAULT_TEXTURES = {
@@ -71226,7 +71240,6 @@ class AbstractBody {
     }
 }
 
-const MIN_HEIGHT = maxLevelHeight * AbstractLevel.STEP;
 class Camera extends PerspectiveCamera {
     static getFar() {
         return state.renderer.camera.far / Camera.FAR;
@@ -71281,8 +71294,9 @@ Camera.LERP = 0.2;
 Camera.FOV = 75;
 Camera.NEAR = 0.01;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.cameraGoal = new Vector3(0, MIN_HEIGHT + Camera.HEIGHT, 0);
-Camera.cameraLookAt = new Vector3(0, MIN_HEIGHT, 0);
+Camera.MIN_HEIGHT = AbstractLevel.HEIGHT_MAX * AbstractLevel.STEP;
+Camera.cameraGoal = new Vector3(0, Camera.MIN_HEIGHT + Camera.HEIGHT, 0);
+Camera.cameraLookAt = new Vector3(0, Camera.MIN_HEIGHT, 0);
 Camera.projection = new Vector3();
 
 class Renderer extends WebGLRenderer {
@@ -71338,7 +71352,7 @@ class Renderer extends WebGLRenderer {
             document.body.appendChild(this.domElement);
         }
         if ('fps' in queryParams) {
-            this.stats = new distExports$1.Stats(this);
+            this.stats = new distExports.Stats(this);
         }
     }
     onResize() {
@@ -71406,7 +71420,7 @@ class DynamicBody extends Circle {
     }
 }
 DynamicBody.RADIUS = 0.2;
-DynamicBody.PADDING = 0;
+DynamicBody.PADDING = 0.15;
 
 class StaticBody {
     constructor(x, y, level) {
@@ -71425,21 +71439,9 @@ class StaticBody {
 
 class Billboard {
     static async create(level, { texture, ...props }, Class = Billboard) {
-        await loadTextures([texture]);
-        const textureName = getTextureName(texture);
+        await TextureUtils.load([texture]);
+        const textureName = TextureUtils.getName(texture);
         return new Class({ level, textureName, ...props });
-    }
-    static getMaterial(textureName, cols = 1, rows = 1) {
-        if (!materials[textureName]) {
-            if (cols > 1 || rows > 1) {
-                loadedTextures[textureName].repeat.set(1 / cols, 1 / rows);
-            }
-            materials[textureName] = new MeshBasicMaterial({
-                ...alphaMaterialProps,
-                map: loadedTextures[textureName]
-            });
-        }
-        return materials[textureName];
     }
     constructor({ level, x, y, scaleX, scaleY, cols = 1, rows = 1, totalFrames = 1, scale = 1, frameDuration = 120, textureName, ...props }) {
         this.frame = 0;
@@ -71488,7 +71490,7 @@ class Billboard {
     }
     createMesh(textureName) {
         try {
-            const material = Billboard.getMaterial(textureName, this.cols, this.rows);
+            const material = TextureUtils.getMaterial(textureName, this.cols, this.rows);
             const image = material.map.image;
             const w = image.width / this.cols;
             const h = image.height / this.rows;
@@ -71530,7 +71532,7 @@ class Billboard {
         const cameraAngle = state.player?.body.angle || state.renderer.camera.rotation.y;
         const angle = normalizeAngle(this.body.angle - cameraAngle);
         const directionIndex = Math.floor((2 * angle) / Math.PI);
-        return directions[directionIndex];
+        return Billboard.DIRECTIONS[directionIndex];
     }
     getRow(direction) {
         return (this.rows -
@@ -71538,6 +71540,7 @@ class Billboard {
             ((this.directionsToRows[direction] ?? this.directionsToRows.default) || 0));
     }
 }
+Billboard.DIRECTIONS = ['up', 'right', 'down', 'left'];
 Billboard.compensateGroupZ = 0.2;
 Billboard.tempVector = new Vector3();
 
@@ -71771,6 +71774,11 @@ class NPC extends Sprite {
 }
 NPC.MAX_SPEED = 0;
 NPC.MAX_ROTATION = 100;
+NPC.DEFAULT_COUNT = 'limit' in queryParams
+    ? Number(queryParams.limit)
+    : DeviceDetector.HIGH_END
+        ? 64
+        : 48;
 
 class Debug {
     static set(innerHTML) {
@@ -71795,7 +71803,7 @@ class BoxMesh extends InstancedMesh {
     constructor(textures, cols, rows = cols) {
         const geometry = new BoxGeometry(1, 1, 1);
         const materials = textures.map((texture) => new MeshBasicMaterial({
-            ...materialProps,
+            ...TextureUtils.PROPS,
             map: texture
         }));
         super(geometry, materials, cols * rows);
@@ -71803,206 +71811,9 @@ class BoxMesh extends InstancedMesh {
     }
 }
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-var dist = {};
-
-var diContainer = {};
-
-var hasRequiredDiContainer;
-
-function requireDiContainer () {
-	if (hasRequiredDiContainer) return diContainer;
-	hasRequiredDiContainer = 1;
-	Object.defineProperty(diContainer, '__esModule', { value: true });
-	diContainer.DIContainer = void 0;
-	class DIContainer {
-	  /**
-	   * get the Class/Override that was used with setClass
-	   * @param Original the class to search for in DIContainer
-	   * @returns {BaseClass}
-	   */
-	  static getClass(Original) {
-	    const Override = this.overrides[Original.name];
-	    return Override || Original;
-	  }
-	  /**
-	   * for future references override Original class with Override
-	   * @param Original the class to search for in DIContainer
-	   * @param Override the extended class to replace that first one
-	   */
-	  static setClass(Original, Override) {
-	    DIContainer.overrides[Original.name] = Override;
-	  }
-	  /**
-	   * get instance of Class/Override that was used with setClass with optional props
-	   * @param Original the class to search for in DIContainer
-	   * @param props the optional props for constructor of instance
-	   * @returns {instanceof Class}
-	   */
-	  static getInstance(Original, ...props) {
-	    const propertyKey = DIContainer.createPropertyKey(props);
-	    if (!DIContainer.instances[Original.name]) {
-	      DIContainer.instances[Original.name] = {};
-	    }
-	    if (!DIContainer.instances[Original.name][propertyKey]) {
-	      const Class = DIContainer.getClass(Original);
-	      const instance = new Class(...props);
-	      DIContainer.instances[Original.name][propertyKey] = instance;
-	    }
-	    return DIContainer.instances[Original.name][propertyKey];
-	  }
-	  /**
-	   * the api to free class instances to prevent eventual oom
-	   * @param Class the class to search for in DIContainer
-	   */
-	  static freeInstance(Class, props) {
-	    const propertyKey = DIContainer.createPropertyKey(props);
-	    delete DIContainer.instances[Class.name][propertyKey];
-	  }
-	  /**
-	   * the api to free class instances to prevent eventual oom
-	   * @param Class the class to search for in DIContainer
-	   */
-	  static freeInstances(Class) {
-	    DIContainer.instances[Class.name] = {};
-	  }
-	  /**
-	   * creates property key string for index in records
-	   * @param props anything really
-	   * @returns {string}
-	   */
-	  static createPropertyKey(props) {
-	    if (typeof props !== 'undefined') {
-	      return DIContainer.tryStringify(props);
-	    }
-	    return 'undefined';
-	  }
-	  /**
-	   * stringify anything or return {} if not possible
-	   * @param props anything really
-	   * @returns {string}
-	   */
-	  static tryStringify(props) {
-	    try {
-	      return JSON.stringify(props);
-	    } catch (_err) {
-	      return '{}';
-	    }
-	  }
-	}
-	diContainer.DIContainer = DIContainer;
-	DIContainer.overrides = {};
-	DIContainer.instances = {};
-	return diContainer;
-}
-
-var injectDecorator = {};
-
-var hasRequiredInjectDecorator;
-
-function requireInjectDecorator () {
-	if (hasRequiredInjectDecorator) return injectDecorator;
-	hasRequiredInjectDecorator = 1;
-	Object.defineProperty(injectDecorator, '__esModule', { value: true });
-	injectDecorator.Inject = Inject;
-	const di_container_1 = requireDiContainer();
-	function Inject(Class, props) {
-	  return function inject(target, propertyKey) {
-	    Object.defineProperty(target, propertyKey, {
-	      get: () => di_container_1.DIContainer.getInstance(Class, props),
-	      set: () => di_container_1.DIContainer.freeInstance(Class, props),
-	      configurable: true,
-	      enumerable: true
-	    });
-	    return target;
-	  };
-	}
-	return injectDecorator;
-}
-
-var types = {};
-
-var hasRequiredTypes;
-
-function requireTypes () {
-	if (hasRequiredTypes) return types;
-	hasRequiredTypes = 1;
-	Object.defineProperty(types, '__esModule', { value: true });
-	return types;
-}
-
-var hasRequiredDist;
-
-function requireDist () {
-	if (hasRequiredDist) return dist;
-	hasRequiredDist = 1;
-	(function (exports$1) {
-		var __createBinding =
-		  (dist && dist.__createBinding) ||
-		  (Object.create
-		    ? function (o, m, k, k2) {
-		        if (k2 === undefined) k2 = k;
-		        var desc = Object.getOwnPropertyDescriptor(m, k);
-		        if (
-		          !desc ||
-		          ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)
-		        ) {
-		          desc = {
-		            enumerable: true,
-		            get: function () {
-		              return m[k];
-		            }
-		          };
-		        }
-		        Object.defineProperty(o, k2, desc);
-		      }
-		    : function (o, m, k, k2) {
-		        if (k2 === undefined) k2 = k;
-		        o[k2] = m[k];
-		      });
-		var __exportStar =
-		  (dist && dist.__exportStar) ||
-		  function (m, exports$1) {
-		    for (var p in m)
-		      if (p !== 'default' && !Object.prototype.hasOwnProperty.call(exports$1, p))
-		        __createBinding(exports$1, m, p);
-		  };
-		Object.defineProperty(exports$1, '__esModule', { value: true });
-		__exportStar(requireDiContainer(), exports$1);
-		__exportStar(requireInjectDecorator(), exports$1);
-		__exportStar(requireTypes(), exports$1); 
-	} (dist));
-	return dist;
-}
-
-var distExports = requireDist();
-
 class Level extends AbstractLevel {
     static async create(canvas, { sides, floor, ocean, objects = Level.DEFAULT_OBJECTS } = {}) {
-        const [sidesTex, floorTex, oceanTex] = await loadTextures([
+        const [sidesTex, floorTex, oceanTex] = await TextureUtils.load([
             sides || Level.SIDES,
             floor || Level.FLOOR,
             ocean || Level.OCEAN,
@@ -72012,17 +71823,14 @@ class Level extends AbstractLevel {
             canvas,
             objects,
             ocean: oceanTex,
-            textures: Level.getCubeTextures(sidesTex, floorTex)
-        });
-    }
-    static getCubeTextures(sidesTex, floorTex) {
-        return mapCubeTextures({
-            up: floorTex,
-            down: floorTex,
-            left: sidesTex,
-            right: sidesTex,
-            front: sidesTex,
-            back: sidesTex
+            textures: TextureUtils.mapToCube({
+                up: floorTex,
+                down: floorTex,
+                left: sidesTex,
+                right: sidesTex,
+                front: sidesTex,
+                back: sidesTex
+            })
         });
     }
     constructor({ textures, canvas, ocean, skybox, objects = {} }, setLevel = true) {
@@ -72047,8 +71855,8 @@ class Level extends AbstractLevel {
     }
     createObjects() {
         Object.entries(this.objects).forEach(([texturePath, { minHeight, maxHeight, fill = 0.5, chance = 0.5, iterations = 1, spread = 1, scale = 1 }]) => {
-            const textureName = getTextureName(texturePath);
-            if (!loadedTextures[textureName])
+            const textureName = TextureUtils.getName(texturePath);
+            if (!TextureUtils.hasTexture(textureName))
                 return;
             const heights = Level.createMatrix({
                 fill,
@@ -72068,11 +71876,11 @@ class Level extends AbstractLevel {
                             return;
                         const { x, y } = this.getXY(col, row);
                         new Billboard({
-                            x: x + (spreadX + 0.5) / spread,
-                            y: y + (spreadY + 0.5) / spread,
                             textureName,
                             scale,
-                            level: this
+                            level: this,
+                            x: x + (spreadX + 0.5) / spread,
+                            y: y + (spreadY + 0.5) / spread
                         });
                     }
                 }
@@ -72104,9 +71912,6 @@ Level.DEFAULT_OBJECTS = {
         spread: 2
     }
 };
-__decorate([
-    distExports.Inject(System)
-], Level.prototype, "system", void 0);
 
-export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, alphaMaterialProps, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, materials, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
+export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, TextureUtils, distanceSq, getMatrix, getQueryParams, mouse, normalize, normalizeAngle, physics, queryParams, randomOf, setKey, state };
 //# sourceMappingURL=index.js.map

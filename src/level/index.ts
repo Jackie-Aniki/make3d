@@ -1,23 +1,15 @@
-import { System } from 'check2d'
-import { Inject } from 'inject.min'
 import { Texture, Vector3 } from 'three'
 import { Renderer } from '../core/renderer'
 import { Events } from '../events'
-import { loadedTextures, state } from '../state'
-import {
-  getMatrix,
-  getTextureName,
-  loadTextures,
-  mapCubeTextures
-} from '../utils/view-utils'
+import { state } from '../state'
+import { getMatrix } from '../utils/view-utils'
 import { AbstractLevel } from './abstract-level'
 import { BoxMesh } from './box-mesh'
 import { LevelCreateProps, LevelObjects, LevelProps } from './model'
 import { Billboard } from '../view/billboard'
+import { TextureUtils } from '../utils/texture-utils'
 
 export class Level extends AbstractLevel {
-  @Inject(System) system!: System
-
   static SIDES = 'sides.webp'
   static FLOOR = 'floor.webp'
   static OCEAN = 'ocean.webp'
@@ -49,7 +41,7 @@ export class Level extends AbstractLevel {
       objects = Level.DEFAULT_OBJECTS
     }: LevelCreateProps<string> = {}
   ): Promise<Level> {
-    const [sidesTex, floorTex, oceanTex] = await loadTextures([
+    const [sidesTex, floorTex, oceanTex] = await TextureUtils.load([
       sides || Level.SIDES,
       floor || Level.FLOOR,
       ocean || Level.OCEAN,
@@ -60,18 +52,14 @@ export class Level extends AbstractLevel {
       canvas,
       objects,
       ocean: oceanTex,
-      textures: Level.getCubeTextures(sidesTex, floorTex)
-    })
-  }
-
-  protected static getCubeTextures(sidesTex: Texture, floorTex: Texture) {
-    return mapCubeTextures({
-      up: floorTex,
-      down: floorTex,
-      left: sidesTex,
-      right: sidesTex,
-      front: sidesTex,
-      back: sidesTex
+      textures: TextureUtils.mapToCube({
+        up: floorTex,
+        down: floorTex,
+        left: sidesTex,
+        right: sidesTex,
+        front: sidesTex,
+        back: sidesTex
+      })
     })
   }
 
@@ -122,8 +110,8 @@ export class Level extends AbstractLevel {
           scale = 1
         }
       ]) => {
-        const textureName = getTextureName(texturePath)
-        if (!loadedTextures[textureName]) return
+        const textureName = TextureUtils.getName(texturePath)
+        if (!TextureUtils.hasTexture(textureName)) return
 
         const heights = Level.createMatrix({
           fill,
@@ -144,11 +132,11 @@ export class Level extends AbstractLevel {
 
               const { x, y } = this.getXY(col, row)
               new Billboard({
-                x: x + (spreadX + 0.5) / spread,
-                y: y + (spreadY + 0.5) / spread,
                 textureName,
                 scale,
-                level: this
+                level: this,
+                x: x + (spreadX + 0.5) / spread,
+                y: y + (spreadY + 0.5) / spread
               })
             }
           }

@@ -14,7 +14,7 @@ export type Key = Direction | 'space'
 export type CubeDirections = Direction | 'front' | 'back'
 
 export interface SpriteState extends Record<string, any> {
-  keys: Record<string, boolean>
+  keys: Partial<Record<Key, boolean>>
   mouse: Mouse
   mouseDown?: boolean
 }

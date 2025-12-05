@@ -1,5 +1,7 @@
 import { Level } from '../level'
 import { AbstractLevel } from '../level/abstract-level'
+import { DeviceDetector } from '../utils/detect-mobile'
+import { queryParams } from '../utils/query-params'
 import { BillboardCreateProps } from './billboard'
 import { Sprite } from './sprite'
 
@@ -18,6 +20,12 @@ export class NPC extends Sprite {
 
   protected static readonly MAX_SPEED = 0
   protected static readonly MAX_ROTATION = 100
+  protected static readonly DEFAULT_COUNT =
+    'limit' in queryParams
+      ? Number(queryParams.limit)
+      : DeviceDetector.HIGH_END
+        ? 64
+        : 48
 
   protected speed = NPC.MAX_SPEED
   protected rotation = NPC.MAX_ROTATION

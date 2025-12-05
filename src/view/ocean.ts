@@ -8,7 +8,9 @@ import {
   Vector3
 } from 'three'
 import { AbstractLevel } from '../level/abstract-level'
-import { Math_Half_PI, alphaMaterialProps, state } from '../state'
+import { state } from '../state'
+import { TextureUtils } from '../utils/texture-utils'
+import { Math_Half_PI } from '../utils/view-utils'
 
 export class Ocean {
   static readonly DEEP_WATER_Z = -0.2
@@ -52,7 +54,7 @@ export class Ocean {
     const radius = Math.hypot(this.cols, this.rows) / 2
     const geometry = new CircleGeometry(radius)
     const material = new MeshBasicMaterial({
-      ...alphaMaterialProps,
+      ...TextureUtils.ALPHA_PROPS,
       alphaTest: opacity,
       opacity,
       map
