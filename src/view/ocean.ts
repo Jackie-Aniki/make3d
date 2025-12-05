@@ -43,7 +43,12 @@ export class Ocean {
     this.animations.forEach((animation) => animation(ms))
   }
 
-  protected createWater(map: Texture, level = 0, opacity = level ? 0.7 : 1) {
+  protected createWater(
+    texture: Texture,
+    level = 0,
+    opacity = level ? 0.7 : 1
+  ) {
+    const map = texture.clone()
     const radius = Math.hypot(this.cols, this.rows) / 2
     const geometry = new CircleGeometry(radius)
     const material = new MeshBasicMaterial({
@@ -60,7 +65,7 @@ export class Ocean {
     mesh.scale.set(scale, scale, scale)
     mesh.renderOrder = level
 
-    const move = 0.5 / scale
+    const move = 0.33 / scale
     this.animations.push(() => {
       map.offset.x = this.mesh.position.x * move
       map.offset.y = -this.mesh.position.z * move

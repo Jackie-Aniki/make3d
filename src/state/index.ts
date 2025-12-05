@@ -1,11 +1,16 @@
 import { System } from 'check2d'
-import { FrontSide, MeshBasicMaterialParameters, Texture } from 'three'
+import {
+  FrontSide,
+  MeshBasicMaterial,
+  MeshBasicMaterialParameters,
+  Texture
+} from 'three'
 import { Loader } from '../loader'
 import { AppState, Direction, Key } from '../model'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { queryParams } from '../utils/query-params'
 
-export const minLevelHeight = DeviceDetector.HIGH_END ? 4 : 3
+export const minLevelHeight = DeviceDetector.HIGH_END ? 8 : 6
 
 export const maxLevelHeight =
   'height' in queryParams
@@ -47,6 +52,8 @@ export const directions: Direction[] = ['up', 'right', 'down', 'left']
 export const Math_Half_PI = Math.PI * 0.5
 
 export const Math_Double_PI = Math.PI * 2
+
+export const materials: Record<string, MeshBasicMaterial> = {}
 
 export const defaultNPCsCount =
   'limit' in queryParams

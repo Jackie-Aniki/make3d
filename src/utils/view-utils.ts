@@ -1,6 +1,5 @@
 import {
   Matrix4,
-  MeshBasicMaterial,
   NearestFilter,
   NearestMipMapLinearFilter,
   Quaternion,
@@ -8,12 +7,7 @@ import {
   Vector3
 } from 'three'
 import { CubeDirections } from '../model'
-import {
-  alphaMaterialProps,
-  loadedTextures,
-  loader,
-  Math_Double_PI
-} from '../state'
+import { loadedTextures, loader, Math_Double_PI } from '../state'
 
 export const loadTextures = async (texturePaths: string[]) => {
   const promises = texturePaths.map((texturePath) => loader.load(texturePath))
@@ -61,32 +55,6 @@ export const mapCubeTextures = <T>({
   front,
   back
 }: Record<CubeDirections, T>): T[] => [left, right, up, down, front, back]
-
-const materials: Record<string, MeshBasicMaterial> = {}
-
-export const createMaterial = (textureName: string, cols = 1, rows = 1) => {
-  try {
-    if (!materials[textureName]) {
-      if (cols > 1 || rows > 1) {
-        loadedTextures[textureName].repeat.set(1 / cols, 1 / rows)
-      }
-
-      materials[textureName] = new MeshBasicMaterial({
-        ...alphaMaterialProps,
-        map: loadedTextures[textureName]
-      })
-    }
-
-    return materials[textureName]
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_error: unknown) {
-    console.error(
-      `texture: "${textureName}" is missing in ${JSON.stringify(Object.keys(loadedTextures))}`
-    )
-
-    return {} as MeshBasicMaterial
-  }
-}
 
 export const getTextureName = (texturePath: string) => {
   const fileName = texturePath.split('/').pop()?.split('.')[0]

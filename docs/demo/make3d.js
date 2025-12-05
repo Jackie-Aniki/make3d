@@ -69626,7 +69626,7 @@ DeviceDetector.IS_TV = /Android TV|SmartTV|AppleTV|Tizen|webOS|NetCast|Roku|Phil
 DeviceDetector.LOW_END = DeviceDetector.IS_MOBILE || DeviceDetector.IS_TV || 'lowend' in queryParams;
 DeviceDetector.HIGH_END = !DeviceDetector.LOW_END;
 
-const minLevelHeight = DeviceDetector.HIGH_END ? 4 : 3;
+const minLevelHeight = DeviceDetector.HIGH_END ? 8 : 6;
 const maxLevelHeight = 'height' in queryParams
     ? Number(queryParams.height)
     : DeviceDetector.HIGH_END
@@ -69655,6 +69655,7 @@ const alphaMaterialProps = {
 const directions = ['up', 'right', 'down', 'left'];
 const Math_Half_PI = Math.PI * 0.5;
 const Math_Double_PI = Math.PI * 2;
+const materials = {};
 const defaultNPCsCount = 'limit' in queryParams
     ? Number(queryParams.limit)
     : DeviceDetector.HIGH_END
@@ -71124,7 +71125,8 @@ class Ocean {
         this.mesh.position.set(x, Ocean.DEEP_WATER_Z, y);
         this.animations.forEach((animation) => animation(ms));
     }
-    createWater(map, level = 0, opacity = level ? 0.7 : 1) {
+    createWater(texture, level = 0, opacity = level ? 0.7 : 1) {
+        const map = texture.clone();
         const radius = Math.hypot(this.cols, this.rows) / 2;
         const geometry = new CircleGeometry(radius);
         const material = new MeshBasicMaterial({
@@ -71139,7 +71141,7 @@ class Ocean {
         mesh.position.set(0, -0.25 + 0.25 * level, 0);
         mesh.scale.set(scale, scale, scale);
         mesh.renderOrder = level;
-        const move = 0.5 / scale;
+        const move = 0.33 / scale;
         this.animations.push(() => {
             map.offset.x = this.mesh.position.x * move;
             map.offset.y = -this.mesh.position.z * move;
@@ -71177,26 +71179,6 @@ const distanceSq = (a, b) => {
     return x * x + y * y;
 };
 const mapCubeTextures = ({ left, right, up, down, front, back }) => [left, right, up, down, front, back];
-const materials = {};
-const createMaterial = (textureName, cols = 1, rows = 1) => {
-    try {
-        if (!materials[textureName]) {
-            if (cols > 1 || rows > 1) {
-                loadedTextures[textureName].repeat.set(1 / cols, 1 / rows);
-            }
-            materials[textureName] = new MeshBasicMaterial({
-                ...alphaMaterialProps,
-                map: loadedTextures[textureName]
-            });
-        }
-        return materials[textureName];
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    }
-    catch (_error) {
-        console.error(`texture: "${textureName}" is missing in ${JSON.stringify(Object.keys(loadedTextures))}`);
-        return {};
-    }
-};
 const getTextureName = (texturePath) => {
     const fileName = texturePath.split('/').pop()?.split('.')[0];
     if (!fileName) {
@@ -71447,6 +71429,18 @@ class Billboard {
         const textureName = getTextureName(texture);
         return new Class({ level, textureName, ...props });
     }
+    static getMaterial(textureName, cols = 1, rows = 1) {
+        if (!materials[textureName]) {
+            if (cols > 1 || rows > 1) {
+                loadedTextures[textureName].repeat.set(1 / cols, 1 / rows);
+            }
+            materials[textureName] = new MeshBasicMaterial({
+                ...alphaMaterialProps,
+                map: loadedTextures[textureName]
+            });
+        }
+        return materials[textureName];
+    }
     constructor({ level, x, y, scaleX, scaleY, cols = 1, rows = 1, totalFrames = 1, scale = 1, frameDuration = 120, textureName, ...props }) {
         this.frame = 0;
         this.direction = 'up';
@@ -71494,7 +71488,7 @@ class Billboard {
     }
     createMesh(textureName) {
         try {
-            const material = createMaterial(textureName, this.cols, this.rows);
+            const material = Billboard.getMaterial(textureName, this.cols, this.rows);
             const image = material.map.image;
             const w = image.width / this.cols;
             const h = image.height / this.rows;
@@ -72114,5 +72108,5 @@ __decorate([
     distExports.Inject(System)
 ], Level.prototype, "system", void 0);
 
-export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, alphaMaterialProps, createMaterial, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
+export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, alphaMaterialProps, defaultNPCsCount, directions, distanceSq, getMatrix, getQueryParams, getTextureName, keys, loadTextures, loadedTextures, loader, mapCubeTextures, materialProps, materials, maxLevelHeight, minLevelHeight, mouse, normalize, normalizeAngle, physics, pixelate, queryParams, randomOf, setKey, state, waterZ };
 //# sourceMappingURL=index.js.map

@@ -1,12 +1,24 @@
-import { Mesh, Object3D, PlaneGeometry, Texture, Vector3 } from 'three'
+import {
+  Mesh,
+  MeshBasicMaterial,
+  Object3D,
+  PlaneGeometry,
+  Texture,
+  Vector3
+} from 'three'
 import { StaticBody } from '../body/static-body'
 import { Camera } from '../core/camera'
 import { type Level } from '../level'
 import { AbstractLevel } from '../level/abstract-level'
 import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
-import { directions, state } from '../state'
 import {
-  createMaterial,
+  alphaMaterialProps,
+  directions,
+  loadedTextures,
+  materials,
+  state
+} from '../state'
+import {
   getTextureName,
   loadTextures,
   normalizeAngle
@@ -28,6 +40,21 @@ export class Billboard {
     await loadTextures([texture])
     const textureName = getTextureName(texture)
     return new Class({ level, textureName, ...props }) as T
+  }
+
+  protected static getMaterial(textureName: string, cols = 1, rows = 1) {
+    if (!materials[textureName]) {
+      if (cols > 1 || rows > 1) {
+        loadedTextures[textureName].repeat.set(1 / cols, 1 / rows)
+      }
+
+      materials[textureName] = new MeshBasicMaterial({
+        ...alphaMaterialProps,
+        map: loadedTextures[textureName]
+      })
+    }
+
+    return materials[textureName]
   }
 
   protected static compensateGroupZ = 0.2
@@ -125,7 +152,7 @@ export class Billboard {
 
   protected createMesh(textureName: string) {
     try {
-      const material = createMaterial(textureName, this.cols, this.rows)
+      const material = Billboard.getMaterial(textureName, this.cols, this.rows)
       const image = material.map!.image as { width: number; height: number }
       const w = image.width / this.cols
       const h = image.height / this.rows
