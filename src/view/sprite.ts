@@ -28,7 +28,7 @@ export class Sprite extends Billboard {
 
   clickTime = 0
 
-  protected clickTimeout = 0
+  protected clickTimeout: number = 0
   protected velocity = 0
   protected state: SpriteState
 
@@ -71,7 +71,7 @@ export class Sprite extends Billboard {
 
       this.clickTimeout = setTimeout(() => {
         resolve()
-      }, Sprite.CLICK_DURATION)
+      }, Sprite.CLICK_DURATION) as unknown as number
     })
   }
 

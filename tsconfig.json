@@ -2,19 +2,11 @@
   "compilerOptions": {
     "lib": ["es2020", "dom"],
     "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "allowJs": true,
-    "sourceMap": false,
-    "declaration": true,
-    "declarationMap": false,
-    "moduleResolution": "bundler",
     "target": "es2020",
-    "module": "es2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "types": ["check2d", "pixi-stats", "rot-js", "three"]
-  },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts"],
-  "exclude": ["**/*.spec.ts"]
+    "strict": true,
+    "declaration": true
+  }
 }

@@ -1,7 +1,7 @@
 {
   "name": "make3d",
   "description": "Game FrameWork for JavaScript 3D WebGL Games",
-  "version": "1.26.4",
+  "version": "1.26.5",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./esm/index.js",
