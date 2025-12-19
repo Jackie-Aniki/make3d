@@ -1,6 +1,6 @@
 import { PerspectiveCamera, Vector3 } from 'three'
 import { AbstractBody } from '../body/abstract-body'
-import { AbstractLevel } from '../level/abstract-level'
+import { BaseLevel } from '../level/base-level'
 import { state } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { Math_Half_PI } from '../utils/view-utils'
@@ -17,7 +17,7 @@ export class Camera extends PerspectiveCamera {
   static readonly FOV = 75
   static readonly NEAR = 0.01
   static readonly FAR = DeviceDetector.HIGH_END ? 32 : 16
-  static readonly MIN_HEIGHT = AbstractLevel.HEIGHT_MAX * AbstractLevel.STEP
+  static readonly MIN_HEIGHT = BaseLevel.HEIGHT_MAX * BaseLevel.STEP
   static readonly cameraGoal = new Vector3(
     0,
     Camera.MIN_HEIGHT + Camera.HEIGHT,

@@ -3,7 +3,7 @@ import { physics } from '../state'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { queryParams } from '../utils/query-params'
 
-export abstract class AbstractLevel {
+export class BaseLevel {
   static readonly STEP = 0.25
   static readonly COLS = DeviceDetector.HIGH_END ? 32 : 24
   static readonly ROWS = DeviceDetector.HIGH_END ? 32 : 24
@@ -18,7 +18,7 @@ export abstract class AbstractLevel {
         : 12
 
   static zToStep(z = 0) {
-    return Math.round(z / AbstractLevel.STEP)
+    return Math.round(z / BaseLevel.STEP)
   }
 
   static reducer(input: number[][], heights: number[][]) {
@@ -32,10 +32,10 @@ export abstract class AbstractLevel {
   static createMatrix({
     min = 0,
     max = 1,
-    iterations = AbstractLevel.ITERATIONS,
-    fill = AbstractLevel.FILL,
-    cols = AbstractLevel.COLS,
-    rows = AbstractLevel.ROWS
+    iterations = BaseLevel.ITERATIONS,
+    fill = BaseLevel.FILL,
+    cols = BaseLevel.COLS,
+    rows = BaseLevel.ROWS
   }) {
     return Array.from({ length: max }, () => {
       const map = new Map.Cellular(cols, rows)
@@ -47,27 +47,27 @@ export abstract class AbstractLevel {
 
       return map._map
     })
-      .reduce(AbstractLevel.reducer, [])
+      .reduce(BaseLevel.reducer, [])
       .map((arrays) =>
-        arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP)
+        arrays.map((value) => Math.max(0, value - min) * BaseLevel.STEP)
       )
   }
 
   protected readonly heights: number[][] = []
 
   constructor() {
-    const min = Math.round(AbstractLevel.HEIGHT_MAX * 2 * AbstractLevel.POND)
-    const max = AbstractLevel.HEIGHT_MAX + min
+    const min = Math.round(BaseLevel.HEIGHT_MAX * 2 * BaseLevel.POND)
+    const max = BaseLevel.HEIGHT_MAX + min
 
-    this.heights = AbstractLevel.createMatrix({
+    this.heights = BaseLevel.createMatrix({
       min,
       max
     })
   }
 
   getZ(x: number, y: number) {
-    const posX = Math.floor(x + AbstractLevel.COLS / 2)
-    const posY = Math.floor(y + AbstractLevel.ROWS / 2)
+    const posX = Math.floor(x + BaseLevel.COLS / 2)
+    const posY = Math.floor(y + BaseLevel.ROWS / 2)
 
     return this.heights[posX]?.[posY] || 0
   }
@@ -87,8 +87,8 @@ export abstract class AbstractLevel {
 
   protected getXY(col: number, row: number) {
     return {
-      x: col - AbstractLevel.COLS / 2,
-      y: row - AbstractLevel.ROWS / 2
+      x: col - BaseLevel.COLS / 2,
+      y: row - BaseLevel.ROWS / 2
     }
   }
 
@@ -96,7 +96,7 @@ export abstract class AbstractLevel {
     const { x, y } = this.getXY(col, row)
     return physics.createBox({ x, y }, 1, 1, {
       isStatic: true,
-      userData: { step: AbstractLevel.zToStep(z) }
+      userData: { step: BaseLevel.zToStep(z) }
     })
   }
 }

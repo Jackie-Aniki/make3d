@@ -1,5 +1,5 @@
 import { Level } from '../level'
-import { AbstractLevel } from '../level/abstract-level'
+import { BaseLevel } from '../level/base-level'
 import { DeviceDetector } from '../utils/detect-mobile'
 import { queryParams } from '../utils/query-params'
 import { BillboardCreateProps } from './billboard'
@@ -38,7 +38,7 @@ export class NPC extends Sprite {
   update(scale: number) {
     const dx = this.mesh.position.x
     const dy = this.mesh.position.z
-    const radius = (AbstractLevel.COLS + AbstractLevel.ROWS) / 2
+    const radius = (BaseLevel.COLS + BaseLevel.ROWS) / 2
     const diff = Math.sqrt(dx * dx + dy * dy) - radius
 
     if (diff > 0 && Math.random() < diff / radius) {

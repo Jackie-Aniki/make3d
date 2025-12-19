@@ -2,7 +2,7 @@ import { Mesh, Object3D, PlaneGeometry, Texture, Vector3 } from 'three'
 import { StaticBody } from '../body/static-body'
 import { Camera } from '../core/camera'
 import { type Level } from '../level'
-import { AbstractLevel } from '../level/abstract-level'
+import { BaseLevel } from '../level/base-level'
 import { BaseBody, BillboardProps, Direction, DirectionsToRows } from '../model'
 import { state } from '../state'
 import { TextureUtils } from '../utils/texture-utils'
@@ -145,8 +145,8 @@ export class Billboard {
 
   protected spawn(
     level: Level,
-    x = (Math.random() - 0.5) * (AbstractLevel.COLS * 0.5),
-    y = (Math.random() - 0.5) * (AbstractLevel.ROWS * 0.5)
+    x = (Math.random() - 0.5) * (BaseLevel.COLS * 0.5),
+    y = (Math.random() - 0.5) * (BaseLevel.ROWS * 0.5)
   ) {
     this.body = this.createBody(x, y, level)
     this.mesh.position.set(x, this.body.z, y)

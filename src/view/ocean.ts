@@ -7,7 +7,7 @@ import {
   Texture,
   Vector3
 } from 'three'
-import { AbstractLevel } from '../level/abstract-level'
+import { BaseLevel } from '../level/base-level'
 import { state } from '../state'
 import { TextureUtils } from '../utils/texture-utils'
 import { Math_Half_PI } from '../utils/view-utils'
@@ -23,9 +23,9 @@ export class Ocean {
 
   protected startTime = Date.now()
 
-  constructor(texture: Texture, scale = AbstractLevel.STEP * 2) {
-    this.cols = AbstractLevel.COLS
-    this.rows = AbstractLevel.ROWS
+  constructor(texture: Texture, scale = BaseLevel.STEP * 2) {
+    this.cols = BaseLevel.COLS
+    this.rows = BaseLevel.ROWS
 
     texture.wrapS = RepeatWrapping
     texture.wrapT = RepeatWrapping

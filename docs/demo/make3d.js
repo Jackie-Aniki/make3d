@@ -59928,14 +59928,14 @@ DeviceDetector.IS_TV = /Android TV|SmartTV|AppleTV|Tizen|webOS|NetCast|Roku|Phil
 DeviceDetector.LOW_END = DeviceDetector.IS_MOBILE || DeviceDetector.IS_TV || 'lowend' in queryParams;
 DeviceDetector.HIGH_END = !DeviceDetector.LOW_END;
 
-class AbstractLevel {
+class BaseLevel {
     static zToStep(z = 0) {
-        return Math.round(z / AbstractLevel.STEP);
+        return Math.round(z / BaseLevel.STEP);
     }
     static reducer(input, heights) {
         return heights.map((column, x) => column.map((value, y) => (input[x]?.[y] || 0) + value), []);
     }
-    static createMatrix({ min = 0, max = 1, iterations = AbstractLevel.ITERATIONS, fill = AbstractLevel.FILL, cols = AbstractLevel.COLS, rows = AbstractLevel.ROWS }) {
+    static createMatrix({ min = 0, max = 1, iterations = BaseLevel.ITERATIONS, fill = BaseLevel.FILL, cols = BaseLevel.COLS, rows = BaseLevel.ROWS }) {
         return Array.from({ length: max }, () => {
             const map = new Map$1.Cellular(cols, rows);
             map.randomize(fill);
@@ -59944,21 +59944,21 @@ class AbstractLevel {
             }
             return map._map;
         })
-            .reduce(AbstractLevel.reducer, [])
-            .map((arrays) => arrays.map((value) => Math.max(0, value - min) * AbstractLevel.STEP));
+            .reduce(BaseLevel.reducer, [])
+            .map((arrays) => arrays.map((value) => Math.max(0, value - min) * BaseLevel.STEP));
     }
     constructor() {
         this.heights = [];
-        const min = Math.round(AbstractLevel.HEIGHT_MAX * 2 * AbstractLevel.POND);
-        const max = AbstractLevel.HEIGHT_MAX + min;
-        this.heights = AbstractLevel.createMatrix({
+        const min = Math.round(BaseLevel.HEIGHT_MAX * 2 * BaseLevel.POND);
+        const max = BaseLevel.HEIGHT_MAX + min;
+        this.heights = BaseLevel.createMatrix({
             min,
             max
         });
     }
     getZ(x, y) {
-        const posX = Math.floor(x + AbstractLevel.COLS / 2);
-        const posY = Math.floor(y + AbstractLevel.ROWS / 2);
+        const posX = Math.floor(x + BaseLevel.COLS / 2);
+        const posY = Math.floor(y + BaseLevel.ROWS / 2);
         return this.heights[posX]?.[posY] || 0;
     }
     forEachHeight(heights = this.heights, iterator) {
@@ -59972,25 +59972,25 @@ class AbstractLevel {
     }
     getXY(col, row) {
         return {
-            x: col - AbstractLevel.COLS / 2,
-            y: row - AbstractLevel.ROWS / 2
+            x: col - BaseLevel.COLS / 2,
+            y: row - BaseLevel.ROWS / 2
         };
     }
     createCollider(col, row, z) {
         const { x, y } = this.getXY(col, row);
         return physics.createBox({ x, y }, 1, 1, {
             isStatic: true,
-            userData: { step: AbstractLevel.zToStep(z) }
+            userData: { step: BaseLevel.zToStep(z) }
         });
     }
 }
-AbstractLevel.STEP = 0.25;
-AbstractLevel.COLS = DeviceDetector.HIGH_END ? 32 : 24;
-AbstractLevel.ROWS = DeviceDetector.HIGH_END ? 32 : 24;
-AbstractLevel.FILL = 0.5;
-AbstractLevel.POND = 0.36;
-AbstractLevel.ITERATIONS = 4;
-AbstractLevel.HEIGHT_MAX = 'height' in queryParams
+BaseLevel.STEP = 0.25;
+BaseLevel.COLS = DeviceDetector.HIGH_END ? 32 : 24;
+BaseLevel.ROWS = DeviceDetector.HIGH_END ? 32 : 24;
+BaseLevel.FILL = 0.5;
+BaseLevel.POND = 0.36;
+BaseLevel.ITERATIONS = 4;
+BaseLevel.HEIGHT_MAX = 'height' in queryParams
     ? Number(queryParams.height)
     : DeviceDetector.HIGH_END
         ? 16
@@ -71547,12 +71547,12 @@ const getMatrix = (position, scale) => {
 };
 
 class Ocean {
-    constructor(texture, scale = AbstractLevel.STEP * 2) {
+    constructor(texture, scale = BaseLevel.STEP * 2) {
         this.mesh = new Group();
         this.animations = [];
         this.startTime = Date.now();
-        this.cols = AbstractLevel.COLS;
-        this.rows = AbstractLevel.ROWS;
+        this.cols = BaseLevel.COLS;
+        this.rows = BaseLevel.ROWS;
         texture.wrapS = RepeatWrapping;
         texture.wrapT = RepeatWrapping;
         texture.repeat.set(this.cols * scale, this.rows * scale);
@@ -71618,7 +71618,7 @@ class AbstractBody {
         return body.userData.level.getZ(x, y);
     }
     static stepToZ(step = 0) {
-        return step * AbstractLevel.STEP;
+        return step * BaseLevel.STEP;
     }
 }
 
@@ -71676,7 +71676,7 @@ Camera.LERP = 0.2;
 Camera.FOV = 75;
 Camera.NEAR = 0.01;
 Camera.FAR = DeviceDetector.HIGH_END ? 32 : 16;
-Camera.MIN_HEIGHT = AbstractLevel.HEIGHT_MAX * AbstractLevel.STEP;
+Camera.MIN_HEIGHT = BaseLevel.HEIGHT_MAX * BaseLevel.STEP;
 Camera.cameraGoal = new Vector3(0, Camera.MIN_HEIGHT + Camera.HEIGHT, 0);
 Camera.cameraLookAt = new Vector3(0, Camera.MIN_HEIGHT, 0);
 Camera.projection = new Vector3();
@@ -71994,7 +71994,7 @@ class Billboard {
     createBody(x, y, level) {
         return new StaticBody(x, y, level);
     }
-    spawn(level, x = (Math.random() - 0.5) * (AbstractLevel.COLS * 0.5), y = (Math.random() - 0.5) * (AbstractLevel.ROWS * 0.5)) {
+    spawn(level, x = (Math.random() - 0.5) * (BaseLevel.COLS * 0.5), y = (Math.random() - 0.5) * (BaseLevel.ROWS * 0.5)) {
         this.body = this.createBody(x, y, level);
         this.mesh.position.set(x, this.body.z, y);
     }
@@ -72032,7 +72032,7 @@ Billboard.DIRECTIONS = ['up', 'right', 'down', 'left'];
 Billboard.compensateGroupZ = 0.2;
 Billboard.tempVector = new Vector3();
 
-class Level extends AbstractLevel {
+class Level extends BaseLevel {
     static async create(canvas, { sides, floor, ocean, objects = Level.DEFAULT_OBJECTS } = {}) {
         const [sidesTex, floorTex, oceanTex] = await TextureUtils.load([
             sides || Level.SIDES,
@@ -72339,7 +72339,7 @@ class NPC extends Sprite {
     update(scale) {
         const dx = this.mesh.position.x;
         const dy = this.mesh.position.z;
-        const radius = (AbstractLevel.COLS + AbstractLevel.ROWS) / 2;
+        const radius = (BaseLevel.COLS + BaseLevel.ROWS) / 2;
         const diff = Math.sqrt(dx * dx + dy * dy) - radius;
         if (diff > 0 && Math.random() < diff / radius) {
             this.body.angle = Math.atan2(-dy, -dx);
@@ -72414,5 +72414,5 @@ Player.DEFAULT_PROPS = {
     }
 };
 
-export { AbstractBody, AbstractLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, TextureUtils, distanceSq, getMatrix, getQueryParams, mouse, normalize, normalizeAngle, physics, queryParams, randomOf, setKey, state };
+export { AbstractBody, BaseLevel, Billboard, BoxMesh, Camera, Debug, DeviceDetector, DynamicBody, Events, Level, Loader, Math_Double_PI, Math_Half_PI, Mouse, NPC, Ocean, Player, Renderer, Skybox, Sprite, StaticBody, TextureUtils, distanceSq, getMatrix, getQueryParams, mouse, normalize, normalizeAngle, physics, queryParams, randomOf, setKey, state };
 //# sourceMappingURL=index.js.map

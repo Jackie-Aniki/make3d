@@ -3,13 +3,13 @@ import { Renderer } from '../core/renderer'
 import { Events } from '../events'
 import { state } from '../state'
 import { getMatrix } from '../utils/view-utils'
-import { AbstractLevel } from './abstract-level'
+import { BaseLevel } from './base-level'
 import { BoxMesh } from './box-mesh'
 import { LevelCreateProps, LevelObjects, LevelProps } from './model'
 import { Billboard } from '../view/billboard'
 import { TextureUtils } from '../utils/texture-utils'
 
-export class Level extends AbstractLevel {
+export class Level extends BaseLevel {
   static SIDES = 'sides.webp'
   static FLOOR = 'floor.webp'
   static OCEAN = 'ocean.webp'

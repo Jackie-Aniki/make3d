@@ -1,7 +1,7 @@
 {
   "name": "make3d",
   "description": "Game FrameWork for JavaScript 3D WebGL Games",
-  "version": "1.26.5",
+  "version": "1.27.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./esm/index.js",
@@ -34,7 +34,8 @@
     "lint": "eslint 'src/**/*.ts' --fix",
     "format": "prettier src --write",
     "precommit": "yarn lint && yarn build && yarn build:docs && yarn format",
-    "amend": "yarn precommit && git commit -a --am --no-edit"
+    "amend": "yarn precommit && git commit -a --am --no-edit",
+    "update": "npx npm-check-updates -u"
   },
   "files": [
     "dist/*.*",
